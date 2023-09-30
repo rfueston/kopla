@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  background-color: #007bff;
+  text-align: center;
+  color: white;
+}
+header {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+
+main {
+  max-width: fit-content;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: inline-block;
+  width: 140px;
+  text-align: right;
+  padding: 15px;
+}
+/*
+​ .form-container {
+  display: flex;
+  flex-direction: column;
+}
+*/
+
+.input-field {
+  margin-bottom: 15px;
+  border-color: grey;
+  border-style: groove;
+  border-width: 1px;
+  border-radius: 2mm;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/*
+.sign-in-link {
+  text-align: center;
+  margin-top: 20px;
+}*/
+/*
+.input-field input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+}
+*/
+
+/* Style the "Already have an account?" link */
+.link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
