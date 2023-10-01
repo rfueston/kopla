@@ -18,7 +18,7 @@ export default function PickLane() {
               <div>
                   <iframe src="https://storage.googleapis.com/maps-solutions-2b0hyqvmmu/commutes/dk82/commutes.html"
                           width="100%" height="100%"
-                          style="border:0;"
+                          // style="border:0;"
                           loading="lazy">
                   </iframe>
               </div>
