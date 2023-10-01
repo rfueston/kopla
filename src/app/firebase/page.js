@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDoc, querySnapshot, onSnapshot, query, deleteDoc, doc } from 'firebase/firestore';
 import {db} from '../firebase';
 
-export default function Home() {
+export default function FireBase() {
     const [items, setItems] = useState( [
         // { childName: 'test child', parentName: 'test parent'}
     ])

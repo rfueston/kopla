@@ -1,29 +1,25 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import React from 'react';
+import { BrowserRouter as Router, Switch,
+    Route, Redirect,} from "react-router-dom";
+
+
+import LoginMain from "../app/login/page";
+import Link from "next/link";
 
 export default function Home() {
     return (
         <div>
-            <h1>HELLO GROUP 1!</h1>
+            <header>Success!, logged in</header>
 
-    <div>
-        <Link href="/account_creation">Account Creation
-            Page</Link> {/* Temporary navigation to account creation page */}
-    </div>
+            <div>
+                <Link href="/login">Sign In</Link>
+            </div>
 
-    <div>
-        <Link href="/login">Login</Link> {/* Temporary navigation to account creation page */}
-    </div>
+            <div>
+                <Link href="/account_creation">Create Account</Link>
+            </div>
 
-    <div>
-        <Link href="/firebase">firebase</Link> {/* Temporary navigation to account creation page */}
-    </div>
+        </div>
+    );
 
-    <div>
-        <Link href="/pickup_lane">Pickup Lane</Link> {/* Temporary navigation to GPS page */}
-    </div>
-
-
-</div>
-)
 }
