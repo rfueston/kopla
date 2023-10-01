@@ -17,7 +17,7 @@ import {
   Alert,
 } from "reactstrap";
 
-export default function Home() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -93,7 +93,7 @@ export default function Home() {
               <br></br>
               <FormGroup row>
                 <Col className="link">
-                  No account? <Link href="/sign_up">Create one</Link>
+                  No account? <Link href="/account_creation">Create one!</Link>
                 </Col>
               </FormGroup>
             </Form>
