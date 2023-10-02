@@ -75,7 +75,7 @@ export default function CreateAccount() {
           </div>
         </div>
         <div className="sign-in-link">
-          <Link href="/loggin">
+          <Link href="/login">
             Sign in
           </Link>
         </div>
