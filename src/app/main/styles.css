@@ -1,8 +1,11 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 0;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: 1000px;
+  margin: 0 auto;
+  margin-left: -500px;
 }
 
 header {
@@ -14,10 +17,67 @@ header {
 
 main {
   max-width: fit-content;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: 1000px;
   margin: 0 auto;
+  margin-left: -500px;
   padding: 20px;
   background-color: #fff;
   color: grey;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#firebaseLink {
+
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding around the text */
+  border: none; /* Remove the default button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  font-size: 16px; /* Font size */
+  margin-left: 15px;
+
+}
+#pickupLane {
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding around the text */
+  border: none; /* Remove the default button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  font-size: 16px; /* Font size */
+  margin-left: 15px;
+}
+#geofencing {
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding around the text */
+  border: none; /* Remove the default button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  font-size: 16px; /* Font size */
+  margin-left: 15px;
+}
+#settings {
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding around the text */
+  border: none; /* Remove the default button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  font-size: 16px; /* Font size */
+  margin-left: 15px;
 }
