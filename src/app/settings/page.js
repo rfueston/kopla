@@ -24,9 +24,11 @@ export default function Settings() {
         <div>
             <header>Settings</header>
             <br></br>
+            <main>
             <div>
                 <Button href="/login" variant="contained" id="firebaseLink">Logout</Button>
             </div>
+            </main>
         </div>
     )
 }
