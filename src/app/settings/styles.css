@@ -17,12 +17,7 @@ header {
 
 main {
   max-width: fit-content;
-  position: absolute;
-  top: 0px;
-  left: 50%;
-  width: 1000px;
   margin: 0 auto;
-  margin-left: -500px;
   padding: 20px;
   background-color: #fff;
   color: grey;

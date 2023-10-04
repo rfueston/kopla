@@ -6,13 +6,16 @@ export default function Home() {
         <div>
             <header>K.O.P.L.A.</header>
             <br></br>
-            <div>
-                <Link href="/login">Sign In</Link>
-            </div>
 
-            <div>
-                <Link href="/account_creation">Create Account</Link>
-            </div>
+            <main>
+                <div>
+                    <button><Link href="/login">Sign In</Link></button>
+                </div>
+                <div>
+                    <button><Link href="/account_creation">Create Account</Link></button>
+                </div>
+            </main>
+
         </div>
     );
 }

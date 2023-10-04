@@ -23,6 +23,7 @@ export default function Main() {
         <div>
             <header>Success!, logged in</header>
             <br></br>
+            <main>
             <div>
                 <Button href="/firebase" variant="contained" id="firebaseLink">Firebase (dev page)</Button>
             </div>
@@ -38,7 +39,9 @@ export default function Main() {
             <div>
                 <Button href="/settings" variant="contained" id="settings">Settings</Button> {/* Temporary navigation to Settings page */}
             </div>
-            <br></br>
+                <br></br>
+
+            </main>
 
         </div>
     )
