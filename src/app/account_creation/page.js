@@ -41,12 +41,12 @@ export default function CreateAccount() {
 
         const errorCode = error.code;
 
-        
+        //modify error code to display as a message to the user
         var errorMessage = error.code.split('/').pop();
         errorMessage = errorMessage.replace(/-/g, " ");
+
         //If the email already exists, display error to user
         setemailInvalid(errorMessage);
-       console.log(errorMessage);
         
       
       });
