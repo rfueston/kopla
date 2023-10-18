@@ -16,10 +16,11 @@ export default function CreateAccount() {
   const [confirmPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
   const [validatePassCompare, setValidatePassCompare] = useState(true);  
-  const [validateEmail, setValidateEmail] = useState(true);  
+  const [emailInvalid, setemailInvalid] = useState('');  
   const [validatePassword, setValidatePassword] = useState(true);
+  const [validateFName, setValidateFName] = useState(true);  
+  const [validateLName, setValidateLName] = useState(true);
   const router = useRouter();
-
 
   const createAccountLogin = async (e) => {
     const auth = getAuth();
@@ -39,39 +40,62 @@ export default function CreateAccount() {
       .catch((error) => {
 
         const errorCode = error.code;
-        console.log(errorCode);
-        
+
+        //modify error code to display as a message to the user
+        var errorMessage = error.code.split('/').pop();
+        errorMessage = errorMessage.replace(/-/g, " ");
+
         //If the email already exists, display error to user
-        if (errorCode == 'auth/email-already-in-use')
-          {
-            setValidateEmail(false);
-            }
+        setemailInvalid(errorMessage);
+        
       
       });
 
   };
 
   function validateNewUser(){
-    setValidatePassCompare(true);
-    setValidatePassword(true);
+    var passCompare = true;
+    var passwordValid = true;
+    var checkFName = true;
+    var checkLName = true;
 
     //regex used to determine password requirements
-    var reg = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?.!@$%^&*-]).{8,}$");
+    var reg = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?.!@$%^&*-])(?!.*(\w)\1{1,}).+.{8,}$/);
+
+    if (firstName.length == 0){
+      setValidateFName(false);
+      checkFName = false;
+    } else {
+      setValidateFName(true);
+    }
+
+    if (lastName.length == 0){
+      setValidateLName(false);
+      checkLName = false;
+    } else {
+      setValidateLName(true);
+    }
 
     //User didn't meet the password requirements, so display error message
     if (!reg.test(password)){
       setValidatePassword(false);
+      passwordValid = false;
 
     } else if (password != confirmPassword){
       setValidatePassCompare(false);
+      setValidatePassword(true);
+      passCompare = false;
+    } else {
+      setValidatePassCompare(true);
+      setValidatePassword(true);
     }
 
-    //if the passwords match and the password is valid, attempt to create account
-    if (validatePassCompare && validatePassword){
-      createAccountLogin()
+    if ( passCompare && passwordValid && checkFName && checkLName){
+      createAccountLogin();
     }
   
   }
+
   return (
     <div>
       <header>
@@ -85,9 +109,10 @@ export default function CreateAccount() {
               placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              required
             />
           </div>
+          <span style={{color:'red'}} hidden={(!validateFName) ? '' : 'false'}>Must enter a first name.</span>
+
           <div className="input-field">
             <input
               type="text"
@@ -97,6 +122,8 @@ export default function CreateAccount() {
               required
             />
           </div>
+          <span style={{color:'red'}} hidden={(!validateLName) ? '' : 'false'}>Must enter a last name.</span>
+
           <div className="input-field">
             <input
               type="email"
@@ -106,7 +133,7 @@ export default function CreateAccount() {
               required
             />
           </div>
-            <span style={{color:'red'}} hidden={(!validateEmail) ? '' : 'false'}>Email already exists.</span>
+            <span style={{color:'red'}} hidden={(emailInvalid != '') ? '' : 'false'}>{emailInvalid}</span>
           <div className="input-field">
             <input
               type="password"
@@ -122,6 +149,7 @@ export default function CreateAccount() {
             <li>At least one uppercase letter</li>
             <li>At least one lowercase letter</li>
             <li>At least one number</li>
+            <li>No repeating characters</li>
             </ul>
           <div className="input-field">
             <input
@@ -133,10 +161,10 @@ export default function CreateAccount() {
             />
                <span style={{color:'red'}} hidden={(!validatePassCompare) ? '' : 'false'}>Passwords do not match.</span>
           </div>
+        </div>
           <div>
             <button onClick={validateNewUser}>Create Account</button>
           </div>
-        </div>
         <div className="sign-in-link">
           Already have an account? <br></br>
           <Link href="/login">
