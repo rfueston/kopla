@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./styles.css"; // Import the CSS
+import { auth } from "../../../lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import {
   Container,
@@ -22,13 +24,13 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { signInWithEmailAndPassword } = useAuth();
+  //const { signInWithEmailAndPassword } = useAuth();
 
   const onSubmit = (event) => {
     setError(null);
-    signInWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        console.log("Success. The user is created in firebase");
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
         router.push("/main");
       })
       .catch((error) => {
