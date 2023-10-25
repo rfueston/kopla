@@ -3,7 +3,7 @@ import { useState} from 'react';
 import Link from 'next/link';
 import styles from './styles.css'; // Import the CSS
 import { getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import { collection, addDoc} from 'firebase/firestore';
+import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { useRouter } from "next/navigation";
 import {db} from '../firebase';
 
@@ -28,7 +28,7 @@ export default function CreateAccount() {
       .then((userCredential) => {
         // If authentication passed, add new user to FireStore
         
-         addDoc(collection(db, 'User'), {
+         setDoc(doc(db, 'User', userCredential.user.uid), {
           firstName: firstName,
           lastName: lastName,
           email: email,
