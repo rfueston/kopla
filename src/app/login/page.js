@@ -31,7 +31,7 @@ export default function Login() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // If authentication passed, add new user to FireStore
+        // If authentication passed, push to main class
         console.log("User ", userCredential.user);
         router.push("/main");
       })
@@ -41,7 +41,7 @@ export default function Login() {
         // //modify error code to display as a message to the user
         var errorMessage = error.code.split("/").pop();
         errorMessage = errorMessage.replace(/-/g, " ");
-        //If the email already exists, display error to user
+        //If the credentials are invalid, display error to user
         console.log(errorMessage);
 
         setInvalidCredentialsError(errorMessage);
