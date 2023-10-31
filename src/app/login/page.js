@@ -6,6 +6,7 @@ import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./styles.css"; // Import the CSS
 import { auth } from "../../../lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import loginController from "./pageController";
 
 import {
   Container,
@@ -19,24 +20,31 @@ import {
   Alert,
 } from "reactstrap";
 
+
+//instead of method being here, pull directly from controller
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
-  //const { signInWithEmailAndPassword } = useAuth();
 
-  const onSubmit = (event) => {
-    setError(null);
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        router.push("/main");
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-    event.preventDefault();
+  const onSubmit = async (event) => {
+    event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    setError(null); // Clear any previous error
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      
+      // Assuming setAdminStatus is asynchronous, you can await it here
+      await loginController.setAdminStatus(userCredential.user.uid);
+
+      router.push("/main"); // Redirect to the main page after successful login
+    } catch (error) {
+      setError(error.message); // Handle login errors
+    }
   };
 
   return (

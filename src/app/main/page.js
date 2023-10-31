@@ -17,16 +17,29 @@ import {
     Input,
     Alert,
 } from "reactstrap";
+import loginController from "../login/pageController";
 
 export default function Main() {
+    const isAdmin = loginController.getAdminStatus();
+    //pull from login controller method to access admin information
+
     return (
+
+        //if else statement for return admin or parent user from login controller (getAdminStatus).
+        //return if statements based on global admin status variable 
+
         <div>
             <header>Success!, logged in</header>
             <br></br>
             <main>
-            <div>
-                <Button href="/firebase" variant="contained" id="firebaseLink">Firebase (dev page)</Button>
-            </div>
+                {isAdmin && (
+                    <div>
+                        {/* Render your Firebase div here */}
+                        <Button href="/firebase" variant="contained" id="firebaseLink">
+                        Firebase (dev page)
+                        </Button>
+                    </div>
+                )}
             <br></br>
             <div>
                 <Link href="/pickup_lane" variant="contained" id="pickupLane">Pickup Lane</Link> {/* Temporary navigation to pickup lane page */}
