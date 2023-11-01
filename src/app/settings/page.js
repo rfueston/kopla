@@ -1,11 +1,10 @@
 "use client";
 import React, { useState } from 'react';
-import EditProfile from './EditProfile'; // Import the EditProfile component
-import Notifications from './notifications'; // Import the Notifications component
-import Security from './security'; // Import the Security component
-import styles from './styles.css'; // Import the CSS
+import EditProfile from './EditProfile';
+import Notifications from './notifications';
+import Security from './security';
+import styles from './styles.css';
 import Link from 'next/link';
-
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('edit-profile');
@@ -48,14 +47,10 @@ const SettingsPage = () => {
           </li>
         </ul>
         <div className="sign-in-link">
-          <Link href="/login">
-            Logout
-          </Link>
+          <Link href="/login">Logout</Link>
         </div>
       </div>
-      <div className="settingsContent">
-        {renderTabContent()}
-      </div>
+      <div className="settingsContent">{renderTabContent()}</div>
     </div>
   );
 };

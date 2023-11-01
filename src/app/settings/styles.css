@@ -1,50 +1,13 @@
-/* SettingsPage.module.css */
-.settingsPage {
+.settings-container {
   display: flex;
+  justify-content: space-between;
   align-items: flex-start;
 }
 
 .settingsMenu {
-  width: 250px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.settingsMenu ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.settingsMenu li {
-  margin-bottom: 10px;
-}
-
-.link {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  display: block;
-  padding: 10px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.link:hover {
-  background-color: #e0e0e0;
+  flex: 1;
 }
 
 .settingsContent {
-  flex-grow: 1;
-  padding: 20px;
-}
-
-/* Style the "Already have an account?" link */
-.link a {
-  color: black;
-  text-decoration: none;
-}
-
-.link a:hover {
-  text-decoration: underline;
+  flex: 2; /* Adjust the value as needed */
 }
