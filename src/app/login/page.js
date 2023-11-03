@@ -46,6 +46,9 @@ export default function Login() {
 
         setInvalidCredentialsError(errorMessage);
       });
+     // fix fetch for admin
+    // Assuming setAdminStatus is asynchronous, you can await it here
+    await loginController.setAdminStatus(userCredential.user.uid);
   };
   function loginUser() {
     performFirebaseLogin();
