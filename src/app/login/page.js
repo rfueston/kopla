@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./styles.css"; // Import the CSS
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { db } from "../firebase";
 
 import {
   Container,
@@ -20,87 +21,71 @@ import {
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const router = useRouter();
-  const { signInWithEmailAndPassword } = useAuth();
+  const [invalidCredentialsError, setInvalidCredentialsError] = useState("");
+  // const { user, login, logout } = useContext(UserContext);
 
-  const onSubmit = (event) => {
-    setError(null);
-    signInWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        console.log("Success. The user is created in firebase");
+  // const [error, setError] = useState(null);
+  const router = useRouter();
+
+  const performFirebaseLogin = async (e) => {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // If authentication passed, push to main class
+        console.log("User ", userCredential.user);
         router.push("/main");
       })
       .catch((error) => {
-        setError(error.message);
-      });
-    event.preventDefault();
-  };
+        const errorCode = error.code;
+        console.log(error);
+        // //modify error code to display as a message to the user
+        var errorMessage = error.code.split("/").pop();
+        errorMessage = errorMessage.replace(/-/g, " ");
+        //If the credentials are invalid, display error to user
+        console.log(errorMessage);
 
+        setInvalidCredentialsError(errorMessage);
+      });
+  };
+  function loginUser() {
+    performFirebaseLogin();
+  }
   return (
-    <Container className="text-center" style={{ padding: "40px 0px" }}>
-      <Row>
-        <Col>
-          <header>Login</header>
-        </Col>
-      </Row>
-      <br></br>
-      <br></br>
+    <div>
+      <header>
+        <h1>Login</h1>
+      </header>
       <main>
-        <Row style={{ maxWidth: "400px", margin: "auto" }}>
-          <Col>
-            <Form onSubmit={onSubmit}>
-              {error && <Alert color="danger">{error}</Alert>}
-              <FormGroup row>
-                <Label for="loginEmail" sm={4}>
-                  Email
-                </Label>
-                {/* <Col sm={8}> */}
-                <Input
-                  className="input-field"
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  name="email"
-                  id="loginEmail"
-                  placeholder="Email"
-                />
-                {/* </Col> */}
-              </FormGroup>
-              <FormGroup row>
-                <Label for="loginPassword" sm={4}>
-                  Password
-                </Label>
-                {/* <Col sm={8}> */}
-                <Input
-                  className="input-field"
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  id="loginPassword"
-                  placeholder="Password"
-                />
-                {/* </Col> */}
-              </FormGroup>
-              <br></br>
-              <FormGroup row>
-                <Col>
-                  <Button>Login</Button>
-                </Col>
-              </FormGroup>
-              <br></br>
-              <br></br>
-              <FormGroup row>
-                <Col className="link">
-                  No account? <Link href="/account_creation">Create one!</Link>
-                </Col>
-              </FormGroup>
-            </Form>
-          </Col>
-        </Row>
+        <div className="form-container">
+          <div className="input-field">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-field">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <span
+            style={{ color: "red" }}
+            hidden={invalidCredentialsError != "" ? "" : "false"}
+          >
+            {invalidCredentialsError}
+          </span>
+
+          <button onClick={loginUser}>Login</button>
+        </div>
       </main>
-    </Container>
+    </div>
   );
 }
 
