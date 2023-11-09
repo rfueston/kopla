@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import EditProfile from './EditProfile';
 import Notifications from './notifications';
 import Security from './security';
+import Accessibility from './accessibility';
+import Help from './help';
 import styles from './styles.css';
 import Link from 'next/link';
 
@@ -17,8 +19,8 @@ const SettingsPage = () => {
           return <Notifications />;
         case 'security':
           return <Security />;
-        case 'appearance':
-          return <Appearance />;
+        case 'accessibility':
+          return <Accessibility />;
         case 'help':
           return <Help />;
         default:
@@ -40,7 +42,7 @@ const SettingsPage = () => {
             <button onClick={() => setActiveTab('security')}>Security</button>
           </li>
           <li>
-            <button onClick={() => setActiveTab('appearance')}>Appearance</button>
+            <button onClick={() => setActiveTab('accessibility')}>Accessibility</button>
           </li>
           <li>
             <button onClick={() => setActiveTab('help')}>Help</button>

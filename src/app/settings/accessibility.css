@@ -1,0 +1,21 @@
+/* styles/AccessibilitySettings.module.css */
+.accessibilitySettings {
+    text-align: center;
+    padding: 20px;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+label {
+    margin: 10px;
+}
+
+.high-contrast {
+    background-color: green;
+    color: yellow;
+}
