@@ -53,6 +53,12 @@ button {
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+  align-self: center; /* Center the button horizontally */
+  margin-bottom: 20px; /* Add some space between the button and the content (adjust as needed) */
+  /* Additional button styles */
+  position: absolute;
+  bottom: 10px; /* Adjust the distance from the bottom as needed */
+  right: 10px; /* Adjust the distance from the right as needed */
 }
 
 /* Style the "Already have an account?" link */
@@ -63,4 +69,48 @@ button {
 
 .link a:hover {
   text-decoration: underline;
+}
+
+/* YourPage.module.css */
+.main-content {
+  display: flex;
+  justify-content: space-between; /* Adjust this based on your needs */
+  align-items: flex-start; /* Adjust this based on your needs */
+  width: 100%; /* Make the main container occupy the full width of the viewport */
+  max-width: 100%; /* Ensure it doesn't exceed the width of the viewport */
+  padding: 20px; /* Add some padding to your content */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  background-color: #ffffff; /* Set a background color for the main content */
+  margin: 0 auto; /* Center the main content horizontally (optional) */
+  /* Additional styles for your main content */
+}
+
+.left-section {
+  flex: 1;
+  padding: 20px;
+  background-color: #e1e1e1;
+  height: 300px; /* Set the height of the section as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-section {
+  flex: 1;
+  padding: 20px;
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fill-div {
+  width: 100%; /* Make the div take up the full width of the section */
+  height: 100%; /* Make the div take up the full height of the section */
+  background-color: grey; /* Set a background color for the div */
+  color: #ffffff; /* Set text color for the content inside the div */
+  text-align: left; /* Center the content horizontally and vertically */
+  /* Additional styles for the div */
+  position: relative;
+  margin: 20px; /* Add some margin for spacing */
 }
