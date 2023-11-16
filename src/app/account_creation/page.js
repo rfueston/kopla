@@ -6,6 +6,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { db } from "../firebase";
+import Head from 'next/head';
 
 
 export default function CreateAccount() {
@@ -183,7 +184,12 @@ export default function CreateAccount() {
         `}
         </style>
       <main>
-        
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+        <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet"/>
+      </Head>
+
         <div ref={childRef} id="formContainer" className={styles.formContainer}>
           <div className={styles.input}>
             <input
