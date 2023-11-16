@@ -177,7 +177,7 @@ export default function CreateAccount() {
           color: white;
           font-size: 25px;
           text-align: center;
-          font-family: "Itim";
+          font-family: 'Itim', cursive;
           font-size:35px;
         }
         
