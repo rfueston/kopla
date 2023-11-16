@@ -140,12 +140,17 @@
 
 
 .createAccountButton {
-  background-color: blue;
+  background-color: #1A7FC1;
   color: white;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  height: 50px;
+  font-size: 20px;
+  font-family: 'Itim', cursive;
 }
 
 .createAccountButton:hover {
@@ -153,9 +158,11 @@
 }
 
 .signInLink {
+  font-family: 'Itim', cursive;
   margin-top: 20px;
 }
 .siginText {
+  font-family: 'Itim', cursive;
   color: black;
 
 }
