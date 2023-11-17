@@ -6,6 +6,7 @@ import styles from "./styles.css"; // Import the CSS
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
 import loginController from "./pageController";
+import { setCookie, getCookie } from "cookies-next";
 
 import {
   Container,
@@ -34,8 +35,11 @@ export default function Login() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
       // If authentication passed, push to main class
-      console.log("User ", userCredential.user);
-      await loginController.setAdminStatus(userCredential.user.uid);
+      //console.log("User ", userCredential.user);
+
+      setCookie('Test', userCredential.user.uid);
+      //console.log(getCookie('Test'));
+      await loginController.setAdminStatus(getCookie("Test"));
       
       router.push("/main");
     } catch (error) {

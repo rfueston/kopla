@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./styles.css"; // Import the CSS
 import React from 'react';
+import { setCookie, getCookie } from "cookies-next";
+
 
 import {
     Container,
@@ -20,8 +22,16 @@ import {
 import loginController from "../login/pageController";
 
 export default function Main() {
-    const isAdmin = loginController.getAdminStatus();
-    //pull from login controller method to access admin information
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        await loginController.setAdminStatus(getCookie("Test"));
+        setIsAdmin(loginController.getAdminStatus());
+      };
+  
+      fetchData();
+    }, []);
 
     return (
 

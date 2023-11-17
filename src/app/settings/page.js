@@ -7,9 +7,16 @@ import Accessibility from './accessibility';
 import Help from './help';
 import styles from './styles.css';
 import Link from 'next/link';
+import { deleteCookie } from 'cookies-next';
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('edit-profile');
+
+  const handleLogout = () => {
+    // Destroy the 'Test' cookie
+    deleteCookie("Test");
+    
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -49,8 +56,8 @@ const SettingsPage = () => {
           </li>
         </ul>
         <div className="sign-in-link">
-          <Link href="/login">Logout</Link>
-        </div>
+          <Link href="/login" onClick={handleLogout}>Logout</Link>
+        </div> 
       </div>
       <div className="settingsContent">{renderTabContent()}</div>
     </div>
