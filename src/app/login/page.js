@@ -40,12 +40,13 @@ export default function Login() {
       
       router.push("/main");
     } catch (error) {
-      console.error("Login error:", error); // Log the full error object for debugging
-  
-      let errorMessage = "An error occurred while logging in. Please try again later.";
-      if (error.code && error.message) {
-        errorMessage = `${error.code}: ${error.message}`;
-      }
+     
+        const errorCode = error.code;
+
+        //modify error code to display as a message to the user
+        var errorMessage = error.code.split("/").pop();
+        errorMessage = errorMessage.replace(/-/g, " ");
+
   
       console.log(errorMessage);
       setInvalidCredentialsError(errorMessage);
