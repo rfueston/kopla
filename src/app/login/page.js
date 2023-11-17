@@ -47,8 +47,6 @@ export default function Login() {
         var errorMessage = error.code.split("/").pop();
         errorMessage = errorMessage.replace(/-/g, " ");
 
-  
-      console.log(errorMessage);
       setInvalidCredentialsError(errorMessage);
     }
   };

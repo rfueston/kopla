@@ -16,7 +16,7 @@ export default function CreateAccount() {
   const [confirmPassword, setRepeatPassword] = useState("");
   const [email, setEmail] = useState("");
   const [validatePassCompare, setValidatePassCompare] = useState(true);
-  const [emailInvalid, setemailInvalid] = useState("");
+  const [invalidCredentialsError, setInvalidCredentialsError] = useState("");
   const [validatePassword, setValidatePassword] = useState(true);
   const [validateFName, setValidateFName] = useState(true);
   const [validateLName, setValidateLName] = useState(true);
@@ -46,7 +46,7 @@ export default function CreateAccount() {
         errorMessage = errorMessage.replace(/-/g, " ");
 
         //If the email already exists, display error to user
-        setemailInvalid(errorMessage);
+        setInvalidCredentialsError(errorMessage);
       });
   };
 
@@ -227,9 +227,9 @@ export default function CreateAccount() {
           </div>
           <span className={styles.errorMessage}
             style={{ color: "red" }}
-            hidden={emailInvalid != "" ? "" : "false"}
+            hidden={invalidCredentialsError != "" ? "" : "false"}
           >
-            {emailInvalid}
+            {invalidCredentialsError}
           </span>
           <div className={styles.input}>
             <input
