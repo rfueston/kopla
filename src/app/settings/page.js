@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditProfile from './EditProfile';
 import Notifications from './notifications';
 import Security from './security';
@@ -7,25 +7,53 @@ import Accessibility from './accessibility';
 import Help from './help';
 import styles from './styles.css';
 import Link from 'next/link';
+import { auth } from '../firebase'; // Import the auth instance from your firebase.js file
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('edit-profile');
+  const [currentUser, setCurrentUser] = useState('');
+  
+
+  useEffect(() => {
+    // Use an effect to fetch user data when the component mounts
+    const fetchUserData = async () => {
+      try {
+        await auth.onAuthStateChanged(function(user) {
+          console.log(" User:", user);
+          setCurrentUser(user);
+        })
+        console.log(auth.currentUser);
+    
+        //console.log(currentUser);
+     
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
+      }
+    };
+
+    fetchUserData(); // Call the function to fetch user data
+
+    // Cleanup function (optional)
+    return () => {
+      // Any cleanup code if needed
+    };
+  }, []); // Run when the component mounts
 
   const renderTabContent = () => {
     switch (activeTab) {
-        case 'edit-profile':
-          return <EditProfile />;
-        case 'notifications':
-          return <Notifications />;
-        case 'security':
-          return <Security />;
-        case 'accessibility':
-          return <Accessibility />;
-        case 'help':
-          return <Help />;
-        default:
-          return null;
-      }
+      case 'edit-profile':
+        return <EditProfile />;
+      case 'notifications':
+        return <Notifications />;
+      case 'security':
+        return <Security />;
+      case 'accessibility':
+        return <Accessibility />;
+      case 'help':
+        return <Help />;
+      default:
+        return null;
+    }
   };
 
   return (

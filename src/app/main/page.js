@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../context/AuthUserContext";
+import { auth } from "../firebase";
 import styles from "./main.module.css"; // Import the CSS
 import React from 'react';
 
@@ -20,8 +20,37 @@ import {
 import loginController from "../login/pageController";
 
 export default function Main() {
+
     const isAdmin = loginController.getAdminStatus();
     //pull from login controller method to access admin information
+
+    useEffect(() => {
+        // Use an effect to run when the component mounts
+        const fetchUserData = async () => {
+          try {
+            const currentUser = auth.currentUser;
+    
+            if (currentUser) {
+              // Access user details
+              console.log('User ID:', currentUser.uid);
+              console.log('User Email:', currentUser.email);
+              console.log('User Display Name:', currentUser.displayName);
+              console.log('User Photo URL:', currentUser.photoURL);
+            } else {
+              console.log('No user signed in');
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error.message);
+          }
+        };
+    
+        fetchUserData(); // Call the function to fetch user data
+    
+        // Cleanup function (optional)
+        return () => {
+          // Any cleanup code if needed
+        };
+      }, []);
 
     return (
 
