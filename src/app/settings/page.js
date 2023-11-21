@@ -11,18 +11,20 @@ import { auth } from '../firebase'; // Import the auth instance from your fireba
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('edit-profile');
-  const [currentUser, setCurrentUser] = useState('');
+  //const [currentUser, setCurrentUser] = useState('');
   
 
   useEffect(() => {
     // Use an effect to fetch user data when the component mounts
     const fetchUserData = async () => {
       try {
-        await auth.onAuthStateChanged(function(user) {
+        auth.onAuthStateChanged(function(user) {
+          //TO DO: make functions for updating backend. Use onAuthStateChanged inside each function
+          
           console.log(" User:", user);
-          setCurrentUser(user);
+       
         })
-        console.log(auth.currentUser);
+        //console.log(auth.currentUser);
     
         //console.log(currentUser);
      
