@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/router';
 import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./main.module.css"; // Import the CSS
 import React from 'react';
@@ -18,8 +18,14 @@ import {
     Alert,
 } from "reactstrap";
 import loginController from "../login/pageController";
+import checkAuth from '../../../lib/cookieAuth';
 
 export default function Main() {
+    
+    useEffect(() => {
+        checkAuth();
+      }, []);
+
     const isAdmin = loginController.getAdminStatus();
     //pull from login controller method to access admin information
 

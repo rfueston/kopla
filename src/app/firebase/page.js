@@ -3,8 +3,14 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDoc, querySnapshot, onSnapshot, query, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import {db} from '../firebase';
+import checkAuth from '../../../lib/cookieAuth';
+
 
 export default function FireBase() {
+    useEffect(() => {
+        checkAuth();
+      }, []);
+      
     const [items, setItems] = useState( [
         // { childName: 'test child', parentName: 'test parent'}
     ])
