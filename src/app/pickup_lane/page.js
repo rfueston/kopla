@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./styles.css"; // Import the CSS
+import checkAuth from '../../../lib/cookieAuth';
 import {
   collection,
   query,
@@ -32,6 +33,10 @@ import {
 } from "reactstrap";
 
 export default function PickLane() {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
   const [data3, setData3] = useState([]);

@@ -7,6 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
 import loginController from "./pageController";
 import Head from 'next/head';
+import { handleLogin } from '../../../lib/handleCookie';
 
 import {
   Container,
@@ -34,6 +35,7 @@ export default function Login() {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
+      handleLogin();
       // If authentication passed, push to main class
       console.log("User ", userCredential.user);
       await loginController.setAdminStatus(userCredential.user.uid);

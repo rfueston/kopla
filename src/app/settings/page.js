@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EditProfile from './EditProfile';
 import Notifications from './notifications';
 import Security from './security';
@@ -7,8 +7,16 @@ import Accessibility from './accessibility';
 import Help from './help';
 import styles from './styles.css';
 import Link from 'next/link';
+import { handleLogout } from '../../../lib/handleCookie';
+import { useRouter } from "next/navigation";
+import checkAuth from '../../../lib/cookieAuth';
+
 
 const SettingsPage = () => {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('edit-profile');
 
   const renderTabContent = () => {
@@ -27,6 +35,11 @@ const SettingsPage = () => {
           return null;
       }
   };
+
+  function logoutUser() {
+    handleLogout();
+    router.push("/login");
+  }
 
   return (
     <div className="settings-container">
@@ -48,8 +61,8 @@ const SettingsPage = () => {
             <button onClick={() => setActiveTab('help')}>Help</button>
           </li>
         </ul>
-        <div className="sign-in-link">
-          <Link href="/login">Logout</Link>
+        <div className="sign-out-button">
+          <button onClick={logoutUser}>Logout</button>
         </div>
       </div>
       <div className="settingsContent">{renderTabContent()}</div>
