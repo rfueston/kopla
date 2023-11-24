@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import styles from "./create.module.css";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { db } from "../firebase";
@@ -28,6 +28,10 @@ export default function CreateAccount() {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        console.log(auth.currentUser);
+        
+        sendEmailVerification(auth.currentUser);
+    
         // If authentication passed, add new user to FireStore
 
         setDoc(doc(db, "User", userCredential.user.uid), {
@@ -40,11 +44,11 @@ export default function CreateAccount() {
       })
       .catch((error) => {
         const errorCode = error.code;
-
+        if (error.code){
         //modify error code to display as a message to the user
-        var errorMessage = error.code.split("/").pop();
-        errorMessage = errorMessage.replace(/-/g, " ");
-
+          var errorMessage = error.code.split("/").pop();
+          errorMessage = errorMessage.replace(/-/g, " ");
+        }
         //If the email already exists, display error to user
         setInvalidCredentialsError(errorMessage);
       });

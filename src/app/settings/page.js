@@ -21,7 +21,7 @@ const SettingsPage = () => {
         auth.onAuthStateChanged(function(user) {
           //TO DO: make functions for updating backend. Use onAuthStateChanged inside each function
           
-          console.log(" User:", user);
+          console.log(" User Data:", user);
        
         })
         //console.log(auth.currentUser);
@@ -57,6 +57,7 @@ const SettingsPage = () => {
         return null;
     }
   };
+
 
   return (
     <div className="settings-container">
