@@ -73,7 +73,7 @@ export default function Login() {
       <div className={styles.transCircle1}></div>
 
      <div id="container" className={styles.container}>
-      <h1 className={styles.h1}>Login</h1>
+      <h1 className={styles.h1}>K.O.P.L.A.</h1>
 
 
       <style jsx global>{`
