@@ -112,11 +112,14 @@ export default function PickLane() {
 
   function removeItem() {
     const updatedItems = [...filteredItems]; // Create a copy of the original array
-
-    var topInQueue = updatedItems.splice(0, 1); // Use splice to remove the item
-    console.log("Removed: ", topInQueue);
-    setFilteredItems(updatedItems); // Update the state with the modified array
-    return topInQueue;
+    if (updatedItems.length !== 0) {
+      var topInQueue = updatedItems.splice(0, 1); // Use splice to remove the item
+      console.log("Removed: ", topInQueue);
+      setFilteredItems(updatedItems); // Update the state with the modified array
+      return topInQueue;
+    } else {
+      return "";
+    }
   }
 
   const updateDismissedStudents = async (docSnap) => {
@@ -140,7 +143,15 @@ export default function PickLane() {
     const documentRef = doc(db, collectionName, documentId);
 
     try {
-      await deleteDoc(documentRef);
+      const collectionRef = collection(db, collectionName);
+
+      // Use getDocs to get a QuerySnapshot
+      const querySnapshot = await getDocs(collectionRef);
+
+      // Check the size of the QuerySnapshot
+      if (querySnapshot.size !== 0) {
+        await deleteDoc(documentRef);
+      }
     } catch (error) {
       throw new Error("Failed to remove document: " + error.message);
     }
@@ -148,20 +159,29 @@ export default function PickLane() {
   const handleDismissButtonClick = (zoneId) => {
     console.log(`Button clicked with zone: ${zoneId}`);
     var nextItem = removeItem();
-    console.log(`nextItem: ${nextItem[0].parentId}`);
-    console.log(`parentId: ${nextItem[0].parentId}`);
-    console.log(`studentId: ${nextItem[0].student_id}`);
     var docRef = doc(db, "zone", zoneId);
-    const docSnap = getDoc(docRef);
+    if (nextItem !== "") {
+      console.log(`nextItem: ${nextItem[0].parentId}`);
+      console.log(`parentId: ${nextItem[0].parentId}`);
+      console.log(`studentId: ${nextItem[0].student_id}`);
 
-    // Access the data using .data() method
-    // updateDismissedStudents(docSnap);
-    var newData = {
-      parentId: nextItem[0].parentId,
-      studentId: nextItem[0].student_id,
-    };
-    setDoc(docRef, newData, { merge: true });
-    removeDocumentFromFirestore("queue", nextItem[0].id);
+      const docSnap = getDoc(docRef);
+
+      // Access the data using .data() method
+      // updateDismissedStudents(docSnap);
+      var newData = {
+        parentId: nextItem[0].parentId,
+        studentId: nextItem[0].student_id,
+      };
+      setDoc(docRef, newData, { merge: true });
+      removeDocumentFromFirestore("queue", nextItem[0].id);
+    } else {
+      var newData = {
+        parentId: "",
+        studentId: "",
+      };
+      setDoc(docRef, newData, { merge: true });
+    }
   };
 
   return (
