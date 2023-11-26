@@ -9,6 +9,11 @@ h1 {
   text-align: center;
   color: white;
 }
+h2 {
+  background-color: grey;
+  text-align: center;
+  color: white;
+}
 header {
   background-color: #007bff;
   color: white;
