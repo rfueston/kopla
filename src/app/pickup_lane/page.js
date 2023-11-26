@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthUserContext";
 import styles from "./styles.css"; // Import the CSS
-import checkAuth from '../../../lib/cookieAuth';
+import checkAuth from "../../../lib/cookieAuth";
 import {
   collection,
   query,
@@ -16,6 +16,7 @@ import {
   orderBy,
   Timestamp,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -109,7 +110,7 @@ export default function PickLane() {
     };
   }, []);
 
-  const removeItem = () => {
+  function removeItem() {
     const updatedItems = [...filteredItems]; // Create a copy of the original array
 
     var removed = updatedItems.splice(0, 1); // Use splice to remove the item
@@ -117,7 +118,7 @@ export default function PickLane() {
     setFilteredItems(updatedItems); // Update the state with the modified array
     removeDocumentFromFirestore("queue", removed.id);
     return removed;
-  };
+  }
 
   const removeDocumentFromFirestore = async (collectionName, documentId) => {
     const documentRef = doc(db, collectionName, documentId);
@@ -134,25 +135,67 @@ export default function PickLane() {
     switch (zoneId) {
       case 1:
         var nextItem = removeItem();
-        setDoc(doc(db, "zone", 1), {
-          parentId: nextItem.parentId,
-          studentId: student_id,
-        });
+        // setDoc(doc(db, "zone", "1"), {
+        //   parentId: nextItem.parentId,
+        //   studentId: nextItem.student_id,
+        // });
+        console.log(`nextItem: ${nextItem[0].parentId}`);
+        console.log(`parentId: ${nextItem[0].parentId}`);
+        console.log(`studentId: ${nextItem[0].student_id}`);
+        var docRef = doc(db, "zone", "1");
+        var newData = {
+          parentId: nextItem[0].parentId,
+          studentId: nextItem[0].student_id,
+        };
+        setDoc(docRef, newData, { merge: true });
+        removeDocumentFromFirestore("queue", nextItem[0].id);
         break;
       case 2:
-        dayName = "Tuesday";
+        // dayName = "Tuesday";
+        var nextItem = removeItem();
+        var docRef = doc(db, "zone", "2");
+        var newData = {
+          parentId: nextItem[0].parentId,
+          studentId: nextItem[0].student_id,
+        };
+        setDoc(docRef, newData, { merge: true });
+        removeDocumentFromFirestore("queue", nextItem[0].id);
         break;
       case 3:
-        dayName = "Wednesday";
+        // dayName = "Wednesday";
+        var nextItem = removeItem();
+        var docRef = doc(db, "zone", "3");
+        var newData = {
+          parentId: nextItem[0].parentId,
+          studentId: nextItem[0].student_id,
+        };
+        setDoc(docRef, newData, { merge: true });
+        removeDocumentFromFirestore("queue", nextItem[0].id);
         break;
       case 4:
-        dayName = "Thursday";
+        // dayName = "Thursday";
+        var nextItem = removeItem();
+        var docRef = doc(db, "zone", "4");
+        var newData = {
+          parentId: nextItem[0].parentId,
+          studentId: nextItem[0].student_id,
+        };
+        setDoc(docRef, newData, { merge: true });
+        removeDocumentFromFirestore("queue", nextItem[0].id);
         break;
       case 5:
-        dayName = "Friday";
+        // dayName = "Friday";
+        var nextItem = removeItem();
+        var docRef = doc(db, "zone", "5");
+        var newData = {
+          parentId: nextItem[0].parentId,
+          studentId: nextItem[0].student_id,
+        };
+        setDoc(docRef, newData, { merge: true });
+        removeDocumentFromFirestore("queue", nextItem[0].id);
         break;
       default:
-        dayName = "Unknown";
+      // dayName = "Unknown";
     }
   };
 
