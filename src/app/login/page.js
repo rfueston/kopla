@@ -7,6 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
 import loginController from "./pageController";
 import Head from 'next/head';
+import { handleLogin } from '../../../lib/handleCookie';
 
 import {
   Container,
@@ -34,6 +35,7 @@ export default function Login() {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
+      handleLogin();
       // If authentication passed, push to main class
       console.log("User ", userCredential.user);
       await loginController.setAdminStatus(userCredential.user.uid);
@@ -71,7 +73,7 @@ export default function Login() {
       <div className={styles.transCircle1}></div>
 
      <div id="container" className={styles.container}>
-      <h1 className={styles.h1}>Login</h1>
+      <h1 className={styles.h1}>K.O.P.L.A.</h1>
 
 
       <style jsx global>{`

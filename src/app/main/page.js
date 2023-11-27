@@ -18,11 +18,22 @@ import {
     Alert,
 } from "reactstrap";
 import loginController from "../login/pageController";
+import checkAuth from '../../../lib/cookieAuth';
+import checkAdminStatus from '../../../lib/checkAdmin';
 
 export default function Main() {
 
-    const isAdmin = loginController.getAdminStatus();
-    //pull from login controller method to access admin information
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        checkAuth();
+        const fetchData = async () => {
+          const isAdminValue = await checkAdminStatus();
+          setIsAdmin(isAdminValue);
+        };
+      
+        fetchData();
+      }, []);
 
     useEffect(() => {
         // Use an effect to run when the component mounts

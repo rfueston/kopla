@@ -1,9 +1,14 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './styles.css'; // Import the CSS
+import checkAuth from '../../../lib/cookieAuth';
+
 
 export default function Geofencing() {
+    useEffect(() => {
+        checkAuth();
+      }, []);
 
     const gpsMap = async () => {
       //TODO: create update sync for map

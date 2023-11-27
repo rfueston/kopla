@@ -1,15 +1,24 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EditProfile from './EditProfile';
 import Notifications from './notifications';
 import Security from './security';
 import Accessibility from './accessibility';
+import Children from './children';
 import Help from './help';
 import styles from './styles.css';
 import Link from 'next/link';
 import { auth } from '../firebase'; // Import the auth instance from your firebase.js file
+import { handleLogout } from '../../../lib/handleCookie';
+import { useRouter } from "next/navigation";
+import checkAuth from '../../../lib/cookieAuth';
+
 
 const SettingsPage = () => {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('edit-profile');
   //const [currentUser, setCurrentUser] = useState('');
   
@@ -43,21 +52,27 @@ const SettingsPage = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'edit-profile':
-        return <EditProfile />;
-      case 'notifications':
-        return <Notifications />;
-      case 'security':
-        return <Security />;
-      case 'accessibility':
-        return <Accessibility />;
-      case 'help':
-        return <Help />;
-      default:
-        return null;
-    }
+        case 'edit-profile':
+          return <EditProfile />;
+        case 'notifications':
+          return <Notifications />;
+        case 'security':
+          return <Security />;
+        case 'accessibility':
+          return <Accessibility />;
+        case 'children':
+          return <Children />;
+        case 'help':
+          return <Help />;
+        default:
+          return null;
+      }
   };
 
+  function logoutUser() {
+    handleLogout();
+    router.push("/login");
+  }
 
   return (
     <div className="settings-container">
@@ -70,6 +85,9 @@ const SettingsPage = () => {
             <button onClick={() => setActiveTab('notifications')}>Notifications</button>
           </li>
           <li>
+            <button onClick={() => setActiveTab('children')}>Children</button>
+          </li>
+          <li>
             <button onClick={() => setActiveTab('security')}>Security</button>
           </li>
           <li>
@@ -79,8 +97,8 @@ const SettingsPage = () => {
             <button onClick={() => setActiveTab('help')}>Help</button>
           </li>
         </ul>
-        <div className="sign-in-link">
-          <Link href="/login">Logout</Link>
+        <div className="sign-out-button">
+          <button onClick={logoutUser}>Logout</button>
         </div>
       </div>
       <div className="settingsContent">{renderTabContent()}</div>
