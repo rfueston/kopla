@@ -82,9 +82,6 @@ const SettingsPage = () => {
             <button onClick={() => setActiveTab('notifications')}>Notifications</button>
           </li>
           <li>
-            <button onClick={() => setActiveTab('children')}>Children</button>
-          </li>
-          <li>
             <button onClick={() => setActiveTab('security')}>Security</button>
           </li>
           <li>
