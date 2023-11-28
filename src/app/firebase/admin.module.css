@@ -1,0 +1,52 @@
+.inputField {
+  margin-bottom: 15px;
+}
+
+.inputField input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.inputField button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tableContainer {
+  width: 100%;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensures equal spacing for each cell */
+}
+
+.dataTable th, .dataTable td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.dataTable th {
+  background-color: #f2f2f2;
+}
+
+/* Additional styling for the update and delete buttons */
+
+.buttonDelete:hover {
+  background-color: #d32f2f;
+}
+.buttonUpdate:hover {
+  background-color: green;
+}

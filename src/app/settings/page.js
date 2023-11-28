@@ -4,7 +4,6 @@ import EditProfile from './EditProfile';
 import Notifications from './notifications';
 import Security from './security';
 import Accessibility from './accessibility';
-import Children from './children';
 import Help from './help';
 import styles from './styles.css';
 import Link from 'next/link';
@@ -60,8 +59,6 @@ const SettingsPage = () => {
           return <Security />;
         case 'accessibility':
           return <Accessibility />;
-        case 'children':
-          return <Children />;
         case 'help':
           return <Help />;
         default:
@@ -83,9 +80,6 @@ const SettingsPage = () => {
           </li>
           <li>
             <button onClick={() => setActiveTab('notifications')}>Notifications</button>
-          </li>
-          <li>
-            <button onClick={() => setActiveTab('children')}>Children</button>
           </li>
           <li>
             <button onClick={() => setActiveTab('security')}>Security</button>
