@@ -108,7 +108,7 @@ export default function Main() {
                     <div>
                        
                         <Button href="/firebase" variant="contained" className={styles.firebaseLink}>
-                        Firebase (dev page)
+                        Admin Page
                         </Button>
                     </div>
                 )}
