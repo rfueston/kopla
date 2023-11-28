@@ -18,7 +18,6 @@ export default function FireBase() {
     function handleSearchButtonClick() {
          // Read items from DB
         try{
-            console.log(newItem.parentEmail);
             if(newItem.parentEmail !== ''){
             const q = query(collection(db, 'Pairs'), where('parentEmail', '==', newItem.parentEmail));
             
@@ -40,7 +39,7 @@ export default function FireBase() {
             alert("Please enter an email address");
         }
         } catch (e){
-            console.log(e);
+            console.error(e);
     }
     }
 
@@ -51,7 +50,6 @@ export default function FireBase() {
         var initialButton = document.getElementById(`button-${id}`);
         
         if (initialButton) {
-            console.log("Before: " + initialButton);
             initialButton.style.visibility = "hidden";
         }
     
@@ -61,9 +59,7 @@ export default function FireBase() {
         }
     
         updateDocId = id;
-    
-        console.log(updateDocId);
-    
+        
         // Loop through each cell in the row and replace text with input fields
         for (let i = 0; i < row.cells.length; i++) {
             var cell = row.cells[i];
@@ -95,7 +91,6 @@ export default function FireBase() {
             const updatedParentEmail = row.cells[2].querySelector('input').value.trim();
         
             // Check if both fields are not empty before updating
-            console.log('New Name: ' + updatedParentName);
             if (updatedChildName && updatedParentName && updatedParentEmail) {
                 try {
                     await updateItem(updateDocId, updatedChildName, updatedParentName, updatedParentEmail);
@@ -121,7 +116,7 @@ export default function FireBase() {
                 }
             } else {
                 // Handle empty fields error
-                console.log('Error: Fields cannot be empty.');
+                console.error('Error: Fields cannot be empty.');
             }
         };
     
@@ -178,7 +173,6 @@ export default function FireBase() {
                 parentEmail: parentEmail,
             });
     
-            console.log('Document updated successfully');
         } catch (error) {
             console.error('Error updating document:', error);
             throw error; // Propagate the error to handle it in the caller
