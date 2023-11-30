@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './profile.css'; // Import the CSS
+import styles from './profile.module.css'; // Import the CSS
 import SettingsController from './settingsController';
 
 const EditProfile = () => {
@@ -59,13 +59,43 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="edit-profile-page">
-      <div className="profile-icon">
-        <img src="/profile-picture.jpg" alt="Profile Picture" />
-      </div>
+    <div>
+    <style jsx global>{`
+      
+      label {
+        display: block;
+        font-weight: bold;
+      }
+      
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+   `}
+   </style>
+   
+    <div className={styles.editprofilepage}>
+      
       <h1>Edit Profile</h1>
       <form>
-        <div className="form-group">
+        <div className={styles.formgroup}>
           <label>First Name</label>
           <input
             type="text"
@@ -74,7 +104,7 @@ const EditProfile = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formgroup}>
           <label>Last Name</label>
           <input
             type="text"
@@ -83,7 +113,7 @@ const EditProfile = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formgroup}>
           <label>Email</label>
           <input
             type="email"
@@ -94,6 +124,7 @@ const EditProfile = () => {
         </div>
         <button onClick={handleSave}>Save</button>
       </form>
+    </div>
     </div>
   );
 };

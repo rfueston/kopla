@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import SettingsController from './settingsController'; // Assuming you have a separate settingsController file
-import styles from './security.css'; // Import the CSS
+import styles from './security.module.css'; // Import the CSS
 import { handleLogout } from '../../../lib/handleCookie';
 import { useRouter } from "next/navigation";
 
@@ -40,9 +40,40 @@ export default function Security() {
   };
 
   return (
-    <div className="security-settings">
+    <div>
+      <style jsx global>{`
+      
+      label {
+        display: block;
+        font-weight: bold;
+      }
+      
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+   `}
+   </style>
+    
+    <div className={styles.securitysettings}>
       {/* ... existing code ... */}
-      <div className="setting">
+      <div className={styles.setting}>
         <label>New Password:</label>
         <input
           type="password"
@@ -51,7 +82,7 @@ export default function Security() {
           onChange={handleInputChange}
         />
       </div>
-      <div className="setting">
+      <div className={styles.setting}>
         <label>Confirm New Password:</label>
         <input
           type="password"
@@ -60,8 +91,9 @@ export default function Security() {
           onChange={handleInputChange}
         />
       </div>
-      {passwordError && <div className="password-error">{passwordError}</div>}
+      {passwordError && <div>{passwordError}</div>}
       <button onClick={handleSavePassword}>Save Changes</button>
+    </div>
     </div>
   );
 }

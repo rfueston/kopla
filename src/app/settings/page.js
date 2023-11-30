@@ -74,9 +74,21 @@ const SettingsPage = () => {
   }
 
   return (
-    <div className="settings-container">
-      <div className="settingsMenu">
-        <ul>
+
+    <div>
+    <style jsx global>{`
+    
+      li {
+        list-style-type: none;
+        padding: 10px;
+      }
+    
+    `}
+    </style>
+
+    <div className={styles.settingscontainer}>
+      <div className={styles.settingsMenu}>
+       
           <li>
             <button onClick={() => setActiveTab('edit-profile')}>Edit Profile</button>
           </li>
@@ -95,12 +107,14 @@ const SettingsPage = () => {
           <li>
             <button onClick={() => setActiveTab('help')}>Help</button>
           </li> */}
-        </ul>
-        <div className="sign-out-button">
+        <li>
+        <div>
           <button onClick={logoutUser}>Logout</button>
         </div>
+        </li>
       </div>
-      <div className="settingsContent">{renderTabContent()}</div>
+      <div className={styles.settingsContent}>{renderTabContent()}</div>
+    </div>
     </div>
   );
 };
