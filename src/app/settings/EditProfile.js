@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import styles from './profile.css'; // Import the CSS
-import SettingsController from "./settingsController";
+import SettingsController from './settingsController';
 
 const EditProfile = () => {
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    bio: 'test',
-    password: '', // Adding a field for password
   });
 
-  const [userDoc, setUserDoc] = useState(null); // Added state for userDoc
+  const [userDoc, setUserDoc] = useState(null);
 
   useEffect(() => {
-    // Call getUserDocument when the component mounts
     SettingsController.getUserDocument()
       .then((userDoc) => {
         setUserDoc(userDoc);
-        console.log("This is the return: ", userDoc);
-        // Populate the state with user data
         setProfileData({
           firstName: userDoc.firstName || '',
           lastName: userDoc.lastName || '',
           email: userDoc.email || '',
-          //bio: userDoc.bio || '',
         });
       })
       .catch((error) => {
@@ -39,19 +33,12 @@ const EditProfile = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    // Check if data has been changed
     if (dataHasChanged()) {
-      console.log("inside data has changed check");
-      // Call functions from SettingsController
       await SettingsController.updateUserDocument(profileData)
-        .then(() => {
-          if (profileData.password) {
-            return SettingsController.updatePassword(profileData.password);
-          }
-        })
-        .then(() => {
+        .then(async () => {
           if (profileData.email !== userDoc.email) {
-            return SettingsController.updateEmail(profileData.email);
+            await SettingsController.updateEmail(profileData.email);
+            alert("Please check your email inbox for a verification email. Verify the new email before logging in with it.");
           }
         })
         .then(() => {
@@ -64,13 +51,10 @@ const EditProfile = () => {
   };
 
   const dataHasChanged = () => {
-    // Check if any data has changed
     return (
       profileData.firstName !== userDoc.firstName ||
       profileData.lastName !== userDoc.lastName ||
-      profileData.email !== userDoc.email ||
-      profileData.bio !== userDoc.bio ||
-      profileData.password !== ''
+      profileData.email !== userDoc.email
     );
   };
 
@@ -106,23 +90,6 @@ const EditProfile = () => {
             name="email"
             value={profileData.email}
             onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Bio</label>
-          <textarea
-            name="bio"
-            value={profileData.bio}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Change Password</label>
-          <input
-            name="password"
-            value={profileData.password}
-            onChange={handleInputChange}
-            type="password"
           />
         </div>
         <button onClick={handleSave}>Save</button>

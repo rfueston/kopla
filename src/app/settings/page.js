@@ -53,14 +53,16 @@ const SettingsPage = () => {
     switch (activeTab) {
         case 'edit-profile':
           return <EditProfile />;
-        case 'notifications':
-          return <Notifications />;
+        // case 'notifications':
+        //   return <Notifications />;
         case 'security':
           return <Security />;
-        case 'accessibility':
-          return <Accessibility />;
-        case 'help':
-          return <Help />;
+        // case 'accessibility':
+        //   return <Accessibility />;
+        // case 'children':
+        //   return <Children />;
+        // case 'help':
+        //   return <Help />;
         default:
           return null;
       }
@@ -78,18 +80,21 @@ const SettingsPage = () => {
           <li>
             <button onClick={() => setActiveTab('edit-profile')}>Edit Profile</button>
           </li>
-          <li>
+          {/* <li>
             <button onClick={() => setActiveTab('notifications')}>Notifications</button>
-          </li>
+          </li> */}
+          {/* <li>
+            <button onClick={() => setActiveTab('children')}>Children</button>
+          </li> */}
           <li>
-            <button onClick={() => setActiveTab('security')}>Security</button>
+            <button onClick={() => setActiveTab('security')}>Change Password</button>
           </li>
-          <li>
+          {/* <li>
             <button onClick={() => setActiveTab('accessibility')}>Accessibility</button>
           </li>
           <li>
             <button onClick={() => setActiveTab('help')}>Help</button>
-          </li>
+          </li> */}
         </ul>
         <div className="sign-out-button">
           <button onClick={logoutUser}>Logout</button>
@@ -101,3 +106,8 @@ const SettingsPage = () => {
 };
 
 export default SettingsPage;
+
+
+
+
+
