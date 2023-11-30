@@ -76,7 +76,7 @@ export default function PickLane() {
       setData5(doc.data());
     });
 
-    const itemsRef = collection(db, "queue"); // Replace 'items' with your collection name
+    const itemsRef = collection(db, "queue");
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split("T")[0];
     currentDate.setHours(0, 0, 0, 0);
@@ -111,7 +111,7 @@ export default function PickLane() {
   }, []);
 
   function removeItem() {
-    const updatedItems = [...filteredItems]; // Create a copy of the original array
+    const updatedItems = [...filteredItems];
     if (updatedItems.length !== 0) {
       var topInQueue = updatedItems.splice(0, 1); // Use splice to remove the item
       console.log("Removed: ", topInQueue);
@@ -185,99 +185,111 @@ export default function PickLane() {
   };
 
   return (
-    <div>
+    <div className="main">
       <header>
         <h1>Pickup Lane</h1>
       </header>
-
-      <br></br>
-      <br></br>
-
-      <main className="main-content">
-        {/* Zone 1 */}
-        <section className="left-section">
-          <div class="fill-div">
-            <h2>ZONE 1</h2>
+      <div className="zones-section">
+        <main className="main-content">
+          {/* Zone 1 */}
+          <section className="zone-section">
+            <div class="fill-div">
+              <h2>ZONE 1</h2>
+              <br></br>
+              <h4>Parent: {data1.parentId}</h4>
+              <h4>Student: {data1.studentId}</h4>
+              <div className="fill-div-center">
+                <button onClick={() => handleDismissButtonClick("1")}>
+                  Dismiss
+                </button>
+              </div>
+            </div>
             <br></br>
-            <h4>Parent: {data1.parentId}</h4>
-            <h4>Student: {data1.studentId}</h4>
-            <button onClick={() => handleDismissButtonClick("1")}>
-              Dismiss
-            </button>
-          </div>
-          <br></br>
-          <br></br>
-        </section>
-        {/* Zone 2 */}
-        <section className="left-section">
-          <div class="fill-div">
-            <h2>ZONE 2</h2>
             <br></br>
-            <h4>Parent: {data2.parentId}</h4>
-            <h4>Student: {data2.studentId}</h4>
-            <button onClick={() => handleDismissButtonClick("2")}>
-              Dismiss
-            </button>
-          </div>
+          </section>
+          {/* Zone 2 */}
+          <section className="zone-section">
+            <div class="fill-div">
+              <h2>ZONE 2</h2>
+              <br></br>
+              <h4>Parent: {data2.parentId}</h4>
+              <h4>Student: {data2.studentId}</h4>
+              <div className="fill-div-center">
+                <button onClick={() => handleDismissButtonClick("2")}>
+                  Dismiss
+                </button>
+              </div>
+            </div>
 
-          <br></br>
-          <br></br>
-        </section>
-
-        {/* Zone 3 */}
-        <section className="left-section">
-          <div class="fill-div">
-            <h2>ZONE 3</h2>
             <br></br>
-            <h4>Parent: {data3.parentId}</h4>
-            <h4>Student: {data3.studentId}</h4>
-            <button onClick={() => handleDismissButtonClick("3")}>
-              Dismiss
-            </button>
-          </div>
-
-          <br></br>
-          <br></br>
-        </section>
-        {/* Zone 4 */}
-        <section className="left-section">
-          <div class="fill-div">
-            <h2>ZONE 4</h2>
             <br></br>
-            <h4>Parent: {data4.parentId}</h4>
-            <h4>Student: {data4.studentId}</h4>
-            <button onClick={() => handleDismissButtonClick("4")}>
-              Dismiss
-            </button>
-          </div>
+          </section>
 
-          <br></br>
-          <br></br>
-        </section>
+          {/* Zone 3 */}
+          <section className="zone-section">
+            <div class="fill-div">
+              <h2>ZONE 3</h2>
+              <br></br>
+              <h4>Parent: {data3.parentId}</h4>
+              <h4>Student: {data3.studentId}</h4>
+              <div className="fill-div-center">
+                <button onClick={() => handleDismissButtonClick("3")}>
+                  Dismiss
+                </button>
+              </div>
+            </div>
 
-        {/* Zone 5 */}
-        <section className="left-section">
-          <div class="fill-div">
-            <h2>ZONE 5</h2>
             <br></br>
-            <h4>Parent: {data5.parentId}</h4>
-            <h4>Student: {data5.studentId}</h4>
-            <button onClick={() => handleDismissButtonClick("5")}>
-              Dismiss
-            </button>
-          </div>
+            <br></br>
+          </section>
+          {/* Zone 4 */}
+          <section className="zone-section">
+            <div class="fill-div">
+              <h2>ZONE 4</h2>
+              <br></br>
+              <h4>Parent: {data4.parentId}</h4>
+              <h4>Student: {data4.studentId}</h4>
+              <div className="fill-div-center">
+                <button onClick={() => handleDismissButtonClick("4")}>
+                  Dismiss
+                </button>
+              </div>
+            </div>
 
-          <br></br>
-          <br></br>
-        </section>
-      </main>
+            <br></br>
+            <br></br>
+          </section>
+
+          {/* Zone 5 */}
+          <section className="zone-section">
+            <div class="fill-div">
+              <h2>ZONE 5</h2>
+              <br></br>
+              <h4>Parent: {data5.parentId}</h4>
+              <h4>Student: {data5.studentId}</h4>
+              <div className="fill-div-center">
+                <button onClick={() => handleDismissButtonClick("5")}>
+                  Dismiss
+                </button>
+              </div>
+            </div>
+
+            <br></br>
+            <br></br>
+          </section>
+        </main>
+      </div>
       <div>
         <h1>Queue of Parents for Today </h1>
         <ul>
           {filteredItems.map((item, index) => (
             <li key={index}>
               {" "}
-              Parent Name: {item.parentId}, Child Name: {item.student_id}
+              <div className="queue-fields">
+                {" "}
+                {index + 1}. Parent Name: {item.parentId}, Child Name(s):{" "}
+                {item.student_id.join(", ")}
+              </div>{" "}
             </li>
           ))}
         </ul>
