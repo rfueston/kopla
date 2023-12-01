@@ -1,52 +1,85 @@
+/* admin.module.css */
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .inputField {
+  display: flex;
   margin-bottom: 15px;
 }
 
-.inputField input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  font-size: 16px;
+.parentEmailInput {
+  margin-right: 10px; /* Add margin between the input field and the search button */
 }
 
-.inputField button {
+.button {
   background-color: #007bff;
   color: white;
   border: none;
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
 }
 
-.tableContainer {
-  width: 100%;
+.button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
 }
 
 .dataTable {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Ensures equal spacing for each cell */
+  margin-top: 20px;
 }
 
 .dataTable th, .dataTable td {
-  padding: 10px;
   border: 1px solid #ddd;
+  padding: 10px;
   text-align: left;
 }
 
 .dataTable th {
-  background-color: #f2f2f2;
+  background-color: #007bff;
+  color: white;
 }
 
-/* Additional styling for the update and delete buttons */
-
-.buttonDelete:hover {
-  background-color: #d32f2f;
+.actions {
+  display: flex;
+  justify-content: space-around;
 }
+
+.buttonUpdate, .buttonDelete {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 .buttonUpdate:hover {
-  background-color: green;
+  background-color: green; /* Darker shade on hover */
+}
+.buttonDelete:hover {
+  background-color: red; /* Darker shade on hover */
+}
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
