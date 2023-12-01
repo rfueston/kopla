@@ -159,7 +159,7 @@ export default function FireBase() {
                 parentName: newItem.parentName.trim(),
                 parentEmail: newItem.parentEmail.trim(),
             });
-            setNewItem({ childName: '', parentName: '', parentEmail: '' });
+            setNewItem({ childName: '', parentName: ''});
         }
     }
 
@@ -186,53 +186,16 @@ export default function FireBase() {
     }
 
     return (
-        <div className={styles.tableContainer}>
+        <div className={styles.container}>
             <style jsx global>{`
-        
-        h1 {
-            background-color: #007bff;
-            text-align: center;
-            color: white;
-          }
-          header {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-          }
-          
-          main {
-            max-width: fit-content;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            color: grey;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          }
-          
-          label {
-            display: inline-block;
-            width: 140px;
-            text-align: right;
-            padding: 15px;
-          }
-
-          button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-          }
+    
             
             `}
             </style>
             <main>
                 <div>
-                    <h1>Admin Page</h1>
-                    <div>
+                    <h1 className={styles.header}>Admin Page</h1>
+                    <div className={styles.formContainer}>
                     <div className={styles.inputField} style={{ display: showInputFields ? 'block' : 'none' }}>
                         <input
                             value={newItem.childName}
@@ -270,31 +233,31 @@ export default function FireBase() {
                         </div>
 
                         <table className={styles.dataTable} style={{ display: showInputFields ? 'table' : 'none' }}>
-                <thead>
-                    <tr>
-                        <th>Child Name</th>
-                        <th>Parent Name</th>
-                        <th>Parent Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-    {items.map((item) => (
-        <tr key={item.id} id={`row-${item.id}`}>
-            <td>{item.childName}</td>
-            <td>{item.parentName}</td>
-            <td>{item.parentEmail}</td>
-            <td>
-                <button id={`button-${item.id}`} className={styles.buttonUpdate} onClick={() => createNewInputFields(item.id)}>
-                    Update
-                </button>
-                <button className={styles.buttonDelete} onClick={() => deleteItem(item.id)}>
-                    X
-                </button>
-            </td>
-        </tr>
-    ))}
-</tbody>
+                            <thead>
+                                <tr>
+                                    <th>Child Name</th>
+                                    <th>Parent Name</th>
+                                    <th>Parent Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {items.map((item) => (
+                                    <tr key={item.id} id={`row-${item.id}`}>
+                                        <td>{item.childName}</td>
+                                        <td>{item.parentName}</td>
+                                        <td>{item.parentEmail}</td>
+                                        <td>
+                                            <button id={`button-${item.id}`} className={styles.buttonUpdate} onClick={() => createNewInputFields(item.id)}>
+                                                Update
+                                            </button>
+                                            <button className={styles.buttonDelete} onClick={() => deleteItem(item.id)}>
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+            </tbody>
             </table>
                     </div>
                 </div>
