@@ -10,6 +10,7 @@ import Head from 'next/head';
 
 
 export default function CreateAccount() {
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -22,23 +23,38 @@ export default function CreateAccount() {
   const [validateLName, setValidateLName] = useState(true);
   const parentRef = useRef(null);
   const childRef = useRef(null);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
+  const [checkSchoolPass, setCheckSchoolPass] = useState(true);
+  const [checkUserType, setCheckUserType] = useState(true);
   var animateStatus = 0;
 
+  const router = useRouter();
+
+  
   const createAccountLogin = async (e) => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(auth.currentUser);
-        
         sendEmailVerification(auth.currentUser);
     
         // If authentication passed, add new user to FireStore
+
+        var checkAdmin = false;
+        var checkParent = false;
+
+        if(selectedRole == 'Admin'){
+          checkAdmin = true;
+        } else if (selectedRole == "Parent"){
+          checkParent = true;
+        }
 
         setDoc(doc(db, "User", userCredential.user.uid), {
           firstName: firstName,
           lastName: lastName,
           email: email,
-          isAdmin: false,
+          isAdmin: checkAdmin,
+          isParent: checkParent,
         });
         router.push("/login");
       })
@@ -59,6 +75,8 @@ export default function CreateAccount() {
     var passwordValid = true;
     var checkFName = true;
     var checkLName = true;
+    var schoolCode = true;
+    var checkUser = true;
 
     //regex used to determine password requirements
     var reg = new RegExp(
@@ -91,8 +109,25 @@ export default function CreateAccount() {
       setValidatePassCompare(true);
       setValidatePassword(true);
     }
+    
+    if(selectedRole == "") {
+      setCheckUserType(false);
+      checkUser = false;
+    } else {
+      setCheckUserType(true);
+    }
 
-    if (passCompare && passwordValid && checkFName && checkLName) {
+    if(selectedRole == "Admin" && adminPassword != "AdminSchool123" && checkUser){
+      setCheckSchoolPass(false);
+      schoolCode = false;
+    } else if (selectedRole == "Staff" && adminPassword != "School123" && checkUser) {
+      setCheckSchoolPass(false);
+      schoolCode = false;
+    } else {
+      setCheckSchoolPass(true);
+    }
+
+    if (passCompare && passwordValid && checkFName && checkLName && schoolCode && checkUser) {
       createAccountLogin();
     }
   }
@@ -167,6 +202,7 @@ export default function CreateAccount() {
       
          body {
           background-color: black;
+          font-family: 'Itim', cursive;
           color: white;
           margin: 0;
           font-family: 'Itim';
@@ -183,6 +219,17 @@ export default function CreateAccount() {
           text-align: center;
           font-family: 'Itim', cursive;
           font-size:35px;
+        }
+        label {
+          color: black;
+          font-family: 'Itim', cursive;
+          font-size: 15px;
+          text-align: left;  
+          display: block;
+          margin-bottom: 5px;
+        }
+        input {
+          font-family: 'Itim', cursive;
         }
         
         `}
@@ -202,10 +249,10 @@ export default function CreateAccount() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
-          </div>
           <span className={styles.errorMessage} hidden={!validateFName ? "" : "false"}>
             Must enter a first name.
           </span>
+          </div>
 
           <div className={styles.input}>
             <input
@@ -215,10 +262,36 @@ export default function CreateAccount() {
               onChange={(e) => setLastName(e.target.value)}
               required
             />
-          </div>
           <span className={styles.errorMessage} hidden={!validateLName ? "" : "false"}>
             Must enter a last name.
           </span>
+          </div>
+          <div className={styles.input}>
+            <select name="userType" id="userType" value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
+              <option value="">*****SELECT*****</option>
+              <option value="Admin">Administrator</option>
+              <option value="Staff">School Staff</option>
+              <option value="Parent">Parent</option>
+            </select>
+            <span className={styles.errorMessage} hidden={!checkUserType ? "" : "false"}>
+              Must select user type.
+          </span>
+          </div>
+          {["Admin", "Staff"].includes(selectedRole) && (
+            <div className={styles.input}>
+              <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter School Code"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                required
+              />
+              <span className={styles.errorMessage} hidden={!checkSchoolPass ? "" : "false"}>
+                 Incorrect School Code.
+              </span>
+            </div>
+          )}
 
           <div className={styles.input}>
             <input
@@ -226,15 +299,15 @@ export default function CreateAccount() {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+              required/>
+
+            <span className={styles.errorMessage}
+              style={{ color: "red" }}
+              hidden={invalidCredentialsError != "" ? "" : "false"}>
+              {invalidCredentialsError}
+            </span>
           </div>
-          <span className={styles.errorMessage}
-            style={{ color: "red" }}
-            hidden={invalidCredentialsError != "" ? "" : "false"}
-          >
-            {invalidCredentialsError}
-          </span>
+
           <div className={styles.input}>
             <input
               type="password"
@@ -243,17 +316,18 @@ export default function CreateAccount() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            
+            <ul
+              style={{ color: "red" }} hidden={!validatePassword ? "" : "false"}
+            >
+              <li>Minimum 8 characters</li>
+              <li>At least one special character (#?.!@$%^&*-)</li>
+              <li>At least one uppercase letter</li>
+              <li>At least one lowercase letter</li>
+              <li>At least one number</li>
+              <li>No repeating characters</li>
+            </ul>
           </div>
-          <ul
-            style={{ color: "red" }} hidden={!validatePassword ? "" : "false"}
-          >
-            <li>Minimum 8 characters</li>
-            <li>At least one special character (#?.!@$%^&*-)</li>
-            <li>At least one uppercase letter</li>
-            <li>At least one lowercase letter</li>
-            <li>At least one number</li>
-            <li>No repeating characters</li>
-          </ul>
           <div className={styles.input}>
             <input
               type="password"
@@ -262,10 +336,10 @@ export default function CreateAccount() {
               onChange={(e) => setRepeatPassword(e.target.value)}
               required
             />
-            <span className={styles.errorMessage} hidden={!validatePassCompare ? "" : "false"}
-            >
+            <span className={styles.errorMessage} hidden={!validatePassCompare ? "" : "false"}>
               Passwords do not match.
             </span>
+
           </div>
         <div>
           <button className={styles.createAccountButton} onClick={validateNewUser}>Create Account</button>
