@@ -11,6 +11,7 @@ import { auth } from '../firebase'; // Import the auth instance from your fireba
 import { handleLogout } from '../../../lib/handleCookie';
 import { useRouter } from "next/navigation";
 import checkAuth from '../../../lib/cookieAuth';
+import Navbar from "../components/navigation/navbar/Navbar";
 
 
 const SettingsPage = () => {
@@ -87,6 +88,8 @@ const SettingsPage = () => {
     </style>
 
     <div className={styles.settingscontainer}>
+    <Navbar /> {}
+
       <div className={styles.settingsMenu}>
        
           <li>

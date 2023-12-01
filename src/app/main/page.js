@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { auth } from "../firebase";
 import styles from "./main.module.css"; // Import the CSS
 import React from 'react';
+import Navbar from "../components/navigation/navbar/Navbar"; // Import the Navbar component
+
+
 
 import {
     Container,
@@ -70,6 +73,7 @@ export default function Main() {
 
         <div>
         <header>Success!, logged in</header>
+            <Navbar /> {}
         <br></br>
             <style jsx global>{`
       
