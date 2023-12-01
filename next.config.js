@@ -9,6 +9,10 @@ const nextConfig = {
         source: "/",
         destination: "/login",
       },
+      {
+        source: "/main",
+        destination: "/pickup_lane",
+      },
     ];
   },
   async redirects() {
@@ -16,6 +20,11 @@ const nextConfig = {
       {
         source: "/login",
         destination: "/",
+        statusCode: 301,
+      },
+      {
+        source: "/pickup_lane",
+        destination: "/main",
         statusCode: 301,
       },
     ];

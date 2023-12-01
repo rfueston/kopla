@@ -9,7 +9,7 @@ const Navbar = () => {
             <ul className={styles.navList}>
                 <li className={styles.navItem}>
                     <Link href="/main">
-                        Home
+                        Dashboard
                     </Link>
                 </li>
                 <li className={styles.navItem}>
@@ -18,13 +18,13 @@ const Navbar = () => {
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <Link href="/pickup_lane">
-                        Pickup Lane
+                    <Link href="/geofencing">
+                        Geofencing
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <Link href="/geofencing">
-                        Geofencing
+                    <Link href="/firebase">
+                        Admin
                     </Link>
                 </li>
                 <li className={styles.navItem}>
