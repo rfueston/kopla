@@ -132,6 +132,16 @@
   color: black;
   padding: 10px;
 }
+.input select {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  border-style: none none solid none;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  font-family: 'Itim', cursive;
+}
 
 .errorMessage {
   color: red;
