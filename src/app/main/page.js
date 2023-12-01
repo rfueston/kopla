@@ -73,7 +73,7 @@ export default function Main() {
 
         <div>
         <header>Success!, logged in</header>
-            <Navbar /> {/* Include the Navbar component here */}
+            <Navbar /> {}
         <br></br>
             <style jsx global>{`
       

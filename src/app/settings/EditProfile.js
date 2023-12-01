@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import styles from './profile.css'; // Import the CSS
-import SettingsController from "./settingsController";
+import styles from './profile.module.css'; // Import the CSS
+import SettingsController from './settingsController';
 
 const EditProfile = () => {
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    bio: 'test',
-    password: '', // Adding a field for password
   });
 
-  const [userDoc, setUserDoc] = useState(null); // Added state for userDoc
+  const [userDoc, setUserDoc] = useState(null);
 
   useEffect(() => {
-    // Call getUserDocument when the component mounts
     SettingsController.getUserDocument()
       .then((userDoc) => {
         setUserDoc(userDoc);
-        console.log("This is the return: ", userDoc);
-        // Populate the state with user data
         setProfileData({
           firstName: userDoc.firstName || '',
           lastName: userDoc.lastName || '',
           email: userDoc.email || '',
-          //bio: userDoc.bio || '',
         });
       })
       .catch((error) => {
@@ -39,19 +33,12 @@ const EditProfile = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    // Check if data has been changed
     if (dataHasChanged()) {
-      console.log("inside data has changed check");
-      // Call functions from SettingsController
       await SettingsController.updateUserDocument(profileData)
-        .then(() => {
-          if (profileData.password) {
-            return SettingsController.updatePassword(profileData.password);
-          }
-        })
-        .then(() => {
+        .then(async () => {
           if (profileData.email !== userDoc.email) {
-            return SettingsController.updateEmail(profileData.email);
+            await SettingsController.updateEmail(profileData.email);
+            alert("Please check your email inbox for a verification email. Verify the new email before logging in with it.");
           }
         })
         .then(() => {
@@ -64,24 +51,51 @@ const EditProfile = () => {
   };
 
   const dataHasChanged = () => {
-    // Check if any data has changed
     return (
       profileData.firstName !== userDoc.firstName ||
       profileData.lastName !== userDoc.lastName ||
-      profileData.email !== userDoc.email ||
-      profileData.bio !== userDoc.bio ||
-      profileData.password !== ''
+      profileData.email !== userDoc.email
     );
   };
 
   return (
-    <div className="edit-profile-page">
-      <div className="profile-icon">
-        <img src="/profile-picture.jpg" alt="Profile Picture" />
-      </div>
+    <div>
+    <style jsx global>{`
+      
+      label {
+        display: block;
+        font-weight: bold;
+      }
+      
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+   `}
+   </style>
+   
+    <div className={styles.editprofilepage}>
+      
       <h1>Edit Profile</h1>
       <form>
-        <div className="form-group">
+        <div className={styles.formgroup}>
           <label>First Name</label>
           <input
             type="text"
@@ -90,7 +104,7 @@ const EditProfile = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formgroup}>
           <label>Last Name</label>
           <input
             type="text"
@@ -99,7 +113,7 @@ const EditProfile = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formgroup}>
           <label>Email</label>
           <input
             type="email"
@@ -108,25 +122,9 @@ const EditProfile = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="form-group">
-          <label>Bio</label>
-          <textarea
-            name="bio"
-            value={profileData.bio}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Change Password</label>
-          <input
-            name="password"
-            value={profileData.password}
-            onChange={handleInputChange}
-            type="password"
-          />
-        </div>
         <button onClick={handleSave}>Save</button>
       </form>
+    </div>
     </div>
   );
 };
