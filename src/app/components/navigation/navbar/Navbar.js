@@ -27,16 +27,13 @@ const Navbar = () => {
                         Dashboard
                     </Link>
                 </li>
-                <li className={styles.navItem}>
-                    <Link href="/settings">
-                        Settings
-                    </Link>
-                </li>
+                {isAdmin && (
                 <li className={styles.navItem}>
                     <Link href="/geofencing">
                         Geofencing
                     </Link>
                 </li>
+                )}
                 {isAdmin && (
                 <li className={styles.navItem}>
                     <Link href="/firebase">
@@ -44,6 +41,11 @@ const Navbar = () => {
                     </Link>
                 </li>
                 )}
+                <li className={styles.navItem}>
+                    <Link href="/settings">
+                        Settings
+                    </Link>
+                </li>
                 <li className={styles.navItem}>
                     <LogoutLink />
                 </li>
