@@ -1,9 +1,24 @@
 // components/Navbar.js
 
 import Link from 'next/link';
+import LogoutLink from '../../../../../lib/logoutUser';
 import styles from '../styles/Navbar.module.css';
+import { useState, useEffect } from "react";
+import checkAdminStatus from '../../../../../lib/checkAdmin';
+
 
 const Navbar = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const isAdminValue = await checkAdminStatus();
+          setIsAdmin(isAdminValue);
+        };
+      
+        fetchData();
+      }, []);
+
     return (
         <nav className={styles.navbar}>
             <ul className={styles.navList}>
@@ -22,15 +37,15 @@ const Navbar = () => {
                         Geofencing
                     </Link>
                 </li>
+                {isAdmin && (
                 <li className={styles.navItem}>
                     <Link href="/firebase">
                         Admin
                     </Link>
                 </li>
+                )}
                 <li className={styles.navItem}>
-                    <Link href="/">
-                        Logout
-                    </Link>
+                    <LogoutLink />
                 </li>
             </ul>
         </nav>

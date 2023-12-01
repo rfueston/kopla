@@ -23,20 +23,12 @@ import {
 } from "reactstrap";
 import loginController from "../login/pageController";
 import checkAuth from '../../../lib/cookieAuth';
-import checkAdminStatus from '../../../lib/checkAdmin';
+
 
 export default function Main() {
 
-    const [isAdmin, setIsAdmin] = useState(false);
-
     useEffect(() => {
         checkAuth();
-        const fetchData = async () => {
-          const isAdminValue = await checkAdminStatus();
-          setIsAdmin(isAdminValue);
-        };
-      
-        fetchData();
       }, []);
 
     useEffect(() => {
