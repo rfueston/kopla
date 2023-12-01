@@ -184,7 +184,7 @@ export default function PickLane() {
   return (
     <div className="main">
       <header>
-        <h1>Pickup Lane</h1>
+        <h1>Dashboard</h1>
       </header>
       <div className="zones-section">
         <main className="main-content">
