@@ -33,6 +33,7 @@ import {
   Alert,
   formattedDate,
 } from "reactstrap";
+import Navbar from "../components/navigation/navbar/Navbar";
 
 export default function PickLane() {
   useEffect(() => {
@@ -185,7 +186,9 @@ export default function PickLane() {
   };
 
   return (
+
     <div>
+      <Navbar /> {}
       <header>
         <h1>Pickup Lane</h1>
       </header>

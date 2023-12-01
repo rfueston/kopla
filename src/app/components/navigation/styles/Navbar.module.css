@@ -1,8 +1,8 @@
 /* styles/Navbar.module.css */
 
 .navbar {
-    background-color: #333;
-    padding: 10px;
+    background-color: #007bff;
+    padding: 20px;
 }
 
 .navList {
@@ -21,4 +21,5 @@
     text-decoration: none;
     color: white;
     font-weight: bold;
+    font-family: 'Itim', serif;
 }

@@ -34,7 +34,7 @@ export default function Main() {
           const isAdminValue = await checkAdminStatus();
           setIsAdmin(isAdminValue);
         };
-      
+
         fetchData();
       }, []);
 
@@ -43,7 +43,7 @@ export default function Main() {
         const fetchUserData = async () => {
           try {
             const currentUser = auth.currentUser;
-    
+
             if (currentUser) {
               // Access user details
               console.log('User ID:', currentUser.uid);
@@ -57,9 +57,9 @@ export default function Main() {
             console.error('Error fetching user data:', error.message);
           }
         };
-    
+
         fetchUserData(); // Call the function to fetch user data
-    
+
         // Cleanup function (optional)
         return () => {
           // Any cleanup code if needed
@@ -69,16 +69,17 @@ export default function Main() {
     return (
 
         //if else statement for return admin or parent user from login controller (getAdminStatus).
-        //return if statements based on global admin status variable 
+        //return if statements based on global admin status variable
 
         <div>
         <header>Success!, logged in</header>
             <Navbar /> {}
         <br></br>
             <style jsx global>{`
-      
+        
+          
       body {
-        font-family: Arial, sans-serif;
+        font-family: Itim, sans-serif;
         position: absolute;
         top: 0px;
         left: 50%;
@@ -88,16 +89,16 @@ export default function Main() {
       }
       
       header {
-        background-color: #007bff;
+        background-color: #69B9EB;
         color: white;
         text-align: center;
-        padding: 20px 0;
+        padding: 10px 0;
       }
 
       main {
         max-width: fit-content;
         margin: 0 auto;
-        padding: 20px;
+        padding: 10px;
         background-color: #fff;
         color: grey;
         border-radius: 5px;
@@ -107,30 +108,32 @@ export default function Main() {
      
      `}
      </style>
-            <main>
-                {isAdmin && (
-                    <div>
-                       
-                        <Button href="/firebase" variant="contained" className={styles.firebaseLink}>
-                        Admin Page
-                        </Button>
-                    </div>
-                )}
-            <br></br>
-            <div>
-                <Link href="/pickup_lane" variant="contained" className={styles.pickupLane}>Pickup Lane</Link> {/* Temporary navigation to pickup lane page */}
-            </div>
-            <br></br>
-            <div>
-                <Button href="/geofencing" variant="contained" className={styles.geofencing}>Geofencing</Button> {/* Temporary navigation to GPS page */}
-            </div>
-            <br></br>
-            <div>
-                <Button href="/settings" variant="contained"className={styles.settings}>Settings</Button> {/* Temporary navigation to Settings page */}
-            </div>
-                <br></br>
 
-            </main>
+
+            {/*<main>*/}
+            {/*    {isAdmin && (*/}
+            {/*        <div>*/}
+            {/*           */}
+            {/*            <Button href="/firebase" variant="contained" className={styles.firebaseLink}>*/}
+            {/*            Admin Page*/}
+            {/*            </Button>*/}
+            {/*        </div>*/}
+            {/*    )}*/}
+            {/*<br></br>*/}
+            {/*<div>*/}
+            {/*    <Link href="/pickup_lane" variant="contained" className={styles.pickupLane}>Pickup Lane</Link> /!* Temporary navigation to pickup lane page *!/*/}
+            {/*</div>*/}
+            {/*<br></br>*/}
+            {/*<div>*/}
+            {/*    <Button href="/geofencing" variant="contained" className={styles.geofencing}>Geofencing</Button> /!* Temporary navigation to GPS page *!/*/}
+            {/*</div>*/}
+            {/*<br></br>*/}
+            {/*<div>*/}
+            {/*    <Button href="/settings" variant="contained"className={styles.settings}>Settings</Button> /!* Temporary navigation to Settings page *!/*/}
+            {/*</div>*/}
+            {/*    <br></br>*/}
+
+            {/*</main>*/}
 
         </div>
     )
