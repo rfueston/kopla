@@ -5,117 +5,125 @@
 /*  padding: 0;*/
 /*}*/
 body {
-  background-color: white;
+    background-color: white;
 }
+
 .main {
-  background-color: white;
+    background-color: white;
 }
 
 h1 {
-  background-color: white;
-  text-align: center;
-  color: black;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 300%;
+    background-color: white;
+    text-align: center;
+    color: black;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 300%;
 }
+
 h2 {
-  background-color: #f5c74d;
-  text-align: center;
-  height: 20%;
-  padding: auto;
-  color: black;
-  font-family: "Courier New", Courier, monospace;
-  font-size: xx-large;
+    background-color: #f5c74d;
+    text-align: center;
+    height: 20%;
+    padding: auto;
+    color: black;
+    font-family: "Courier New", Courier, monospace;
+    font-size: xx-large;
 }
+
 header {
-  background-color: white;
-  color: black;
-  text-align: center;
+    background-color: white;
+    color: black;
+    text-align: center;
 }
 
 main {
-  max-width: fit-content;
-  margin: 0 auto;
-  padding: 10px;
-  background-color: #fff;
-  color: grey;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: fit-content;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #fff;
+    color: grey;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .zones-section {
-  flex: 1;
-  padding: 8px;
-  background-color: #080808;
-  height: fit-content; /* Set the height of the section as needed */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(86, 84, 84);
+    flex: 1;
+    padding: 8px;
+    background-color: #080808;
+    height: fit-content; /* Set the height of the section as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(86, 84, 84);
 }
+
 .main-content {
-  display: flex;
-  justify-content: space-between; /* Adjust this based on your needs */
-  align-items: flex-start; /* Adjust this based on your needs */
-  width: 100%; /* Make the main container occupy the full width of the viewport */
-  max-width: 100%; /* Ensure it doesn't exceed the width of the viewport */
-  padding: 20px; /* Add some padding to your content */
-  box-sizing: border-box; /* Include padding and border in the width calculation */
-  background-color: #ffffff; /* Set a background color for the main content */
-  margin: 0 auto; /* Center the main content horizontally (optional) */
-  height: fit-content;
-  border-radius: 10px; /* You can adjust the value to control the roundness */
-  padding: 10px;
-  /* Additional styles for your main content */
+    display: flex;
+    justify-content: space-between; /* Adjust this based on your needs */
+    align-items: flex-start; /* Adjust this based on your needs */
+    width: 100%; /* Make the main container occupy the full width of the viewport */
+    max-width: 100%; /* Ensure it doesn't exceed the width of the viewport */
+    padding: 20px; /* Add some padding to your content */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    background-color: #ffffff; /* Set a background color for the main content */
+    margin: 0 auto; /* Center the main content horizontally (optional) */
+    height: fit-content;
+    border-radius: 10px; /* You can adjust the value to control the roundness */
+    padding: 10px;
+    /* Additional styles for your main content */
 }
+
 .zone-section {
-  flex: 1;
-  padding: 3px;
-  background-color: black;
-  height: fit-content; /* Set the height of the section as needed */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px; /* You can adjust the value to control the roundness */
+    flex: 1;
+    padding: 3px;
+    background-color: black;
+    height: fit-content; /* Set the height of the section as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px; /* You can adjust the value to control the roundness */
 }
+
 .fill-div {
-  width: 100%; /* Make the div take up the full width of the section */
-  height: 100%; /* Make the div take up the full height of the section */
-  background-color: #f5c74d; /* Set a background color for the div */
-  color: black; /* Set text color for the content inside the div */
-  text-align: left; /* Center the content horizontally and vertically */
-  /* Additional styles for the div */
-  position: relative;
-  padding: 10px;
-  border-radius: 10px; /* You can adjust the value to control the roundness */
-  /* padding: 30px; */
-  height: fit-content;
+    width: 100%; /* Make the div take up the full width of the section */
+    height: 100%; /* Make the div take up the full height of the section */
+    background-color: #f5c74d; /* Set a background color for the div */
+    color: black; /* Set text color for the content inside the div */
+    text-align: left; /* Center the content horizontally and vertically */
+    /* Additional styles for the div */
+    position: relative;
+    padding: 10px;
+    border-radius: 10px; /* You can adjust the value to control the roundness */
+    /* padding: 30px; */
+    height: fit-content;
 }
 
 .fill-div-center {
-  text-align: center;
+    text-align: center;
 }
 
 button {
-  background-color: #1a7fc1;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 50%;
-  margin-top: 20px;
-  height: 50px;
-  font-size: 20px;
-  font-family: "Itim", cursive;
-  align-self: center; /* Center the button horizontally */
-  text-align: center;
+    background-color: #1a7fc1;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    height: 50px;
+    font-size: 20px;
+    font-family: "Itim", cursive;
+    align-self: center; /* Center the button horizontally */
+    text-align: center;
 }
 
 button:hover {
-  background-color: #125683;
+    background-color: #125683;
 }
+
 .queue-fields {
-  color: black;
-  padding: 10px;
-  text-align: center;
+    color: black;
+    padding: 10px;
+    text-align: center;
 }
