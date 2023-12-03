@@ -326,7 +326,7 @@ export default function PickLane() {
         <div className={styles.zonesSection}>
           <main className={styles.mainContent}>
             {/* Zone 1 */}
-            <section className={styles.zonesSection}>
+            <section className={styles.zoneSection}>
               <div class={styles.fillDiv}>
                 <h2>ZONE {zone_number[1]}</h2>
                 <br></br>
@@ -358,7 +358,7 @@ export default function PickLane() {
               <br></br>
             </section>
             {/* Zone 2 */}
-            <section className={styles.zonesSection}>
+            <section className={styles.zoneSection}>
               <div className={styles.fillDiv}>
                 <h2>ZONE {zone_number[2]}</h2>
                 <br></br>
@@ -392,7 +392,7 @@ export default function PickLane() {
             </section>
 
             {/* Zone 3 */}
-            <section className={styles.zonesSection}>
+            <section className={styles.zoneSection}>
               <div className={styles.fillDiv}>
                 <h2>ZONE {zone_number[3]}</h2>
                 <br></br>
@@ -425,7 +425,7 @@ export default function PickLane() {
             <br></br>
           </section>
           {/* Zone 4 */}
-          <section className={styles.zonesSection}>
+          <section className={styles.zoneSection}>
             <div className={styles.fillDiv}>
               <h2>ZONE {zone_number[4]}</h2>
               <br></br>
@@ -459,7 +459,7 @@ export default function PickLane() {
           </section>
 
           {/* Zone 5 */}
-          <section className={styles.zonesSection}>
+          <section className={styles.zoneSection}>
             <div className={styles.fillDiv}>
               <h2>ZONE {zone_number[5]}</h2>
               <br></br>
