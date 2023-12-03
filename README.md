@@ -1,5 +1,26 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+## First Setup Steps
+
+1. Download: https://github.com/rfueston/kopla/
+
+2. Set .env.local file provided in root folder. (file must be named .env.local. when downloading the . in front is stripped) 
+
+3. install node: https://nodejs.org/en/download/ or nvm install --Its
+
+4. npm install next@latest react@latest react-dom@latest
+
+5. npm install -g npm@latest or npm install -g npm@10.2.4 (if needed)
+
+6. (if using nvm) nvm use v20.10.0 (you wnt to be using at leaast 20.10.0 node)
+
+7. npm install (in the project folder)
+
+8. npm install qrcode.react (in the project folder)
+
+9. npm run dev from project root folder
+
 ## Getting Started
 
 First, run the development server:
