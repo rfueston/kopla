@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthUserContext";
-import CameraWithQRCodeScanner from "../../../lib/QRCodeCamera"
-import QRCodeComponent from "../../../lib/createQRCode"
+import CameraWithQRCodeScanner from "../../../lib/QRCodeCamera";
+import QRCodeComponent from "../../../lib/createQRCode";
 import styles from "./pickup.module.css"; // Import the CSS
 import checkAuth from "../../../lib/cookieAuth";
 import {
@@ -22,7 +22,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import SettingsController from '../settings/settingsController';
+import SettingsController from "../settings/settingsController";
 
 import {
   Container,
@@ -40,34 +40,33 @@ import { isAppPageRouteDefinition } from "next/dist/server/future/route-definiti
 
 export default function PickLane() {
   const [profileData, setProfileData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    email: "",
     isAdmin: false,
     isParent: false,
   });
   const [userDoc, setUserDoc] = useState(null);
 
-
   useEffect(() => {
     checkAuth();
 
-      SettingsController.getUserDocument()
-        .then((userDoc) => {
-          setUserDoc(userDoc);
-          setProfileData({
-            firstName: userDoc.firstName || '',
-            lastName: userDoc.lastName || '',
-            email: userDoc.email || '',
-            isAdmin: userDoc.isAdmin || false,
-            isParent: userDoc.isParent || false,
-          });
-        })
-        .catch((error) => {
-          console.error('Error fetching user document:', error);
+    SettingsController.getUserDocument()
+      .then((userDoc) => {
+        setUserDoc(userDoc);
+        setProfileData({
+          firstName: userDoc.firstName || "",
+          lastName: userDoc.lastName || "",
+          email: userDoc.email || "",
+          isAdmin: userDoc.isAdmin || false,
+          isParent: userDoc.isParent || false,
         });
+      })
+      .catch((error) => {
+        console.error("Error fetching user document:", error);
+      });
   }, []);
-  
+
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
   const [data3, setData3] = useState([]);
@@ -85,6 +84,7 @@ export default function PickLane() {
     false, //4
     false, //5
   ]);
+  const [selectedRadioOption, setSelectedRadioOption] = useState();
   const gpsMap = async () => {
     const zoneCollection = collection(db, "zone");
     const zoneDocs = await getDocs(zoneCollection);
@@ -138,8 +138,6 @@ export default function PickLane() {
       console.log("Filtered data: ", filteredItems);
     });
 
-
-
     return () => {
       unsub1();
       unsub2();
@@ -149,20 +147,29 @@ export default function PickLane() {
       unsubscribe();
     };
   }, []);
-
-
+  function setSelectedRadioOptionFunction(value) {
+    setSelectedRadioOption(value);
+    // location.reload();
+  }
   function removeItem() {
     const updatedItems = [...filteredItems];
     if (updatedItems.length !== 0) {
-      var topInQueue = updatedItems.splice(0, 1); // Use splice to remove the item
-      console.log("Removed: ", topInQueue);
-      setFilteredItems(updatedItems); // Update the state with the modified array
-      return topInQueue;
+      if (selectedRadioOption && selectedRadioOption.trim() != "") {
+        var selectedItemInQueue = updatedItems.filter(
+          (obj) => obj.parent_email_id === selectedRadioOption
+        );
+        setSelectedRadioOptionFunction("");
+        return selectedItemInQueue;
+      } else {
+        var topInQueue = updatedItems.splice(0, 1); // Use splice to remove the item
+        console.log("Removed: ", topInQueue);
+        setFilteredItems(updatedItems); // Update the state with the modified array
+        return topInQueue;
+      }
     } else {
       return "";
     }
   }
-
 
   const removeDocumentFromFirestore = async (collectionName, documentId) => {
     const documentRef = doc(db, collectionName, documentId);
@@ -183,25 +190,27 @@ export default function PickLane() {
   };
 
   const getParentData = async (data) => {
+    if (data && data.text !== "") {
+      const collectionRef = collection(db, "Pairs");
+      const q = query(collectionRef, where("parentEmail", "==", data.text));
+      const snapshot = await getDocs(q);
+      const documents = snapshot.docs.map((doc) => doc.data());
 
-    if(data && data.text !== ''){
-          const collectionRef = collection(db, 'Pairs');
-          const q = query(collectionRef, where('parentEmail', '==', data.text));
-          const snapshot = await getDocs(q);
-          const documents = snapshot.docs.map(doc => doc.data());
-          
-          const queueStudentIdsArray = documents.map(child => child.childName);
+      const queueStudentIdsArray = documents.map((child) => child.childName);
 
-          addToQueue(documents[0].parentName, queueStudentIdsArray, data.text);
+      addToQueue(documents[0].parentName, queueStudentIdsArray, data.text);
+    }
+  };
 
-   }
-  }
-
-  const addToQueue = async (queueParentId, queueStudentIdsArray, parentEmail) => {
+  const addToQueue = async (
+    queueParentId,
+    queueStudentIdsArray,
+    parentEmail
+  ) => {
     try {
       const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const midnightTimestamp = Timestamp.fromDate(currentDate);
+      currentDate.setHours(0, 0, 0, 0);
+      const midnightTimestamp = Timestamp.fromDate(currentDate);
 
       const queuCollectionRef = collection(db, "queue");
       const newDocumentRef = await addDoc(queuCollectionRef, {
@@ -217,7 +226,7 @@ export default function PickLane() {
     }
   };
   const handleDismissButtonClick = (zoneId) => {
-    console.log(`Button clicked with zone: ${zoneId}`);
+    // console.log(`Button clicked with zone: ${zoneId}`);
     var nextItem = removeItem();
     var docRef = doc(db, "zone", zoneId);
     if (nextItem !== "") {
@@ -230,6 +239,7 @@ export default function PickLane() {
       var newData = {
         parentId: nextItem[0].parentId,
         studentId: nextItem[0].student_id,
+        parent_email_id: nextItem[0].parent_email_id,
       };
       setDoc(docRef, newData, { merge: true });
       removeDocumentFromFirestore("queue", nextItem[0].id);
@@ -237,11 +247,67 @@ export default function PickLane() {
       var newData = {
         parentId: "",
         studentId: "",
+        parent_email_id: "",
       };
       setDoc(docRef, newData, { merge: true });
     }
   };
+  const handlePushBackIntoQueue = async (zoneId) => {
+    // console.log(`Button clicked with zone: ${zoneId}`);
+    var reduced_top_timestamp;
+    if (filteredItems.length > 0) {
+      const top_timestamp = filteredItems[0].queu_timestamp;
+      const dateObject = top_timestamp.toDate();
 
+      // Reduce time by milliseconds
+      dateObject.setMilliseconds(dateObject.getMilliseconds() - 2);
+      reduced_top_timestamp = Timestamp.fromDate(dateObject);
+    } else {
+      reduced_top_timestamp = Timestamp.fromDate(new Date());
+    }
+
+    // console.log("Top of the queue timestamp:", top_timestamp);
+    // console.log("Reduced Top of the queue timestamp:", reduced_top_timestamp);
+
+    var swapZoneRef = doc(db, "zone", zoneId.toString());
+    const swapZoneDocSnapshot = await getDoc(swapZoneRef);
+    const swapZoneDoc = swapZoneDocSnapshot.data();
+    // console.log("Left data: ", leftDoc);
+    // console.log(
+    //   "Doc from zone : ",
+    //   swapZoneDoc["parentId"],
+    //   swapZoneDoc["studentId"],
+    //   swapZoneDoc["parent_email_id"]
+    // );
+    const isZoneEmpty = [
+      swapZoneDoc["parentId"],
+      swapZoneDoc["studentId"],
+      swapZoneDoc["parent_email_id"],
+    ].every((str) => str.trim() === "");
+    if (!isZoneEmpty) {
+      const queuCollectionRef = collection(db, "queue");
+      const backToQueueData = {
+        parentId: swapZoneDoc["parentId"],
+        student_id: swapZoneDoc["studentId"],
+        parent_email_id: swapZoneDoc["parent_email_id"],
+        queu_timestamp: reduced_top_timestamp,
+      };
+      await addDoc(queuCollectionRef, backToQueueData);
+      var emptyData = {
+        parentId: "",
+        studentId: "",
+        parent_email_id: "",
+      };
+      setDoc(swapZoneRef, emptyData, { merge: true });
+      setSelectedRadioOptionFunction("");
+    } else {
+      alert("No parent in zone to push into queue");
+
+      setTimeout(function () {
+        window.close();
+      }, 2000);
+    }
+  };
   const handleZoneSwap = async () => {
     if (checkboxStates.filter((value) => value).length < 2) {
       alert("Please select two zones to swap.");
@@ -281,43 +347,46 @@ export default function PickLane() {
     setCheckboxStates(newCheckboxStates);
     //console.log("check_box states: ", newCheckboxStates);
   };
+  const handleRadioChange = (event) => {
+    setSelectedRadioOption(event.target.value);
+    console.log("Current selected option : ", selectedRadioOption);
+    // location.reload();
+  };
   return (
-   <div>
-      <style jsx global>{`
-      
-      h1 {
-        background-color: white;
-        text-align: center;
-        color: black;
-        font-family: "Courier New", Courier, monospace;
-        font-size: 300%;
-      }
-      h2 {
-        background-color: #f5c74d;
-        text-align: center;
-        height: 20%;
-        padding: auto;
-        color: black;
-        font-family: "Courier New", Courier, monospace;
-        font-size: xx-large;
-      }
-      header {
-        background-color: white;
-        color: black;
-        text-align: center;
-      }
+    <div>
+      <style jsx global>
+        {`
+          h1 {
+            background-color: white;
+            text-align: center;
+            color: black;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 300%;
+          }
+          h2 {
+            background-color: #f5c74d;
+            text-align: center;
+            height: 20%;
+            padding: auto;
+            color: black;
+            font-family: "Courier New", Courier, monospace;
+            font-size: xx-large;
+          }
+          header {
+            background-color: white;
+            color: black;
+            text-align: center;
+          }
 
+          body {
+            background-color: white;
+          }
 
-      body {
-        background-color: white;
-      }
-
-      li {
-        list-style-type: none;
-      }
-     
-     `}
-     </style>
+          li {
+            list-style-type: none;
+          }
+        `}
+      </style>
 
       <div className={styles.main}>
         <header>
@@ -328,15 +397,24 @@ export default function PickLane() {
             {/* Zone 1 */}
             <section className={styles.zoneSection}>
               <div class={styles.fillDiv}>
+                <div>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handlePushBackIntoQueue(zone_number[1])}
+                  >
+                    Put parent back into Queue
+                  </button>
+                </div>
                 <h2>ZONE {zone_number[1]}</h2>
                 <br></br>
                 <h4>Parent: {data1.parentId}</h4>
                 <h4>Student: {data1.studentId}</h4>
                 <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons}
+                  <button
+                    className={styles.buttons}
                     onClick={() => handleDismissButtonClick(zone_number[1])}
                   >
-                    Dismiss
+                    Assign
                   </button>
                   {
                     <label key={zone_number[1]}>
@@ -360,15 +438,24 @@ export default function PickLane() {
             {/* Zone 2 */}
             <section className={styles.zoneSection}>
               <div className={styles.fillDiv}>
+                <div>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handlePushBackIntoQueue(zone_number[2])}
+                  >
+                    Put parent back into Queue
+                  </button>
+                </div>
                 <h2>ZONE {zone_number[2]}</h2>
                 <br></br>
                 <h4>Parent: {data2.parentId}</h4>
                 <h4>Student: {data2.studentId}</h4>
                 <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons}
+                  <button
+                    className={styles.buttons}
                     onClick={() => handleDismissButtonClick(zone_number[2])}
                   >
-                    Dismiss
+                    Assign
                   </button>
                   {
                     <label key={zone_number[2]}>
@@ -386,23 +473,30 @@ export default function PickLane() {
                   }
                 </div>
               </div>
-
               <br></br>
               <br></br>
             </section>
-
             {/* Zone 3 */}
             <section className={styles.zoneSection}>
               <div className={styles.fillDiv}>
+                <div>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handlePushBackIntoQueue(zone_number[3])}
+                  >
+                    Put parent back into Queue
+                  </button>
+                </div>
                 <h2>ZONE {zone_number[3]}</h2>
                 <br></br>
                 <h4>Parent: {data3.parentId}</h4>
                 <h4>Student: {data3.studentId}</h4>
                 <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons}
+                  <button
+                    className={styles.buttons}
                     onClick={() => handleDismissButtonClick(zone_number[3])}
                   >
-                    Dismiss
+                    Assign
                   </button>
                   {
                     <label key={zone_number[3]}>
@@ -420,100 +514,124 @@ export default function PickLane() {
                   }
                 </div>
               </div>
-
-            <br></br>
-            <br></br>
-          </section>
-          {/* Zone 4 */}
-          <section className={styles.zoneSection}>
-            <div className={styles.fillDiv}>
-              <h2>ZONE {zone_number[4]}</h2>
               <br></br>
-              <h4>Parent: {data4.parentId}</h4>
-              <h4>Student: {data4.studentId}</h4>
-              <div className={styles.fillDivCenter}>
-                <button className={styles.buttons}
-                  onClick={() => handleDismissButtonClick(zone_number[4])}
-                >
-                  Dismiss
-                </button>
-                {
-                  <label key={zone_number[4]}>
-                    <input
-                      type="checkbox"
-                      checked={checkboxStates[zone_number[4]]}
-                      onChange={() => handleCheckboxChange(zone_number[4])}
-                      disabled={
-                        checkboxStates.filter((value) => value).length >= 2 &&
-                        !checkboxStates[zone_number[4]]
-                      }
-                    />
-                    Swap Zone
-                  </label>
-                }
-              </div>
-            </div>
-
-            <br></br>
-            <br></br>
-          </section>
-
-          {/* Zone 5 */}
-          <section className={styles.zoneSection}>
-            <div className={styles.fillDiv}>
-              <h2>ZONE {zone_number[5]}</h2>
               <br></br>
-              <h4>Parent: {data5.parentId}</h4>
-              <h4>Student: {data5.studentId}</h4>
-              <div className={styles.fillDivCenter}>
-                <button className={styles.buttons}
-                  onClick={() => handleDismissButtonClick(zone_number[5])}
-                >
-                  Dismiss
-                </button>
-                {
-                  <label key={zone_number[5]}>
-                    <input
-                      type="checkbox"
-                      checked={checkboxStates[zone_number[5]]}
-                      onChange={() => handleCheckboxChange(zone_number[5])}
-                      disabled={
-                        checkboxStates.filter((value) => value).length >= 2 &&
-                        !checkboxStates[zone_number[5]]
-                      }
-                    />
-                    Swap Zone
-                  </label>
-                }
+            </section>
+            {/* Zone 4 */}
+            <section className={styles.zoneSection}>
+              <div className={styles.fillDiv}>
+                <div>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handlePushBackIntoQueue(zone_number[4])}
+                  >
+                    Put parent back into Queue
+                  </button>
+                </div>
+                <h2>ZONE {zone_number[4]}</h2>
+                <br></br>
+                <h4>Parent: {data4.parentId}</h4>
+                <h4>Student: {data4.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handleDismissButtonClick(zone_number[4])}
+                  >
+                    Assign
+                  </button>
+                  {
+                    <label key={zone_number[4]}>
+                      <input
+                        type="checkbox"
+                        checked={checkboxStates[zone_number[4]]}
+                        onChange={() => handleCheckboxChange(zone_number[4])}
+                        disabled={
+                          checkboxStates.filter((value) => value).length >= 2 &&
+                          !checkboxStates[zone_number[4]]
+                        }
+                      />
+                      Swap Zone
+                    </label>
+                  }
+                </div>
               </div>
-            </div>
 
-            <br></br>
-            <br></br>
-          </section>
-        </main>
-      </div>
-      <div className={styles.fillDivCenter}>
-        <button className={styles.buttons} onClick={() => handleZoneSwap()}>Swap Zones</button>
-      </div>
-      <div>
-        <h1>Queue of Parents for Today </h1>
-        <ul>
-          {filteredItems.map((item, index) => (
-            <li key={index}>
-              {" "}
-              <div className={styles.queueFields}>
+              <br></br>
+              <br></br>
+            </section>
+
+            {/* Zone 5 */}
+            <section className={styles.zoneSection}>
+              <div className={styles.fillDiv}>
+                <div>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handlePushBackIntoQueue(zone_number[5])}
+                  >
+                    Put parent back into Queue
+                  </button>
+                </div>
+                <h2>ZONE {zone_number[5]}</h2>
+                <br></br>
+                <h4>Parent: {data5.parentId}</h4>
+                <h4>Student: {data5.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button
+                    className={styles.buttons}
+                    onClick={() => handleDismissButtonClick(zone_number[5])}
+                  >
+                    Assign
+                  </button>
+                  {
+                    <label key={zone_number[5]}>
+                      <input
+                        type="checkbox"
+                        checked={checkboxStates[zone_number[5]]}
+                        onChange={() => handleCheckboxChange(zone_number[5])}
+                        disabled={
+                          checkboxStates.filter((value) => value).length >= 2 &&
+                          !checkboxStates[zone_number[5]]
+                        }
+                      />
+                      Swap Zone
+                    </label>
+                  }
+                </div>
+              </div>
+
+              <br></br>
+              <br></br>
+            </section>
+          </main>
+        </div>
+        <div className={styles.fillDivCenter}>
+          <button className={styles.buttons} onClick={() => handleZoneSwap()}>
+            Swap Zones
+          </button>
+        </div>
+        <div>
+          <h1>Queue of Parents for Today </h1>
+          <ol>
+            {filteredItems.map((item, index) => (
+              <li key={index}>
                 {" "}
                 <div className={styles.queueFields}>
                   {" "}
-                  {index + 1}. Parent Name: {item.parentId}, Child Name(s):{" "}
-                  {item.student_id.join(", ")}
-                </div>{" "}
-              </div>
+                  <div className={styles.queueFields}>
+                    <input
+                      type="radio"
+                      value={item.parent_email_id}
+                      checked={selectedRadioOption === item.parent_email_id}
+                      onChange={handleRadioChange}
+                    />
+                    Parent Name: {item.parentId}, Child Name(s):{" "}
+                    {item.student_id.join(", ")}
+                  </div>{" "}
+                </div>
               </li>
             ))}
-          </ul>
-          
+          </ol>
+
           <div className={styles.qrCodeContainer}>
             {profileData.isParent && (
               <div>
@@ -523,15 +641,14 @@ export default function PickLane() {
               </div>
             )}
 
-            {(!profileData.isParent) && (
+            {!profileData.isParent && (
               <div>
-                <CameraWithQRCodeScanner getParentData={getParentData}/>
-            </div>
+                <CameraWithQRCodeScanner getParentData={getParentData} />
+              </div>
             )}
+          </div>
         </div>
+      </div>
     </div>
-  </div>
-  </div>
-    
   );
 }
