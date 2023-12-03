@@ -390,7 +390,7 @@ export default function PickLane() {
               </div>
             )}
 
-            {(!profileData.isParent || profileData.isAdmin) && (
+            {(!profileData.isParent) && (
               <div>
                 <CameraWithQRCodeScanner getParentData={getParentData}/>
             </div>
