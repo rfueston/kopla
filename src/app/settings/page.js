@@ -54,8 +54,8 @@ const SettingsPage = () => {
     switch (activeTab) {
         case 'edit-profile':
           return <EditProfile />;
-        // case 'notifications':
-        //   return <Notifications />;
+        case 'notifications':
+          return <Notifications />;
         case 'security':
           return <Security />;
         // case 'accessibility':
@@ -95,9 +95,9 @@ const SettingsPage = () => {
           <li>
             <button onClick={() => setActiveTab('edit-profile')}>Edit Profile</button>
           </li>
-          {/* <li>
+          <li>
             <button onClick={() => setActiveTab('notifications')}>Notifications</button>
-          </li> */}
+          </li>
           {/* <li>
             <button onClick={() => setActiveTab('children')}>Children</button>
           </li> */}
