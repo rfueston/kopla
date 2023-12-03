@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthUserContext";
-import styles from "./styles.css"; // Import the CSS
+import CameraWithQRCodeScanner from "../../../lib/QRCodeCamera"
+import QRCodeComponent from "../../../lib/createQRCode"
+import styles from "./pickup.module.css"; // Import the CSS
 import checkAuth from "../../../lib/cookieAuth";
 import {
   collection,
@@ -20,6 +22,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import SettingsController from '../settings/settingsController';
 
 import {
   Container,
@@ -33,12 +36,38 @@ import {
   Alert,
   formattedDate,
 } from "reactstrap";
+import { isAppPageRouteDefinition } from "next/dist/server/future/route-definitions/app-page-route-definition";
 
 export default function PickLane() {
+  const [profileData, setProfileData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    isAdmin: false,
+    isParent: false,
+  });
+  const [userDoc, setUserDoc] = useState(null);
+
+
   useEffect(() => {
     checkAuth();
-  }, []);
 
+      SettingsController.getUserDocument()
+        .then((userDoc) => {
+          setUserDoc(userDoc);
+          setProfileData({
+            firstName: userDoc.firstName || '',
+            lastName: userDoc.lastName || '',
+            email: userDoc.email || '',
+            isAdmin: userDoc.isAdmin || false,
+            isParent: userDoc.isParent || false,
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching user document:', error);
+        });
+  }, []);
+  
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
   const [data3, setData3] = useState([]);
@@ -100,6 +129,8 @@ export default function PickLane() {
       console.log("Filtered data: ", filteredItems);
     });
 
+
+
     return () => {
       unsub1();
       unsub2();
@@ -109,6 +140,7 @@ export default function PickLane() {
       unsubscribe();
     };
   }, []);
+
 
   function removeItem() {
     const updatedItems = [...filteredItems];
@@ -121,6 +153,7 @@ export default function PickLane() {
       return "";
     }
   }
+
 
   const removeDocumentFromFirestore = async (collectionName, documentId) => {
     const documentRef = doc(db, collectionName, documentId);
@@ -140,15 +173,36 @@ export default function PickLane() {
     }
   };
 
-  const addToQueue = async (queueParentId, queueStudentIdsArray) => {
+  const getParentData = async (data) => {
+
+    if(data && data.text !== ''){
+          const collectionRef = collection(db, 'Pairs');
+          const q = query(collectionRef, where('parentEmail', '==', data.text));
+          const snapshot = await getDocs(q);
+          const documents = snapshot.docs.map(doc => doc.data());
+          
+          const queueStudentIdsArray = documents.map(child => child.childName);
+
+          addToQueue(documents[0].parentName, queueStudentIdsArray, data.text);
+
+   }
+  }
+
+  const addToQueue = async (queueParentId, queueStudentIdsArray, parentEmail) => {
     try {
+      const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const midnightTimestamp = Timestamp.fromDate(currentDate);
+
       const queuCollectionRef = collection(db, "queue");
-      const newDocumentRef = await queuCollectionRef.add({
+      const newDocumentRef = await addDoc(queuCollectionRef, {
         parentId: queueParentId,
+        parent_email_id: parentEmail,
         student_id: queueStudentIdsArray,
-        queu_timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        queu_timestamp: midnightTimestamp,
       });
-      console.log("Added parent to queue with ID:", newDocumentRef.id);
+
+      window.location.reload();
     } catch (error) {
       console.error("Error adding parent to queue:", error);
     }
@@ -182,114 +236,167 @@ export default function PickLane() {
   };
 
   return (
-    <div className="main">
-      <header>
-        <h1>Dashboard</h1>
-      </header>
-      <div className="zones-section">
-        <main className="main-content">
-          {/* Zone 1 */}
-          <section className="zone-section">
-            <div class="fill-div">
-              <h2>ZONE 1</h2>
-              <br></br>
-              <h4>Parent: {data1.parentId}</h4>
-              <h4>Student: {data1.studentId}</h4>
-              <div className="fill-div-center">
-                <button onClick={() => handleDismissButtonClick("1")}>
-                  Dismiss
-                </button>
+    <div>
+      <style jsx global>{`
+      
+      h1 {
+        background-color: white;
+        text-align: center;
+        color: black;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 300%;
+      }
+      h2 {
+        background-color: #f5c74d;
+        text-align: center;
+        height: 20%;
+        padding: auto;
+        color: black;
+        font-family: "Courier New", Courier, monospace;
+        font-size: xx-large;
+      }
+      header {
+        background-color: white;
+        color: black;
+        text-align: center;
+      }
+
+
+      body {
+        background-color: white;
+      }
+
+      li {
+        list-style-type: none;
+      }
+     
+     `}
+     </style>
+      <div className={styles.main}>
+        <header>
+          <h1>Dashboard</h1>
+        </header>
+        <div className={styles.zonesSection}>
+          <main className={styles.mainContent}>
+            {/* Zone 1 */}
+            <section className={styles.zoneSection}>
+              <div class={styles.fillDiv}>
+                <h2>ZONE 1</h2>
+                <br></br>
+                <h4>Parent: {data1.parentId}</h4>
+                <h4>Student: {data1.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("1")}>
+                    Dismiss
+                  </button>
+                </div>
               </div>
-            </div>
-            <br></br>
-            <br></br>
-          </section>
-          {/* Zone 2 */}
-          <section className="zone-section">
-            <div class="fill-div">
-              <h2>ZONE 2</h2>
               <br></br>
-              <h4>Parent: {data2.parentId}</h4>
-              <h4>Student: {data2.studentId}</h4>
-              <div className="fill-div-center">
-                <button onClick={() => handleDismissButtonClick("2")}>
-                  Dismiss
-                </button>
-              </div>
-            </div>
-
-            <br></br>
-            <br></br>
-          </section>
-
-          {/* Zone 3 */}
-          <section className="zone-section">
-            <div class="fill-div">
-              <h2>ZONE 3</h2>
               <br></br>
-              <h4>Parent: {data3.parentId}</h4>
-              <h4>Student: {data3.studentId}</h4>
-              <div className="fill-div-center">
-                <button onClick={() => handleDismissButtonClick("3")}>
-                  Dismiss
-                </button>
+            </section>
+            {/* Zone 2 */}
+            <section className={styles.zoneSection}>
+              <div class={styles.fillDiv}>
+                <h2>ZONE 2</h2>
+                <br></br>
+                <h4>Parent: {data2.parentId}</h4>
+                <h4>Student: {data2.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("2")}>
+                    Dismiss
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <br></br>
-            <br></br>
-          </section>
-          {/* Zone 4 */}
-          <section className="zone-section">
-            <div class="fill-div">
-              <h2>ZONE 4</h2>
               <br></br>
-              <h4>Parent: {data4.parentId}</h4>
-              <h4>Student: {data4.studentId}</h4>
-              <div className="fill-div-center">
-                <button onClick={() => handleDismissButtonClick("4")}>
-                  Dismiss
-                </button>
-              </div>
-            </div>
-
-            <br></br>
-            <br></br>
-          </section>
-
-          {/* Zone 5 */}
-          <section className="zone-section">
-            <div class="fill-div">
-              <h2>ZONE 5</h2>
               <br></br>
-              <h4>Parent: {data5.parentId}</h4>
-              <h4>Student: {data5.studentId}</h4>
-              <div className="fill-div-center">
-                <button onClick={() => handleDismissButtonClick("5")}>
-                  Dismiss
-                </button>
-              </div>
-            </div>
+            </section>
 
-            <br></br>
-            <br></br>
-          </section>
-        </main>
-      </div>
-      <div>
-        <h1>Queue of Parents for Today </h1>
-        <ul>
-          {filteredItems.map((item, index) => (
-            <li key={index}>
-              {" "}
-              <div className="queue-fields">
+            {/* Zone 3 */}
+            <section className={styles.zoneSection}>
+              <div class={styles.fillDiv}>
+                <h2>ZONE 3</h2>
+                <br></br>
+                <h4>Parent: {data3.parentId}</h4>
+                <h4>Student: {data3.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("3")}>
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+
+              <br></br>
+              <br></br>
+            </section>
+            {/* Zone 4 */}
+            <section className={styles.zoneSection}>
+              <div class={styles.fillDiv}>
+                <h2>ZONE 4</h2>
+                <br></br>
+                <h4>Parent: {data4.parentId}</h4>
+                <h4>Student: {data4.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("4")}>
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+
+              <br></br>
+              <br></br>
+            </section>
+
+            {/* Zone 5 */}
+            <section className={styles.zoneSection}>
+              <div class={styles.fillDiv}>
+                <h2>ZONE 5</h2>
+                <br></br>
+                <h4>Parent: {data5.parentId}</h4>
+                <h4>Student: {data5.studentId}</h4>
+                <div className={styles.fillDivCenter}>
+                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("5")}>
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+
+              <br></br>
+              <br></br>
+            </section>
+          </main>
+        </div>
+        <div>
+          <h1>Queue of Parents for Today </h1>
+          <ul>
+            {filteredItems.map((item, index) => (
+              <li key={index}>
                 {" "}
-                {index + 1}. Parent Name: {item.parentId}, Child Name(s):{" "}
-                {item.student_id.join(", ")}
-              </div>{" "}
-            </li>
-          ))}
-        </ul>
+                <div className={styles.queueFields}>
+                  {" "}
+                  {index + 1}. Parent Name: {item.parentId}, Child Name(s):{" "}
+                  {item.student_id.join(", ")}
+                </div>{" "}
+              </li>
+            ))}
+          </ul>
+          
+          <div className={styles.qrCodeContainer}>
+            {profileData.isParent && (
+              <div>
+                <h2>Show Staff QR Code to Join the Queue</h2>
+
+                <QRCodeComponent value={profileData.email} />
+              </div>
+            )}
+
+            {(!profileData.isParent || profileData.isAdmin) && (
+              <div>
+                <CameraWithQRCodeScanner getParentData={getParentData}/>
+            </div>
+            )}
+        </div>
+        </div>
       </div>
     </div>
   );
