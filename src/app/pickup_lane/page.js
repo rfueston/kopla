@@ -75,7 +75,16 @@ export default function PickLane() {
   const [data5, setData5] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [, setFormattedDate] = useState();
-
+  var [selectedCount, setSelectedCount] = useState();
+  const [zone_number] = useState(["0", "1", "2", "3", "4", "5"]);
+  const [checkboxStates, setCheckboxStates] = useState([
+    false, //0
+    false, //1
+    false, //2
+    false, //3
+    false, //4
+    false, //5
+  ]);
   const gpsMap = async () => {
     const zoneCollection = collection(db, "zone");
     const zoneDocs = await getDocs(zoneCollection);
@@ -216,8 +225,6 @@ export default function PickLane() {
       console.log(`parentId: ${nextItem[0].parentId}`);
       console.log(`studentId: ${nextItem[0].student_id}`);
 
-      const docSnap = getDoc(docRef);
-
       // Access the data using .data() method
       // updateDismissedStudents(docSnap);
       var newData = {
@@ -235,8 +242,47 @@ export default function PickLane() {
     }
   };
 
+  const handleZoneSwap = async () => {
+    if (checkboxStates.filter((value) => value).length < 2) {
+      alert("Please select two zones to swap.");
+    } else {
+      // console.log("State before filter: ", checkboxStates);
+      const selected_zones_to_swap = checkboxStates
+        .map((value, index) => (value ? index : null))
+        .filter((index) => index !== null);
+      // console.log("Zones being swapped: ", selected_zones_to_swap);
+
+      var docRefLeftZone = doc(
+        db,
+        "zone",
+        selected_zones_to_swap[0].toString()
+      );
+      const leftDocSnapshot = await getDoc(docRefLeftZone);
+      const leftDoc = leftDocSnapshot.data();
+      // console.log("Left data: ", leftDoc);
+
+      var docRefRightZone = doc(
+        db,
+        "zone",
+        selected_zones_to_swap[1].toString()
+      );
+      const rightDocSnapshot = await getDoc(docRefRightZone);
+      const rightDoc = rightDocSnapshot.data();
+      // console.log("Right data: ", rightDoc);
+
+      setDoc(docRefLeftZone, rightDoc, { merge: true });
+      setDoc(docRefRightZone, leftDoc, { merge: true });
+    }
+  };
+
+  const handleCheckboxChange = (index) => {
+    const newCheckboxStates = [...checkboxStates];
+    newCheckboxStates[index] = !newCheckboxStates[index];
+    setCheckboxStates(newCheckboxStates);
+    //console.log("check_box states: ", newCheckboxStates);
+  };
   return (
-    <div>
+   <div>
       <style jsx global>{`
       
       h1 {
@@ -272,6 +318,7 @@ export default function PickLane() {
      
      `}
      </style>
+
       <div className={styles.main}>
         <header>
           <h1>Dashboard</h1>
@@ -279,32 +326,64 @@ export default function PickLane() {
         <div className={styles.zonesSection}>
           <main className={styles.mainContent}>
             {/* Zone 1 */}
-            <section className={styles.zoneSection}>
+            <section className={styles.zonesSection}>
               <div class={styles.fillDiv}>
-                <h2>ZONE 1</h2>
+                <h2>ZONE {zone_number[1]}</h2>
                 <br></br>
                 <h4>Parent: {data1.parentId}</h4>
                 <h4>Student: {data1.studentId}</h4>
                 <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("1")}>
+                  <button className={styles.buttons}
+                    onClick={() => handleDismissButtonClick(zone_number[1])}
+                  >
                     Dismiss
                   </button>
+                  {
+                    <label key={zone_number[1]}>
+                      <input
+                        type="checkbox"
+                        checked={checkboxStates[zone_number[1]]}
+                        onChange={() => handleCheckboxChange(zone_number[1])}
+                        disabled={
+                          checkboxStates.filter((value) => value).length >= 2 &&
+                          !checkboxStates[zone_number[1]]
+                        }
+                      />
+                      Swap Zone
+                    </label>
+                  }
                 </div>
               </div>
               <br></br>
               <br></br>
             </section>
             {/* Zone 2 */}
-            <section className={styles.zoneSection}>
-              <div class={styles.fillDiv}>
-                <h2>ZONE 2</h2>
+            <section className={styles.zonesSection}>
+              <div className={styles.fillDiv}>
+                <h2>ZONE {zone_number[2]}</h2>
                 <br></br>
                 <h4>Parent: {data2.parentId}</h4>
                 <h4>Student: {data2.studentId}</h4>
                 <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("2")}>
+                  <button className={styles.buttons}
+                    onClick={() => handleDismissButtonClick(zone_number[2])}
+                  >
                     Dismiss
                   </button>
+                  {
+                    <label key={zone_number[2]}>
+                      <input
+                        type="checkbox"
+                        checked={checkboxStates[zone_number[2]]}
+                        onChange={() => handleCheckboxChange(zone_number[2])}
+                        disabled={
+                          checkboxStates.filter((value) => value).length >= 2 &&
+                          !checkboxStates[zone_number[2]]
+                        }
+                      />
+                      Swap Zone
+                    </label>
+                  }
                 </div>
               </div>
 
@@ -313,70 +392,124 @@ export default function PickLane() {
             </section>
 
             {/* Zone 3 */}
-            <section className={styles.zoneSection}>
-              <div class={styles.fillDiv}>
-                <h2>ZONE 3</h2>
+            <section className={styles.zonesSection}>
+              <div className={styles.fillDiv}>
+                <h2>ZONE {zone_number[3]}</h2>
                 <br></br>
                 <h4>Parent: {data3.parentId}</h4>
                 <h4>Student: {data3.studentId}</h4>
                 <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("3")}>
+                  <button className={styles.buttons}
+                    onClick={() => handleDismissButtonClick(zone_number[3])}
+                  >
                     Dismiss
                   </button>
+                  {
+                    <label key={zone_number[3]}>
+                      <input
+                        type="checkbox"
+                        checked={checkboxStates[zone_number[3]]}
+                        onChange={() => handleCheckboxChange(zone_number[3])}
+                        disabled={
+                          checkboxStates.filter((value) => value).length >= 2 &&
+                          !checkboxStates[zone_number[3]]
+                        }
+                      />
+                      Swap Zone
+                    </label>
+                  }
                 </div>
               </div>
 
+            <br></br>
+            <br></br>
+          </section>
+          {/* Zone 4 */}
+          <section className={styles.zonesSection}>
+            <div className={styles.fillDiv}>
+              <h2>ZONE {zone_number[4]}</h2>
               <br></br>
-              <br></br>
-            </section>
-            {/* Zone 4 */}
-            <section className={styles.zoneSection}>
-              <div class={styles.fillDiv}>
-                <h2>ZONE 4</h2>
-                <br></br>
-                <h4>Parent: {data4.parentId}</h4>
-                <h4>Student: {data4.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("4")}>
-                    Dismiss
-                  </button>
-                </div>
+              <h4>Parent: {data4.parentId}</h4>
+              <h4>Student: {data4.studentId}</h4>
+              <div className={styles.fillDivCenter}>
+                <button className={styles.buttons}
+                  onClick={() => handleDismissButtonClick(zone_number[4])}
+                >
+                  Dismiss
+                </button>
+                {
+                  <label key={zone_number[4]}>
+                    <input
+                      type="checkbox"
+                      checked={checkboxStates[zone_number[4]]}
+                      onChange={() => handleCheckboxChange(zone_number[4])}
+                      disabled={
+                        checkboxStates.filter((value) => value).length >= 2 &&
+                        !checkboxStates[zone_number[4]]
+                      }
+                    />
+                    Swap Zone
+                  </label>
+                }
               </div>
+            </div>
 
-              <br></br>
-              <br></br>
-            </section>
+            <br></br>
+            <br></br>
+          </section>
 
-            {/* Zone 5 */}
-            <section className={styles.zoneSection}>
-              <div class={styles.fillDiv}>
-                <h2>ZONE 5</h2>
-                <br></br>
-                <h4>Parent: {data5.parentId}</h4>
-                <h4>Student: {data5.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button className={styles.buttons} onClick={() => handleDismissButtonClick("5")}>
-                    Dismiss
-                  </button>
-                </div>
+          {/* Zone 5 */}
+          <section className={styles.zonesSection}>
+            <div className={styles.fillDiv}>
+              <h2>ZONE {zone_number[5]}</h2>
+              <br></br>
+              <h4>Parent: {data5.parentId}</h4>
+              <h4>Student: {data5.studentId}</h4>
+              <div className={styles.fillDivCenter}>
+                <button className={styles.buttons}
+                  onClick={() => handleDismissButtonClick(zone_number[5])}
+                >
+                  Dismiss
+                </button>
+                {
+                  <label key={zone_number[5]}>
+                    <input
+                      type="checkbox"
+                      checked={checkboxStates[zone_number[5]]}
+                      onChange={() => handleCheckboxChange(zone_number[5])}
+                      disabled={
+                        checkboxStates.filter((value) => value).length >= 2 &&
+                        !checkboxStates[zone_number[5]]
+                      }
+                    />
+                    Swap Zone
+                  </label>
+                }
               </div>
+            </div>
 
-              <br></br>
-              <br></br>
-            </section>
-          </main>
-        </div>
-        <div>
-          <h1>Queue of Parents for Today </h1>
-          <ul>
-            {filteredItems.map((item, index) => (
-              <li key={index}>
+            <br></br>
+            <br></br>
+          </section>
+        </main>
+      </div>
+      <div className={styles.fillDivCenter}>
+        <button className={styles.buttons} onClick={() => handleZoneSwap()}>Swap Zones</button>
+      </div>
+      <div>
+        <h1>Queue of Parents for Today </h1>
+        <ul>
+          {filteredItems.map((item, index) => (
+            <li key={index}>
+              {" "}
+              <div className={styles.queueFields}>
                 {" "}
                 <div className={styles.queueFields}>
                   {" "}
                   {index + 1}. Parent Name: {item.parentId}, Child Name(s):{" "}
                   {item.student_id.join(", ")}
                 </div>{" "}
+              </div>
               </li>
             ))}
           </ul>
@@ -396,8 +529,9 @@ export default function PickLane() {
             </div>
             )}
         </div>
-        </div>
-      </div>
     </div>
+  </div>
+  </div>
+    
   );
 }
