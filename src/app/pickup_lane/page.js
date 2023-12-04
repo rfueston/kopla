@@ -352,7 +352,7 @@ export default function PickLane() {
             background-color: #f5c74d;
             text-align: center;
             height: 20%;
-            padding: auto;
+            //padding: auto;
             color: black;
             font-family: "Courier New", Courier, monospace;
             font-size: xx-large;
