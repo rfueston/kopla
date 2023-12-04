@@ -10,7 +10,6 @@ class loginController {
     getAdminStatus() {
         return this.isAdmin;
         //make call to firebase with userUID to grab admin status (isAdmin)
-        //TO DO: set admin status as global vairable in this controller for true or false
     }
 
     async setAdminStatus(userUID) {

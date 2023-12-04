@@ -32,7 +32,7 @@ export default function Login() {
 
             const errorCode = error.code;
 
-            //modify error code to display as a message to the user
+            //error code to display
             var errorMessage = error.code.split("/").pop();
             errorMessage = errorMessage.replace(/-/g, " ");
 

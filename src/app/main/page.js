@@ -13,7 +13,6 @@ export default function Main() {
     }, []);
 
     useEffect(() => {
-        // Use an effect to run when the component mounts
         const fetchUserData = async () => {
             try {
                 const currentUser = auth.currentUser;
@@ -34,9 +33,7 @@ export default function Main() {
 
         fetchUserData(); // Call the function to fetch user data
 
-        // Cleanup function (optional)
         return () => {
-            // Any cleanup code if needed
         };
     }, []);
 
