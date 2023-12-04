@@ -4,6 +4,7 @@ import {addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where}
 import {db} from '../firebase';
 import checkAuth from '../../../lib/cookieAuth';
 import styles from "./admin.module.css";
+import Navbar from "../components/navigation/navbar/Navbar";
 
 export default function FireBase() {
     useEffect(() => {
@@ -189,6 +190,9 @@ export default function FireBase() {
             
             `}
             </style>
+
+            <Navbar /> {}
+
             <main>
                 <div>
                     <h1 className={styles.header}>Admin Page</h1>
