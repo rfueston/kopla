@@ -16,7 +16,7 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 6. (if using nvm) nvm use v20.10.0 (you wnt to be using at leaast 20.10.0 node)
 
-7. npm install (in the project folder)
+7. npm install --force (in the project folder) (force may be needed due to an older google api being used)
 
 8. npm install qrcode.react (in the project folder)
 
