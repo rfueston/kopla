@@ -1,198 +1,209 @@
 .container {
-  position: absolute;
-  width: 80%;
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
-  border-radius: 30px;
-  text-align: center;
-  height:300px;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+    position: absolute;
+    width: 80%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 30px;
+    text-align: center;
+    height: 300px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 /* top left */
 .triangle {
-  margin: auto;
-  position: absolute;
-  top: -60px;
-  left: -30px;
-  width: 0;
-  height: 0;
-  border-left: 100px solid transparent;
-  border-right: 100px solid transparent;
-  border-bottom: 200px solid #1A7FC1; /* Adjust the color as needed */
+    margin: auto;
+    position: absolute;
+    top: -60px;
+    left: -30px;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 200px solid #1A7FC1; /* Adjust the color as needed */
 }
+
 .circle {
-  margin: auto;
-  position: absolute;
-  background-color: #69B9EB;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  top: 120px;
-  left: 150px;
-  opacity: 77%;
+    margin: auto;
+    position: absolute;
+    background-color: #69B9EB;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    top: 120px;
+    left: 150px;
+    opacity: 77%;
 }
+
 /* top left */
 
 /*bottom right shapes */
 .triangle1 {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 40px solid #1A7FC1;
-  right: 110px;
-  bottom: 95px;
-  opacity: 77%;
-  transform: rotate(45deg);
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 40px solid #1A7FC1;
+    right: 110px;
+    bottom: 95px;
+    opacity: 77%;
+    transform: rotate(45deg);
 }
 
 .transCircle {
-  margin: auto;
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  right: -75px;
-  bottom: -100px;
-  border-radius: 50%;
-  background-color: #69B9EB;
+    margin: auto;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    right: -75px;
+    bottom: -100px;
+    border-radius: 50%;
+    background-color: #69B9EB;
 }
+
 /*bottom right shapes */
 
 /*bottom left shapes */
 .square1 {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 200px;
-  height: 200px;
-  left: 0px;
-  bottom: 0px;
-  opacity: 75%;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 200px;
+    height: 200px;
+    left: 0px;
+    bottom: 0px;
+    opacity: 75%;
 }
+
 .square {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 150px;
-  height: 150px;
-  left: 0px;
-  bottom: 0px;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 150px;
+    height: 150px;
+    left: 0px;
+    bottom: 0px;
 }
+
 /*bottom left shapes */
 
 /*top right shapes */
 .square2 {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 200px;
-  height: 200px;
-  top: 0px;
-  right: 0px;
-  opacity: 75%;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 200px;
+    height: 200px;
+    top: 0px;
+    right: 0px;
+    opacity: 75%;
 }
+
 .square3 {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 150px;
-  height: 150px;
-  top: 0px;
-  right: 0px;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 150px;
+    height: 150px;
+    top: 0px;
+    right: 0px;
 }
+
 /*top right shapes */
 
 
 .formContainer {
-  width: 96%;
+    width: 96%;
 }
 
 .input {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
 }
 
 .input input {
-  width: 50%;
-  border: 3px solid white;
-  border-radius: 10px;
-  background-color: black;
-  color: white;
-  padding-left: 80px;
-  line-height: 35px;
-  box-sizing: border-box;
+    width: 50%;
+    border: 3px solid white;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    padding-left: 80px;
+    line-height: 35px;
+    box-sizing: border-box;
 }
 
 .email {
-  background-image: url("./images/emailImage.png");
-  background-repeat: no-repeat;
-  background-position: left 20px center;
-  filter: grayscale(100%);
+    background-image: url("./images/emailImage.png");
+    background-repeat: no-repeat;
+    background-position: left 20px center;
+    filter: grayscale(100%);
 }
 
 .password {
-  background-image: url("./images/passwordImage.png");
-  background-repeat: no-repeat;
-  background-position: left 20px center;
+    background-image: url("./images/passwordImage.png");
+    background-repeat: no-repeat;
+    background-position: left 20px center;
 
 }
 
 .errorMessage {
-  color: red;
-  margin-top: 5px;
+    color: red;
+    margin-top: 5px;
 }
 
 .loginButton {
-  background-color: #1A7FC1;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 50%;
-  margin-top: 20px;
-  height: 50px;
-  font-size: 20px;
-  font-family: 'Itim', cursive;
+    background-color: #1A7FC1;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    height: 50px;
+    font-size: 20px;
+    font-family: 'Itim', cursive;
 }
 
 .loginButton:hover {
-  background-color: #125683;
+    background-color: #125683;
 }
 
 .signInLink {
-  margin-top: 20px;
-  font-family: 'Itim', cursive;
+    margin-top: 20px;
+    font-family: 'Itim', cursive;
 
 }
+
 .forgotPassword {
- position: absolute;
- right: 180px;
- font-family: 'Itim', cursive;
+    position: absolute;
+    right: 180px;
+    font-family: 'Itim', cursive;
 
 }
- .inputEmail {
-  display: inline-block
+
+.inputEmail {
+    display: inline-block
 
 }
- .inputPassword {
-  position: absolute;
-  left: 0;
-  right: 210px;
-  top: 80px;
-  margin-left: 50px;
-  font-family: 'Itim', cursive;
+
+.inputPassword {
+    position: absolute;
+    left: 0;
+    right: 210px;
+    top: 80px;
+    margin-left: 50px;
+    font-family: 'Itim', cursive;
 
 }
+
 .siginText {
-  font-family: 'Itim', cursive;
-  color: white;
+    font-family: 'Itim', cursive;
+    color: white;
 
 }

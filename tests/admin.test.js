@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
-import {fireEvent, render, screen} from "@testing-library/react";
-import NavbarTest from "../src/app/components/navigation/navbar/Navbar";
+import {render, screen} from "@testing-library/react";
 import AdminTest from "../src/app/firebase/page";
 
 

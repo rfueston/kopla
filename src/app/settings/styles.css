@@ -1,26 +1,26 @@
 .settingscontainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-radius: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 30%;
 }
 
 .settingsMenu {
-  flex: 1;
-  background-color: #1A7FC1;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 50%;
-  margin-top: 20px;
-  height: 50px;
-  font-size: 20px;
-  font-family: 'Itim', cursive;
+    flex: 1;
+    background-color: #1A7FC1;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    height: 50px;
+    font-size: 20px;
+    font-family: 'Itim', cursive;
 }
 
 .settingsContent {
-  flex: 2; /* Adjust the value as needed */
-  border-radius: 30%;
+    flex: 2; /* Adjust the value as needed */
+    border-radius: 30%;
 }
