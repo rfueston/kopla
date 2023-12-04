@@ -1,178 +1,187 @@
 .container {
-  position: absolute;
-  width: 80%;
-  max-width: 600px;
-  margin: auto;
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  text-align: center;
-  height:450px;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+    position: absolute;
+    width: 80%;
+    max-width: 600px;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    text-align: center;
+    height: 450px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 /* top left */
 .triangle {
-  margin: auto;
-  position: absolute;
-  top: -60px;
-  left: -30px;
-  width: 0;
-  height: 0;
-  border-left: 100px solid transparent;
-  border-right: 100px solid transparent;
-  border-bottom: 200px solid #1A7FC1; /* Adjust the color as needed */
+    margin: auto;
+    position: absolute;
+    top: -60px;
+    left: -30px;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 200px solid #1A7FC1; /* Adjust the color as needed */
 }
+
 .circle {
-  margin: auto;
-  position: absolute;
-  background-color: #69B9EB;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  top: 120px;
-  left: 150px;
-  opacity: 77%;
+    margin: auto;
+    position: absolute;
+    background-color: #69B9EB;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    top: 120px;
+    left: 150px;
+    opacity: 77%;
 }
+
 /* top left */
 
 /*bottom right shapes */
 .triangle1 {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 40px solid #1A7FC1;
-  right: 110px;
-  bottom: 95px;
-  opacity: 77%;
-  transform: rotate(45deg);
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 40px solid #1A7FC1;
+    right: 110px;
+    bottom: 95px;
+    opacity: 77%;
+    transform: rotate(45deg);
 }
 
 .transCircle {
-  margin: auto;
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  right: -75px;
-  bottom: -100px;
-  border-radius: 50%;
-  background-color: #69B9EB;
+    margin: auto;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    right: -75px;
+    bottom: -100px;
+    border-radius: 50%;
+    background-color: #69B9EB;
 }
+
 /*bottom right shapes */
 
 /*bottom left shapes */
 .square1 {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 200px;
-  height: 200px;
-  left: 0px;
-  bottom: 0px;
-  opacity: 75%;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 200px;
+    height: 200px;
+    left: 0px;
+    bottom: 0px;
+    opacity: 75%;
 }
+
 .square {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 150px;
-  height: 150px;
-  left: 0px;
-  bottom: 0px;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 150px;
+    height: 150px;
+    left: 0px;
+    bottom: 0px;
 }
+
 /*bottom left shapes */
 
 /*top right shapes */
 .square2 {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 200px;
-  height: 200px;
-  top: 0px;
-  right: 0px;
-  opacity: 75%;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 200px;
+    height: 200px;
+    top: 0px;
+    right: 0px;
+    opacity: 75%;
 }
+
 .square3 {
-  margin: auto;
-  position: absolute;
-  background-color: #1A7FC1;
-  width: 150px;
-  height: 150px;
-  top: 0px;
-  right: 0px;
+    margin: auto;
+    position: absolute;
+    background-color: #1A7FC1;
+    width: 150px;
+    height: 150px;
+    top: 0px;
+    right: 0px;
 }
+
 /*top right shapes */
 
 
 .formContainer {
-  background-color:white;
-  width: 96%;
+    background-color: white;
+    width: 96%;
 }
 
 .input {
-  width: 100%;
-  margin-bottom: 15px;
-  background-color: white;
-  padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: white;
+    padding: 10px;
 }
 
 .input input {
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  border-style: none none solid none;
-  background-color: white;
-  color: black;
-  padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    border-style: none none solid none;
+    background-color: white;
+    color: black;
+    padding: 10px;
 }
+
 .input select {
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  border-style: none none solid none;
-  background-color: white;
-  color: black;
-  padding: 10px;
-  font-family: 'Itim', cursive;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    border-style: none none solid none;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    font-family: 'Itim', cursive;
 }
 
 .errorMessage {
-  color: red;
-  margin-top: 5px;
+    color: red;
+    margin-top: 5px;
 }
 
 
 .createAccountButton {
-  background-color: #1A7FC1;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
-  height: 50px;
-  font-size: 20px;
-  font-family: 'Itim', cursive;
+    background-color: #1A7FC1;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    height: 50px;
+    font-size: 20px;
+    font-family: 'Itim', cursive;
 }
 
 .createAccountButton:hover {
-  background-color: rgb(0, 0, 189);
+    background-color: rgb(0, 0, 189);
 }
 
 .signInLink {
-  font-family: 'Itim', cursive;
-  margin-top: 20px;
+    font-family: 'Itim', cursive;
+    margin-top: 20px;
 }
+
 .siginText {
-  font-family: 'Itim', cursive;
-  color: black;
+    font-family: 'Itim', cursive;
+    color: black;
 
 }
