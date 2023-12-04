@@ -1,85 +1,87 @@
 /* admin.module.css */
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .header {
-  background-color: #007bff;
-  color: white;
-  text-align: center;
-  padding: 20px 0;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
 }
 
 .formContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .inputField {
-  display: flex;
-  margin-bottom: 15px;
+    display: flex;
+    margin-bottom: 15px;
 }
 
 .parentEmailInput {
-  margin-right: 10px; /* Add margin between the input field and the search button */
+    margin-right: 10px; /* Add margin between the input field and the search button */
 }
 
 .button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+    background-color: #0056b3; /* Darker shade on hover */
 }
 
 .dataTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .dataTable th, .dataTable td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
 }
 
 .dataTable th {
-  background-color: #007bff;
-  color: white;
+    background-color: #007bff;
+    color: white;
 }
 
 .actions {
-  display: flex;
-  justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
 }
 
 .buttonUpdate, .buttonDelete {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .buttonUpdate:hover {
-  background-color: green; /* Darker shade on hover */
+    background-color: green; /* Darker shade on hover */
 }
+
 .buttonDelete:hover {
-  background-color: red; /* Darker shade on hover */
+    background-color: red; /* Darker shade on hover */
 }
+
 .tableRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

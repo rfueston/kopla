@@ -5,57 +5,58 @@
 /*  padding: 0;*/
 /*}*/
 h1 {
-  background-color: #007bff;
-  text-align: center;
-  color: white;
+    background-color: #007bff;
+    text-align: center;
+    color: white;
 }
+
 header {
-  background-color: #007bff;
-  color: white;
-  text-align: center;
-  padding: 20px 0;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
 }
 
 main {
-  max-width: fit-content;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  color: grey;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: fit-content;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    color: grey;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
-  display: inline-block;
-  width: 140px;
-  text-align: right;
-  padding: 15px;
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+    padding: 15px;
 }
 
 .input-field {
-  margin-bottom: 15px;
-  border-color: grey;
-  border-style: groove;
-  border-width: 1px;
-  border-radius: 2mm;
+    margin-bottom: 15px;
+    border-color: grey;
+    border-style: groove;
+    border-width: 1px;
+    border-radius: 2mm;
 }
 
 button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 /* Style the "Already have an account?" link */
 .link a {
-  color: #007bff;
-  text-decoration: none;
+    color: #007bff;
+    text-decoration: none;
 }
 
 .link a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }

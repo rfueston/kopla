@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import LogoutLink from '../../../../../lib/logoutUser';
 import styles from '../styles/Navbar.module.css';
-import { useState, useEffect } from "react";
+import {useEffect, useState} from "react";
 import checkAdminStatus from '../../../../../lib/checkAdmin';
 
 
@@ -12,12 +12,12 @@ const Navbar = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-          const isAdminValue = await checkAdminStatus();
-          setIsAdmin(isAdminValue);
+            const isAdminValue = await checkAdminStatus();
+            setIsAdmin(isAdminValue);
         };
-      
+
         fetchData();
-      }, []);
+    }, []);
 
     return (
         <nav className={styles.navbar}>
@@ -28,18 +28,18 @@ const Navbar = () => {
                     </Link>
                 </li>
                 {isAdmin && (
-                <li className={styles.navItem}>
-                    <Link href="/geofencing">
-                        Geofencing
-                    </Link>
-                </li>
+                    <li className={styles.navItem}>
+                        <Link href="/geofencing">
+                            Geofencing
+                        </Link>
+                    </li>
                 )}
                 {isAdmin && (
-                <li className={styles.navItem}>
-                    <Link href="/firebase">
-                        Admin
-                    </Link>
-                </li>
+                    <li className={styles.navItem}>
+                        <Link href="/firebase">
+                            Admin
+                        </Link>
+                    </li>
                 )}
                 <li className={styles.navItem}>
                     <Link href="/settings">
@@ -47,7 +47,7 @@ const Navbar = () => {
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <LogoutLink />
+                    <LogoutLink/>
                 </li>
             </ul>
         </nav>

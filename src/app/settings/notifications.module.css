@@ -1,70 +1,71 @@
 /* notifications.module.css */
 .notificationsContainer {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align items to the top */
-  height: 100vh;
-  padding-top: 20px; /* Add some top padding */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    height: 100vh;
+    padding-top: 20px; /* Add some top padding */
 }
 
 .notificationsBox {
-  width: 80%;
-  max-width: 600px;
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  text-align: center;
-  margin-top: 50px; /* Adjust the margin-top as needed */
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    text-align: center;
+    margin-top: 50px; /* Adjust the margin-top as needed */
 }
+
 .notificationSetting {
-  margin-bottom: 20px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .notificationSetting label {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .toggleSwitch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  cursor: pointer;
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    cursor: pointer;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  border-radius: 34px;
-  transition: 0.4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: '';
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.4s;
+    position: absolute;
+    content: '';
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
 }
 
 .active {
-  background-color: #2196f3;
+    background-color: #2196f3;
 }
 
 .active:before {
-  transform: translateX(26px);
+    transform: translateX(26px);
 }

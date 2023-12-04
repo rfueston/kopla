@@ -1,44 +1,46 @@
 
-
 .firebaseLink {
 
-  background-color: #007bff; /* Button background color */
-  color: #fff; /* Text color */
-  padding: 10px 20px; /* Padding around the text */
-  border: none; /* Remove the default button border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Change the cursor to a pointer on hover */
-  font-size: 16px; /* Font size */
-  margin-left: 15px;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Padding around the text */
+    border: none; /* Remove the default button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+    font-size: 16px; /* Font size */
+    margin-left: 15px;
 
 }
+
 .pickupLane {
-  background-color: #007bff; /* Button background color */
-  color: #fff; /* Text color */
-  padding: 10px 20px; /* Padding around the text */
-  border: none; /* Remove the default button border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Change the cursor to a pointer on hover */
-  font-size: 16px; /* Font size */
-  margin-left: 15px;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Padding around the text */
+    border: none; /* Remove the default button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+    font-size: 16px; /* Font size */
+    margin-left: 15px;
 }
+
 .geofencing {
-  background-color: #007bff; /* Button background color */
-  color: #fff; /* Text color */
-  padding: 10px 20px; /* Padding around the text */
-  border: none; /* Remove the default button border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Change the cursor to a pointer on hover */
-  font-size: 16px; /* Font size */
-  margin-left: 15px;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Padding around the text */
+    border: none; /* Remove the default button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+    font-size: 16px; /* Font size */
+    margin-left: 15px;
 }
+
 .settings {
-  background-color: #007bff; /* Button background color */
-  color: #fff; /* Text color */
-  padding: 10px 20px; /* Padding around the text */
-  border: none; /* Remove the default button border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Change the cursor to a pointer on hover */
-  font-size: 16px; /* Font size */
-  margin-left: 15px;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Padding around the text */
+    border: none; /* Remove the default button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+    font-size: 16px; /* Font size */
+    margin-left: 15px;
 }

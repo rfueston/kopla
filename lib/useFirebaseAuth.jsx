@@ -1,56 +1,55 @@
-import { useState, useEffect } from "react";
-import { Firebase } from "firebase/app";
+import {useEffect, useState} from "react";
 import "firebase/auth";
 
 const formatAuthUser = (user) => ({
-  uid: user.uid,
-  email: user.email,
+    uid: user.uid,
+    email: user.email,
 });
 
 export default function useFirebaseAuth() {
-  const [authUser, setAuthUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+    const [authUser, setAuthUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  const authStateChanged = async (authState) => {
-    if (!authState) {
-      setLoading(false);
-      return;
-    }
+    const authStateChanged = async (authState) => {
+        if (!authState) {
+            setLoading(false);
+            return;
+        }
 
-    setLoading(true);
+        setLoading(true);
 
-    var formattedUser = formatAuthUser(authState);
+        var formattedUser = formatAuthUser(authState);
 
-    setAuthUser(formattedUser);
+        setAuthUser(formattedUser);
 
-    setLoading(false);
-  };
+        setLoading(false);
+    };
 
-  const clear = () => {
-    setAuthUser(null);
-    setLoading(true);
-  };
+    const clear = () => {
+        setAuthUser(null);
+        setLoading(true);
+    };
 
-  const signInWithEmailAndPassword = (email, password) =>
-    firebase.auth().signInWithEmailAndPassword(email, password);
+    const signInWithEmailAndPassword = (email, password) =>
+        firebase.auth().signInWithEmailAndPassword(email, password);
 
-  const createUserWithEmailAndPassword = (email, password) =>
-    firebase.auth().createUserWithEmailAndPassword(email, password);
+    const createUserWithEmailAndPassword = (email, password) =>
+        firebase.auth().createUserWithEmailAndPassword(email, password);
 
-  const signOut = () => firebase.auth().signOut().then(clear);
+    const signOut = () => firebase.auth().signOut().then(clear);
 
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(authStateChanged);
-    return () => unsubscribe();
-  }, []);
+    useEffect(() => {
+        const unsubscribe = firebase.auth().onAuthStateChanged(authStateChanged);
+        return () => unsubscribe();
+    }, []);
 
-  return {
-    authUser,
-    loading,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    signOut,
-  };
+    return {
+        authUser,
+        loading,
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        signOut,
+    };
 }
 
 // Credit: https://blog.logrocket.com/implementing-authentication-in-next-js-with-firebase/
