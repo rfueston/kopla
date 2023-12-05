@@ -359,6 +359,10 @@ export default function PickLane() {
         }
     };
 
+    const startGPSServices = async () => {
+        alert("Turn on GPS.");
+    };
+
     const resetCheckboxStates = () => {
         setCheckboxStates((prevStates) => prevStates.map(() => false));
     };
@@ -423,46 +427,50 @@ export default function PickLane() {
                             {zones.map((zoneNumber, index) => (
                                 <section className={styles.zoneSection} key={zoneNumber}>
                                     <div className={styles.fillDiv}>
-                                        <div>
-                                            <button
-                                                className={styles.buttons}
-                                                onClick={() => handlePushBackIntoQueue(zoneNumber)}
-                                            >
-                                                Put parent back into Queue
-                                            </button>
-                                        </div>
+                                        {profileData.isAdmin && (
+                                            <div>
+                                                <button
+                                                    className={styles.buttons}
+                                                    onClick={() => handlePushBackIntoQueue(zoneNumber)}
+                                                >
+                                                    Put parent back into Queue
+                                                </button>
+                                            </div>
+                                        )}
                                         <h2>ZONE {zoneNumber}</h2>
                                         <br></br>
                                         <h4>Parent: {zoneData[zoneNumber]?.parentId || ""}</h4>
                                         <h4>Student: {Array.isArray(zoneData[zoneNumber]?.studentId) ? zoneData[zoneNumber]?.studentId.join(", ") : ""}</h4>
-                                        <div className={styles.fillDivCenter}>
-                                            <button
-                                                className={styles.buttons}
-                                                onClick={() => assignParentToZoneFromQueue(zoneNumber)}
-                                            >
-                                                Assign
-                                            </button>
-                                            <button
-                                                className={styles.buttons}
-                                                onClick={() => dismissParentFromZone(zoneNumber)}
-                                            >
-                                                Dismiss
-                                            </button>
-                                            {
-                                                <label key={zoneNumber}>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={checkboxStates[zoneNumber]}
-                                                        onChange={() => handleCheckboxChange(zoneNumber)}
-                                                        disabled={
-                                                            checkboxStates.filter((value) => value).length >= 2 &&
-                                                            !checkboxStates[zoneNumber]
-                                                        }
-                                                    />
-                                                    Swap Zone
-                                                </label>
-                                            }
-                                        </div>
+                                        {profileData.isAdmin && (
+                                            <div className={styles.fillDivCenter}>
+                                                <button
+                                                    className={styles.buttons}
+                                                    onClick={() => assignParentToZoneFromQueue(zoneNumber)}
+                                                >
+                                                    Assign
+                                                </button>
+                                                <button
+                                                    className={styles.buttons}
+                                                    onClick={() => dismissParentFromZone(zoneNumber)}
+                                                >
+                                                    Dismiss
+                                                </button>
+                                                {
+                                                    <label key={zoneNumber}>
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={checkboxStates[zoneNumber]}
+                                                            onChange={() => handleCheckboxChange(zoneNumber)}
+                                                            disabled={
+                                                                checkboxStates.filter((value) => value).length >= 2 &&
+                                                                !checkboxStates[zoneNumber]
+                                                            }
+                                                        />
+                                                        Swap Zone
+                                                    </label>
+                                                }
+                                            </div>
+                                        )}
                                     </div>
                                     <br></br>
                                     <br></br>
@@ -472,7 +480,7 @@ export default function PickLane() {
                     </div>
                 )}
 
-                {!profileData.isParent && (
+                {profileData.isAdmin && (
                     <div>
                         <button className={styles.outerButtons} onClick={() => handleZoneSwap()}>
                             Swap Zones
@@ -490,12 +498,14 @@ export default function PickLane() {
                                     <div className={styles.queueFields}>
                                         {" "}
                                         <div className={styles.queueFields}>
-                                            <input
-                                                type="radio"
-                                                value={item.parent_email_id}
-                                                checked={selectedRadioOption === item.parent_email_id}
-                                                onChange={handleRadioChange}
-                                            />
+                                            {profileData.isAdmin && (
+                                                <input
+                                                    type="radio"
+                                                    value={item.parent_email_id}
+                                                    checked={selectedRadioOption === item.parent_email_id}
+                                                    onChange={handleRadioChange}
+                                                />
+                                            )}
                                             Parent Name: {item.parentId}, Child Name(s):{" "}
                                             {item.student_id.join(", ")}
                                         </div>
@@ -511,11 +521,11 @@ export default function PickLane() {
                 {profileData.isParent && (
                     <div>
 
-                        <h2>You are in Zone: </h2>
+                        <h2>You are in Zone or Queue Position: </h2>
 
 
                         {/*//check for what zone they are in. add logic*/}
-                        <h1>0</h1>
+                        <h1>Queue Position 0</h1>
 
                     </div>
                 )}
@@ -527,7 +537,7 @@ export default function PickLane() {
                         <h2>Please Select "On My Way" Before Leaving</h2>
 
                         <center>
-                            <button className={styles.outerButtons} onClick={() => handleZoneSwap()}>
+                            <button className={styles.outerButtons} onClick={() => startGPSServices()}>
                                 On My Way
                             </button>
                         </center>
@@ -541,7 +551,7 @@ export default function PickLane() {
                         <h2>If you are not given a Zone Please Select "I'm Here!"</h2>
 
                         <center>
-                            <button className={styles.outerButtons} onClick={() => handleZoneSwap()}>
+                            <button className={styles.outerButtons} onClick={() => startGPSServices()}>
                                 I'm Here!
                             </button>
                         </center>
@@ -553,7 +563,7 @@ export default function PickLane() {
                 <div className={styles.qrCodeContainer}>
                     {profileData.isParent && (
                         <div>
-                            <h2>Show Staff QR Code to Join the Queue If Still Not in One</h2>
+                            <h2>Show Staff QR Code to Join the Queue to be Manually Added</h2>
 
                             <QRCodeComponent value={profileData.email}/>
                         </div>
