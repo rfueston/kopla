@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import styles from './system.module.css'; // Import the CSS
+import styles from './system.module.css';
 
 const SystemPage = () => {
     const [systemSettings, setSystemSettings] = useState({
@@ -47,7 +47,7 @@ const SystemPage = () => {
             alert("System Updated");
 
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
 

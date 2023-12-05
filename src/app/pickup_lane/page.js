@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef  } from "react";
 import CameraWithQRCodeScanner from "../../../lib/QRCodeCamera";
 import QRCodeComponent from "../../../lib/createQRCode";
-import styles from "./pickup.module.css"; // Import the CSS
+import styles from "./pickup.module.css";
 import checkAuth from "../../../lib/cookieAuth";
 import {
   addDoc,
@@ -74,19 +74,19 @@ export default function PickLane() {
     };
   
     fetchSystemSettings();
-  }, []); // Empty dependency array to run the effect only once
+  }, []);
 
   const [filteredItems, setFilteredItems] = useState([]);
   const [, setFormattedDate] = useState();
   var [selectedCount, setSelectedCount] = useState();
 
   const [checkboxStates, setCheckboxStates] = useState([
-    false, //0
-    false, //1
-    false, //2
-    false, //3
-    false, //4
-    false, //5
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
   ]);
   const [selectedRadioOption, setSelectedRadioOption] = useState();
   const gpsMap = async () => {
@@ -109,7 +109,6 @@ export default function PickLane() {
       const unsubscribe = onSnapshot(
         doc(db, "zone", zoneNumber.toString()),
         (doc) => {
-          console.log(`Current data ${zoneNumber}: `, doc.data());
           const newData = { ...zoneData, [zoneNumber]: doc.data() };
           setZoneData((prevData) => ({ ...prevData, ...newData }));
         }
@@ -136,7 +135,6 @@ export default function PickLane() {
         filteredData.sort((a, b) => a.queu_timestamp - b.queu_timestamp);
       });
       setFilteredItems(filteredData);
-      console.log("Filtered data: ", filteredData);
     });
   
     // Clean up subscriptions
@@ -163,7 +161,6 @@ export default function PickLane() {
         return selectedItemInQueue;
       } else {
         var topInQueue = updatedItems.splice(0, 1); // Use splice to remove the item
-        console.log("Removed: ", topInQueue);
         setFilteredItems(updatedItems); // Update the state with the modified array
         return topInQueue;
       }
@@ -239,17 +236,12 @@ export default function PickLane() {
 ].every((str) => typeof str === "string" && str.trim() === "");
 
     if (action === "ASSIGN") {
-      console.log("Zone is empty?: ", isZoneEmpty);
 
       if (!isZoneEmpty) {
         alert("Please dismiss current parent to assign new parent");
       } else {
         var nextItem = removeItem();
         if (nextItem !== "") {
-          console.log(`nextItem: ${nextItem[0].parentId}`);
-          console.log(`parentId: ${nextItem[0].parentId}`);
-          console.log(`studentId: ${nextItem[0].student_id}`);
-
           // Access the data using .data() method
           // updateDismissedStudents(docSnap);
           var newData = {
@@ -257,7 +249,6 @@ export default function PickLane() {
             studentId: nextItem[0].student_id,
             parent_email_id: nextItem[0].parent_email_id,
           };
-          console.log("New data: ", newData);
           setDoc(docRef, newData, { merge: true });
           removeDocumentFromFirestore("queue", nextItem[0].id);
         } else {
@@ -292,7 +283,7 @@ export default function PickLane() {
     assignParentFromQueueOrDismissFromZone(zoneId, "DISMISS");
   };
   const handlePushBackIntoQueue = async (zoneId) => {
-    // console.log(`Button clicked with zone: ${zoneId}`);
+
     var reduced_top_timestamp;
     if (filteredItems.length > 0) {
       const top_timestamp = filteredItems[0].queu_timestamp;
@@ -305,21 +296,12 @@ export default function PickLane() {
       reduced_top_timestamp = Timestamp.fromDate(new Date());
     }
 
-    // console.log("Top of the queue timestamp:", top_timestamp);
-    // console.log("Reduced Top of the queue timestamp:", reduced_top_timestamp);
-
     const zoneIdString = zoneId.toString();
 
     var swapZoneRef = doc(db, "zone", zoneIdString);
     const swapZoneDocSnapshot = await getDoc(swapZoneRef);
     const swapZoneDoc = swapZoneDocSnapshot.data();
-    // console.log("Left data: ", leftDoc);
-    // console.log(
-    //   "Doc from zone : ",
-    //   swapZoneDoc["parentId"],
-    //   swapZoneDoc["studentId"],
-    //   swapZoneDoc["parent_email_id"]
-    // );
+
     const isZoneEmpty = [
       swapZoneDoc["parentId"],
       Array.isArray(swapZoneDoc["studentId"])
@@ -385,12 +367,9 @@ export default function PickLane() {
     const newCheckboxStates = [...checkboxStates];
     newCheckboxStates[index] = !newCheckboxStates[index];
     setCheckboxStates(newCheckboxStates);
-    //console.log("check_box states: ", newCheckboxStates);
   };
   const handleRadioChange = (event) => {
     setSelectedRadioOption(event.target.value);
-    console.log("Current selected option : ", selectedRadioOption);
-    // location.reload();
   };
 
   const zones = Array.from({ length: zoneAmount }, (_, index) => index + 1);

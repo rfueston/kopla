@@ -1,6 +1,6 @@
 // Notifications.js
 import React, {useState} from 'react';
-import styles from './notifications.module.css'; // Import the CSS
+import styles from './notifications.module.css';
 
 const Notifications = () => {
     const [notificationSettings, setNotificationSettings] = useState({

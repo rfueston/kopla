@@ -17,15 +17,6 @@ export default function Main() {
             try {
                 const currentUser = auth.currentUser;
 
-                if (currentUser) {
-                    // Access user details
-                    console.log('User ID:', currentUser.uid);
-                    console.log('User Email:', currentUser.email);
-                    console.log('User Display Name:', currentUser.displayName);
-                    console.log('User Photo URL:', currentUser.photoURL);
-                } else {
-                    console.log('No user signed in');
-                }
             } catch (error) {
                 console.error('Error fetching user data:', error.message);
             }
