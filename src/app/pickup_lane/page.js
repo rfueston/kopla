@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef  } from "react";
 import CameraWithQRCodeScanner from "../../../lib/QRCodeCamera";
 import QRCodeComponent from "../../../lib/createQRCode";
 import styles from "./pickup.module.css"; // Import the CSS
@@ -30,6 +30,9 @@ export default function PickLane() {
     isParent: false,
   });
   const [userDoc, setUserDoc] = useState(null);
+  const [zoneAmount, setZoneAmount] = useState(0);
+  const [zoneData, setZoneData] = useState({});
+  const zoneRefArray = useRef([]);
 
   useEffect(() => {
     checkAuth();
@@ -50,15 +53,33 @@ export default function PickLane() {
       });
   }, []);
 
-  const [data1, setData1] = useState([]);
-  const [data2, setData2] = useState([]);
-  const [data3, setData3] = useState([]);
-  const [data4, setData4] = useState([]);
-  const [data5, setData5] = useState([]);
+  useEffect(() => {
+    const fetchSystemSettings = async () => {
+      const systemDocRef = doc(db, 'System', 'SystemSetting');
+  
+      try {
+        const docSnapshot = await getDoc(systemDocRef);
+  
+        if (docSnapshot.exists()) {
+          // Document exists, use the data
+          const data = docSnapshot.data();
+          setZoneAmount(data.zoneAmount || 3);
+        } else {
+          // Document doesn't exist, use the default value
+          setZoneAmount(3);
+        }
+      } catch (error) {
+        console.error('Error fetching system settings:', error);
+      }
+    };
+  
+    fetchSystemSettings();
+  }, []); // Empty dependency array to run the effect only once
+
   const [filteredItems, setFilteredItems] = useState([]);
   const [, setFormattedDate] = useState();
   var [selectedCount, setSelectedCount] = useState();
-  const [zone_number] = useState(["0", "1", "2", "3", "4", "5"]);
+
   const [checkboxStates, setCheckboxStates] = useState([
     false, //0
     false, //1
@@ -75,42 +96,39 @@ export default function PickLane() {
     const queueDocs = await getDocs(queueCollection);
   };
   gpsMap();
-  useEffect(() => {
-    const unsub1 = onSnapshot(doc(db, "zone", "1"), (doc) => {
-      console.log("Current data 1: ", doc.data());
-      setData1(doc.data());
-    });
-    const unsub2 = onSnapshot(doc(db, "zone", "2"), (doc) => {
-      console.log("Current data 2: ", doc.data());
-      setData2(doc.data());
-    });
-    const unsub3 = onSnapshot(doc(db, "zone", "3"), (doc) => {
-      console.log("Current data 3: ", doc.data());
-      setData3(doc.data());
-    });
-    const unsub4 = onSnapshot(doc(db, "zone", "4"), (doc) => {
-      console.log("Current data 4: ", doc.data());
-      setData4(doc.data());
-    });
-    const unsub5 = onSnapshot(doc(db, "zone", "5"), (doc) => {
-      console.log("Current data 5: ", doc.data());
-      setData5(doc.data());
-    });
 
+  useEffect(() => {
+    const zoneDataInitialState = Array.from(
+      { length: zoneAmount },
+      (_, index) => ({ parentId: "", studentId: "" })
+    );
+  
+    const unsubscribes = [];
+  
+    for (let zoneNumber = 1; zoneNumber <= zoneAmount; zoneNumber++) {
+      const unsubscribe = onSnapshot(
+        doc(db, "zone", zoneNumber.toString()),
+        (doc) => {
+          console.log(`Current data ${zoneNumber}: `, doc.data());
+          const newData = { ...zoneData, [zoneNumber]: doc.data() };
+          setZoneData((prevData) => ({ ...prevData, ...newData }));
+        }
+      );
+  
+      unsubscribes.push(unsubscribe);
+    }
+  
     const itemsRef = collection(db, "queue");
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0];
     currentDate.setHours(0, 0, 0, 0);
     const midnightTimestamp = Timestamp.fromDate(currentDate);
-
-    console.log(midnightTimestamp);
-
+  
     const timestampQuery = query(
       itemsRef,
-      where("queu_timestamp", ">=", midnightTimestamp), // change to >= timestamp as we only need parents checked in today
+      where("queu_timestamp", ">=", midnightTimestamp),
       orderBy("queu_timestamp")
     );
-
+  
     const unsubscribe = onSnapshot(timestampQuery, (snapshot) => {
       const filteredData = [];
       snapshot.forEach((doc) => {
@@ -118,18 +136,16 @@ export default function PickLane() {
         filteredData.sort((a, b) => a.queu_timestamp - b.queu_timestamp);
       });
       setFilteredItems(filteredData);
-      console.log("Filtered data: ", filteredItems);
+      console.log("Filtered data: ", filteredData);
     });
-
+  
+    // Clean up subscriptions
     return () => {
-      unsub1();
-      unsub2();
-      unsub3();
-      unsub4();
-      unsub5();
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
       unsubscribe();
     };
-  }, []);
+  }, [zoneAmount, zoneData]);
+  
 
   function setSelectedRadioOptionFunction(value) {
     setSelectedRadioOption(value);
@@ -211,14 +227,17 @@ export default function PickLane() {
     }
   };
   const assignParentFromQueueOrDismissFromZone = async (zoneId, action) => {
-    var docRef = doc(db, "zone", zoneId);
+    const zoneIdString = zoneId.toString();
+
+    var docRef = doc(db, "zone", zoneIdString);
     const docSnapshot = await getDoc(docRef);
     const zoneDoc = docSnapshot.data();
     const isZoneEmpty = [
-      zoneDoc["parentId"],
-      zoneDoc["studentId"].every((str) => str.trim() === "") ? "" : "non-empty",
-      zoneDoc["parent_email_id"],
-    ].every((str) => str.trim() === "");
+  zoneDoc["parentId"],
+  Array.isArray(zoneDoc["studentId"]) && zoneDoc["studentId"].every((str) => typeof str === "string" && str.trim() === "") ? "" : "non-empty",
+  zoneDoc["parent_email_id"],
+].every((str) => typeof str === "string" && str.trim() === "");
+
     if (action === "ASSIGN") {
       console.log("Zone is empty?: ", isZoneEmpty);
 
@@ -264,6 +283,7 @@ export default function PickLane() {
       }
     }
   };
+
   const assignParentToZoneFromQueue = (zoneId) => {
     assignParentFromQueueOrDismissFromZone(zoneId, "ASSIGN");
   };
@@ -288,7 +308,9 @@ export default function PickLane() {
     // console.log("Top of the queue timestamp:", top_timestamp);
     // console.log("Reduced Top of the queue timestamp:", reduced_top_timestamp);
 
-    var swapZoneRef = doc(db, "zone", zoneId.toString());
+    const zoneIdString = zoneId.toString();
+
+    var swapZoneRef = doc(db, "zone", zoneIdString);
     const swapZoneDocSnapshot = await getDoc(swapZoneRef);
     const swapZoneDoc = swapZoneDocSnapshot.data();
     // console.log("Left data: ", leftDoc);
@@ -300,9 +322,12 @@ export default function PickLane() {
     // );
     const isZoneEmpty = [
       swapZoneDoc["parentId"],
-      swapZoneDoc["studentId"],
+      Array.isArray(swapZoneDoc["studentId"])
+        ? swapZoneDoc["studentId"].every((str) => (typeof str === 'string' ? str.trim() === '' : true))
+        : true, // If studentId is not an array, consider it as empty
       swapZoneDoc["parent_email_id"],
-    ].every((str) => str.trim() === "");
+    ].every((str) => (typeof str === 'string' ? str.trim() === '' : true));
+
     if (!isZoneEmpty) {
       const queuCollectionRef = collection(db, "queue");
       const backToQueueData = {
@@ -327,37 +352,33 @@ export default function PickLane() {
       }, 2000);
     }
   };
+  
   const handleZoneSwap = async () => {
     if (checkboxStates.filter((value) => value).length < 2) {
       alert("Please select two zones to swap.");
     } else {
-      // console.log("State before filter: ", checkboxStates);
       const selected_zones_to_swap = checkboxStates
         .map((value, index) => (value ? index : null))
         .filter((index) => index !== null);
-      // console.log("Zones being swapped: ", selected_zones_to_swap);
-
-      var docRefLeftZone = doc(
-        db,
-        "zone",
-        selected_zones_to_swap[0].toString()
-      );
+  
+      var docRefLeftZone = doc(db, "zone", selected_zones_to_swap[0].toString());
       const leftDocSnapshot = await getDoc(docRefLeftZone);
       const leftDoc = leftDocSnapshot.data();
-      // console.log("Left data: ", leftDoc);
-
-      var docRefRightZone = doc(
-        db,
-        "zone",
-        selected_zones_to_swap[1].toString()
-      );
+  
+      var docRefRightZone = doc(db, "zone", selected_zones_to_swap[1].toString());
       const rightDocSnapshot = await getDoc(docRefRightZone);
       const rightDoc = rightDocSnapshot.data();
-      // console.log("Right data: ", rightDoc);
-
-      setDoc(docRefLeftZone, rightDoc, { merge: true });
-      setDoc(docRefRightZone, leftDoc, { merge: true });
+  
+      await setDoc(docRefLeftZone, rightDoc, { merge: true });
+      await setDoc(docRefRightZone, leftDoc, { merge: true });
+  
+      // Reset checkbox states
+      setCheckboxStates((prevStates) => prevStates.map(() => false));
     }
+  };
+
+  const resetCheckboxStates = () => {
+    setCheckboxStates((prevStates) => prevStates.map(() => false));
   };
 
   const handleCheckboxChange = (index) => {
@@ -371,6 +392,9 @@ export default function PickLane() {
     console.log("Current selected option : ", selectedRadioOption);
     // location.reload();
   };
+
+  const zones = Array.from({ length: zoneAmount }, (_, index) => index + 1);
+
   return (
     <div>
       <style jsx global>
@@ -412,253 +436,60 @@ export default function PickLane() {
           <h1>Dashboard</h1>
         </header>
         <div className={styles.zonesSection}>
-          <main className={styles.mainContent}>
-            {/* Zone 1 */}
-            <section className={styles.zoneSection}>
-              <div class={styles.fillDiv}>
-                <div>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => handlePushBackIntoQueue(zone_number[1])}
-                  >
-                    Put parent back into Queue
-                  </button>
+        <main className={styles.mainContent}>
+          {zones.map((zoneNumber, index) => (
+              <section className={styles.zoneSection} key={zoneNumber}>
+                <div className={styles.fillDiv}>
+                  <div>
+                    <button
+                      className={styles.buttons}
+                      onClick={() => handlePushBackIntoQueue(zoneNumber)}
+                    >
+                      Put parent back into Queue
+                    </button>
+                  </div>
+                  <h2>ZONE {zoneNumber}</h2>
+                  <br></br>
+                  <h4>Parent: {zoneData[zoneNumber]?.parentId || ""}</h4>
+                  <h4>Student: {Array.isArray(zoneData[zoneNumber]?.studentId) ? zoneData[zoneNumber]?.studentId.join(", ") : ""}</h4>
+                  <div className={styles.fillDivCenter}>
+                    <button
+                      className={styles.buttons}
+                      onClick={() => assignParentToZoneFromQueue(zoneNumber)}
+                    >
+                      Assign
+                    </button>
+                    <button
+                      className={styles.buttons}
+                      onClick={() => dismissParentFromZone(zoneNumber)}
+                    >
+                      Dismiss
+                    </button>
+                    {
+                      <label key={zoneNumber}>
+                        <input
+                          type="checkbox"
+                          checked={checkboxStates[zoneNumber]}
+                          onChange={() => handleCheckboxChange(zoneNumber)}
+                          disabled={
+                            checkboxStates.filter((value) => value).length >= 2 &&
+                            !checkboxStates[zoneNumber]
+                          }
+                        />
+                        Swap Zone
+                      </label>
+                    }
+                  </div>
                 </div>
-                <h2>ZONE {zone_number[1]}</h2>
                 <br></br>
-                <h4>Parent: {data1.parentId}</h4>
-                <h4>Student: {data1.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => assignParentToZoneFromQueue(zone_number[1])}
-                  >
-                    Assign
-                  </button>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => dismissParentFromZone(zone_number[1])}
-                  >
-                    Dismiss
-                  </button>
-                  {
-                    <label key={zone_number[1]}>
-                      <input
-                        type="checkbox"
-                        checked={checkboxStates[zone_number[1]]}
-                        onChange={() => handleCheckboxChange(zone_number[1])}
-                        disabled={
-                          checkboxStates.filter((value) => value).length >= 2 &&
-                          !checkboxStates[zone_number[1]]
-                        }
-                      />
-                      Swap Zone
-                    </label>
-                  }
-                </div>
-              </div>
-              <br></br>
-              <br></br>
-            </section>
-            {/* Zone 2 */}
-            <section className={styles.zoneSection}>
-              <div className={styles.fillDiv}>
-                <div>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => handlePushBackIntoQueue(zone_number[2])}
-                  >
-                    Put parent back into Queue
-                  </button>
-                </div>
-                <h2>ZONE {zone_number[2]}</h2>
                 <br></br>
-                <h4>Parent: {data2.parentId}</h4>
-                <h4>Student: {data2.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => assignParentToZoneFromQueue(zone_number[2])}
-                  >
-                    Assign
-                  </button>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => dismissParentFromZone(zone_number[2])}
-                  >
-                    Dismiss
-                  </button>
-                  {
-                    <label key={zone_number[2]}>
-                      <input
-                        type="checkbox"
-                        checked={checkboxStates[zone_number[2]]}
-                        onChange={() => handleCheckboxChange(zone_number[2])}
-                        disabled={
-                          checkboxStates.filter((value) => value).length >= 2 &&
-                          !checkboxStates[zone_number[2]]
-                        }
-                      />
-                      Swap Zone
-                    </label>
-                  }
-                </div>
-              </div>
-              <br></br>
-              <br></br>
-            </section>
-            {/* Zone 3 */}
-            <section className={styles.zoneSection}>
-              <div className={styles.fillDiv}>
-                <div>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => handlePushBackIntoQueue(zone_number[3])}
-                  >
-                    Put parent back into Queue
-                  </button>
-                </div>
-                <h2>ZONE {zone_number[3]}</h2>
-                <br></br>
-                <h4>Parent: {data3.parentId}</h4>
-                <h4>Student: {data3.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => assignParentToZoneFromQueue(zone_number[3])}
-                  >
-                    Assign
-                  </button>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => dismissParentFromZone(zone_number[3])}
-                  >
-                    Dismiss
-                  </button>
-                  {
-                    <label key={zone_number[3]}>
-                      <input
-                        type="checkbox"
-                        checked={checkboxStates[zone_number[3]]}
-                        onChange={() => handleCheckboxChange(zone_number[3])}
-                        disabled={
-                          checkboxStates.filter((value) => value).length >= 2 &&
-                          !checkboxStates[zone_number[3]]
-                        }
-                      />
-                      Swap Zone
-                    </label>
-                  }
-                </div>
-              </div>
-              <br></br>
-              <br></br>
-            </section>
-            {/* Zone 4 */}
-            <section className={styles.zoneSection}>
-              <div className={styles.fillDiv}>
-                <div>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => handlePushBackIntoQueue(zone_number[4])}
-                  >
-                    Put parent back into Queue
-                  </button>
-                </div>
-                <h2>ZONE {zone_number[4]}</h2>
-                <br></br>
-                <h4>Parent: {data4.parentId}</h4>
-                <h4>Student: {data4.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => assignParentToZoneFromQueue(zone_number[4])}
-                  >
-                    Assign
-                  </button>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => dismissParentFromZone(zone_number[4])}
-                  >
-                    Dismiss
-                  </button>
-                  {
-                    <label key={zone_number[4]}>
-                      <input
-                        type="checkbox"
-                        checked={checkboxStates[zone_number[4]]}
-                        onChange={() => handleCheckboxChange(zone_number[4])}
-                        disabled={
-                          checkboxStates.filter((value) => value).length >= 2 &&
-                          !checkboxStates[zone_number[4]]
-                        }
-                      />
-                      Swap Zone
-                    </label>
-                  }
-                </div>
-              </div>
-
-              <br></br>
-              <br></br>
-            </section>
-
-            {/* Zone 5 */}
-            <section className={styles.zoneSection}>
-              <div className={styles.fillDiv}>
-                <div>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => handlePushBackIntoQueue(zone_number[5])}
-                  >
-                    Put parent back into Queue
-                  </button>
-                </div>
-                <h2>ZONE {zone_number[5]}</h2>
-                <br></br>
-                <h4>Parent: {data5.parentId}</h4>
-                <h4>Student: {data5.studentId}</h4>
-                <div className={styles.fillDivCenter}>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => assignParentToZoneFromQueue(zone_number[5])}
-                  >
-                    Assign
-                  </button>
-                  <button
-                    className={styles.buttons}
-                    onClick={() => dismissParentFromZone(zone_number[5])}
-                  >
-                    Dismiss
-                  </button>
-                  {
-                    <label key={zone_number[5]}>
-                      <input
-                        type="checkbox"
-                        checked={checkboxStates[zone_number[5]]}
-                        onChange={() => handleCheckboxChange(zone_number[5])}
-                        disabled={
-                          checkboxStates.filter((value) => value).length >= 2 &&
-                          !checkboxStates[zone_number[5]]
-                        }
-                      />
-                      Swap Zone
-                    </label>
-                  }
-                </div>
-              </div>
-
-              <br></br>
-              <br></br>
-            </section>
+              </section>
+            ))}
           </main>
         </div>
-        <div className={styles.fillDivCenter}>
-          <button className={styles.buttons} onClick={() => handleZoneSwap()}>
+          <button className={styles.outerButtons} onClick={() => handleZoneSwap()}>
             Swap Zones
-          </button>
-        </div>
-        <div>
+            </button>
           <h1>Queue of Parents for Today </h1>
           <ol>
             {filteredItems.map((item, index) => (
@@ -698,6 +529,6 @@ export default function PickLane() {
           </div>
         </div>
       </div>
-    </div>
+
   );
 }

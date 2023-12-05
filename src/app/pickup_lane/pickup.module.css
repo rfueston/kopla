@@ -1,10 +1,3 @@
-/*body {*/
-/*  font-family: Arial, sans-serif;*/
-/*  background-color: #f0f0f0;*/
-/*  margin: 0;*/
-/*  padding: 0;*/
-/*}*/
-
 .main {
     background-color: white;
 }
@@ -12,32 +5,31 @@
 .zonesSection {
     padding: 8px;
     background-color: #080808;
-    height: fit-content; /* Set the height of the section as needed */
-    display: flex;
+    height: fit-content;
     align-items: center;
     justify-content: center;
     background-color: rgb(86, 84, 84);
     display: flex;
     flex-direction: row;
     border-radius: 15px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .mainContent {
-    justify-content: space-between; /* Adjust this based on your needs */
-    align-items: flex-start; /* Adjust this based on your needs */
-    width: 100%; /* Make the main container occupy the full width of the viewport */
-    max-width: 100%; /* Ensure it doesn't exceed the width of the viewport */
-    padding: 20px; /* Add some padding to your content */
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    background-color: #ffffff; /* Set a background color for the main content */
-    margin: 0 auto; /* Center the main content horizontally (optional) */
-    height: fit-content;
-    border-radius: 10px; /* You can adjust the value to control the roundness */
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    /* Additional styles for your main content */
+    justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  margin: 0 auto;
+  height: fit-content;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .zoneSection {
@@ -46,26 +38,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px; /* You can adjust the value to control the roundness */
+    border-radius: 10px;
     border: 2px solid #000;
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
+    flex: 0 0 calc(20% - 16px);
+    width: calc(20% - 16px);
+    margin-bottom: 16px;
+    align-self: flex-start;
+     margin-bottom: 16px;
+    box-sizing: border-box;
+    
 }
-
 .fillDiv {
-    width: 100%; /* Make the div take up the full width of the section */
-    background-color: #f5c74d; /* Set a background color for the div */
-    color: black; /* Set text color for the content inside the div */
-    text-align: left; /* Center the content horizontally and vertically */
-    /* Additional styles for the div */
+    width: 100%;
+    background-color: #f5c74d;
+    color: black;
+    text-align: left;
     position: relative;
     padding: 10px;
-    border-radius: 10px; /* You can adjust the value to control the roundness */
-    /* padding: 30px; */
+    border-radius: 10px;
     height: 100%;
-    flex: 1;
 }
 
 .fillDivCenter {
@@ -82,8 +73,8 @@
     width: 100%;
     text-align: center;
     padding: 20px;
-    background-color: #fff; /* Adjust as needed */
-    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    background-color: #fff;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .buttons {
@@ -98,15 +89,34 @@
     height: 50px;
     font-size: min(1em, 5vw);
     font-family: "Itim", cursive;
-    align-self: center; /* Center the button horizontally */
+    align-self: center;
     text-align: center;
     max-width: 100%;
 }
 
+.outerButtons {
+    background-color: #1a7fc1;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 25%;
+    margin-top: 20px;
+    height: 50px;
+    font-size: min(1em, 5vw);
+    font-family: "Itim", cursive;
+    text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+    margin-top: 20px;
+}
+
 .qrCodeReaderContainer {
     position: relative;
-    width: 300px; /* Set the width as needed */
-    height: 300px; /* Set the height as needed */
+    width: 300px;
+    height: 300px;
     margin: 0 auto;
 }
 
@@ -124,3 +134,4 @@
 .push-to-queue-button {
     width: 100%;
 }
+
