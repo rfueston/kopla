@@ -18,7 +18,7 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 7. npm install --force (in the project folder) (force may be needed due to an older google api being used)
 
-8. npm install qrcode.react (in the project folder)
+8. npm install qrcode.react (in the project folder) (force is need)
 
 9. npm run dev from project root folder
 
