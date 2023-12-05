@@ -36,8 +36,11 @@ const SystemPage = () => {
         fetchSystemSettings();
       }, []); // Empty dependency array to run the effect only once
 
-    const handleUpdate = (setting, value) => {
+    const handleUpdate = async (setting, value) => {
         try {
+          const isValid = await getCurrentZoneData(value);
+
+          if(isValid){
             setSystemSettings(() => ({[setting]: value}));
 
             setDoc(doc(db, "System", "SystemSetting"), {
@@ -46,10 +49,44 @@ const SystemPage = () => {
 
             alert("System Updated");
 
+          } else {
+            alert("You are trying to remove a zone that currently has a parent in it. Please dismiss the parent(s) before changing the zone amount");
+          }
+
         } catch (e) {
             console.error(e);
         }
     };
+
+    const getZoneData = async (systemDocRef) => {
+      try {
+          const docSnapshot = await getDoc(systemDocRef);
+
+          if (docSnapshot.exists()) {
+              const data = docSnapshot.data();
+              return data.parentId === "";
+          } else {
+              return false;
+          }
+      } catch (error) {
+          console.error('Error fetching zone data:', error);
+          return false;
+      }
+  };
+
+    const getCurrentZoneData = async (value) => {
+    const promises = [];
+
+    for (let i = systemSettings.zoneAmount; i > value; i--) {
+        const systemDocRef = doc(db, 'zone', i.toString());
+        promises.push(getZoneData(systemDocRef));
+    }
+
+    const results = await Promise.all(promises);
+
+    // Check if all results are valid (parentId is empty)
+    return results.every(isValid => isValid);
+};
 
     return (
         <div>
