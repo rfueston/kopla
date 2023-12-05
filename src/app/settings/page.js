@@ -38,35 +38,6 @@ const SettingsPage = () => {
     }, []);
     const router = useRouter();
     const [activeTab, setActiveTab] = useState('edit-profile');
-    //const [currentUser, setCurrentUser] = useState('');
-
-
-    useEffect(() => {
-        // Use an effect to fetch user data when the component mounts
-        const fetchUserData = async () => {
-            try {
-                auth.onAuthStateChanged(function (user) {
-                    //TO DO: make functions for updating backend. Use onAuthStateChanged inside each function
-
-                    console.log(" User Data:", user);
-
-                })
-                //console.log(auth.currentUser);
-
-                //console.log(currentUser);
-
-            } catch (error) {
-                console.error('Error fetching user data:', error.message);
-            }
-        };
-
-        fetchUserData(); // Call the function to fetch user data
-
-        // Cleanup function (optional)
-        return () => {
-            // Any cleanup code if needed
-        };
-    }, []); // Run when the component mounts
 
     const renderTabContent = () => {
         switch (activeTab) {
@@ -82,11 +53,6 @@ const SettingsPage = () => {
                 return null;
         }
     };
-
-    function logoutUser() {
-        handleLogout();
-        router.push("/login");
-    }
 
     return (
 

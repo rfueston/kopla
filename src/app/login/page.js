@@ -24,7 +24,6 @@ export default function Login() {
 
             handleLogin();
             // If authentication passed, push to main class
-            console.log("User ", userCredential.user);
             await loginController.setAdminStatus(userCredential.user.uid);
 
             router.push("/main");

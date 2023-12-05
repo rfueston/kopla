@@ -1,7 +1,7 @@
 // pages/security.js
 import React, {useState} from 'react';
-import SettingsController from './settingsController'; // Assuming you have a separate settingsController file
-import styles from './security.module.css'; // Import the CSS
+import SettingsController from './settingsController';
+import styles from './security.module.css';
 import {handleLogout} from '../../../lib/handleCookie';
 import {useRouter} from 'next/navigation';
 

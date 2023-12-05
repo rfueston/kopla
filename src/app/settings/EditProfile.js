@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import styles from './profile.module.css'; // Import the CSS
+import styles from './profile.module.css';
 import SettingsController from './settingsController';
 
 const EditProfile = () => {
