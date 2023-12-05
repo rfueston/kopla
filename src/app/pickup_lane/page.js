@@ -433,7 +433,7 @@ export default function PickLane() {
                                                     className={styles.buttons}
                                                     onClick={() => handlePushBackIntoQueue(zoneNumber)}
                                                 >
-                                                    Put parent back into Queue
+                                                    Send Back to Queue
                                                 </button>
                                             </div>
                                         )}
