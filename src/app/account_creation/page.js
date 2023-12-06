@@ -7,6 +7,7 @@ import {doc, setDoc} from "firebase/firestore";
 import {useRouter} from "next/navigation";
 import {db} from "../firebase";
 import Head from 'next/head';
+import SettingsController from '../settings/settingsController';
 
 
 export default function CreateAccount() {
@@ -27,10 +28,31 @@ export default function CreateAccount() {
     const [adminPassword, setAdminPassword] = useState("");
     const [checkSchoolPass, setCheckSchoolPass] = useState(true);
     const [checkUserType, setCheckUserType] = useState(true);
+    const [systemSettings, setSystemSettings] = useState({
+        zoneAmount: 3,
+        schoolAdminCode: 'AdminSchool123',
+        schoolStaffCode: 'School123'
+    });
+    const [systemDoc, setSystemDoc] = useState(null);
+
     var animateStatus = 0;
 
     const router = useRouter();
 
+    useEffect(() => {
+        SettingsController.getSystemDocument()
+            .then((systemDoc) => {
+              setSystemDoc(systemDoc);
+                setSystemSettings({
+                  zoneAmount: systemDoc.zoneAmount || 3,
+                  schoolAdminCode: systemDoc.schoolAdminCode || 'AdminSchool123',
+                  schoolStaffCode: systemDoc.schoolStaffCode || 'School123',
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching user document:', error);
+            });
+    }, []);
 
     const createAccountLogin = async (e) => {
         const auth = getAuth();
@@ -117,10 +139,10 @@ export default function CreateAccount() {
             setCheckUserType(true);
         }
 
-        if (selectedRole == "Admin" && adminPassword != "AdminSchool123" && checkUser) {
+        if (selectedRole == "Admin" && adminPassword != systemSettings.schoolAdminCode && checkUser) {
             setCheckSchoolPass(false);
             schoolCode = false;
-        } else if (selectedRole == "Staff" && adminPassword != "School123" && checkUser) {
+        } else if (selectedRole == "Staff" && adminPassword != systemSettings.schoolStaffCode && checkUser) {
             setCheckSchoolPass(false);
             schoolCode = false;
         } else {
