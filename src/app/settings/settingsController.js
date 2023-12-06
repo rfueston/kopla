@@ -21,7 +21,7 @@ class SettingsController {
                     } catch (error) {
                         console.error(error);
                     }
-                } 
+                }
             });
         });
     }
@@ -31,12 +31,12 @@ class SettingsController {
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
                     try {
-                        updateDoc(doc(db, "User", user.uid), {
+                        await updateDoc(doc(db, "User", user.uid), {
                             firstName: userData.firstName,
                             lastName: userData.lastName,
                             email: userData.email
                         });
-
+                        resolve('User document updated successfully.');
                     } catch (error) {
                         reject(`Error updating user document: ${error.message}`);
                     }
