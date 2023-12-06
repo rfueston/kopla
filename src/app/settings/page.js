@@ -54,6 +54,26 @@ const SettingsPage = () => {
         }
     };
 
+    const handleStaffDownload = () => {
+        console.log("Yes");
+        const pdfPath = '/userManualStaff.pdf';
+        const link = document.createElement('a');
+        link.href = pdfPath;
+        link.download = 'userManual.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+    const handleParentDownload = () => {
+        const pdfPath = '/userManualParent.pdf';
+        const link = document.createElement('a');
+        link.href = pdfPath;
+        link.download = 'userManual.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
     return (
 
         <div>
@@ -86,6 +106,9 @@ const SettingsPage = () => {
                         <button onClick={() => setActiveTab('system')}>System Settings</button>
                     </li>
                     )}
+                    <li>
+                        <button onClick={ !profileData.isParent ? handleStaffDownload : handleParentDownload}>Download User Manual</button>
+                    </li>
                 </div>
                 <div className={styles.settingsContent}>{renderTabContent()}</div>
             </div>
