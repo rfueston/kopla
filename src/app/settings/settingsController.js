@@ -1,5 +1,5 @@
 import {auth, db} from '../firebase';
-import {doc, getDoc, updateDoc} from 'firebase/firestore';
+import {doc, getDoc, updateDoc, setDoc} from 'firebase/firestore';
 import {updatePassword, verifyBeforeUpdateEmail} from 'firebase/auth'
 
 class SettingsController {
@@ -25,6 +25,21 @@ class SettingsController {
             });
         });
     }
+    async getSystemDocument() {
+        try {
+          const docRef = doc(db, 'System', 'SystemSetting');
+          const systemDoc = await getDoc(docRef);
+      
+          if (systemDoc.exists()) {
+            return systemDoc.data();
+          } else {
+            throw new Error(`Error fetching system document: Document not found`);
+          }
+        } catch (error) {
+          console.error(error);
+          throw new Error(`Error fetching system document: ${error.message}`);
+        }
+      }
 
     updateUserDocument(userData) {
         return new Promise((resolve, reject) => {
@@ -46,6 +61,27 @@ class SettingsController {
             });
         });
     }
+
+    async updateSystemDocument(systemData) {
+        try {
+          console.log(systemData);
+      
+          const docRef = doc(db, "System", "SystemSetting");
+          
+          // Use await directly without the need for an outer promise
+          await updateDoc(docRef, {
+            zoneAmount: systemData.zoneAmount,
+            schoolAdminCode: systemData.schoolAdminCode,
+            schoolStaffCode: systemData.schoolStaffCode
+          });
+
+          console.log(docRef);
+      
+          console.log("It worked");
+        } catch (error) {
+          console.error(`Error updating user document: ${error.message}`);
+        }
+      }
 
     updatePassword(newPassword) {
         return new Promise((resolve, reject) => {
