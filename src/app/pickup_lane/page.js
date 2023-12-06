@@ -665,7 +665,7 @@ export default function PickLane() {
                     </div>
                 )}
 
-                {!profileData.isParent && (
+                {profileData.isParent && (
                     <div>
                         <h2>Please Select "On My Way" Before Leaving and Wait for Location Service Prompt</h2>
 
@@ -680,7 +680,7 @@ export default function PickLane() {
                     </div>
                 )}
 
-                {!profileData.isParent && (
+                {profileData.isParent && (
                     <div>
                         <h2>If you are not given a Zone Please Select "I'm Here!"</h2>
 
