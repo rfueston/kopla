@@ -18,18 +18,18 @@
 
 .mainContent {
     justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  max-width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  margin: 0 auto;
-  height: fit-content;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    margin: 0 auto;
+    height: fit-content;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .zoneSection {
@@ -47,6 +47,29 @@
      margin-bottom: 16px;
     box-sizing: border-box;
     
+}
+
+@media screen and (max-width: 768px) {
+    .mainContent {
+        padding: 15px;
+    }
+
+    .zoneSection {
+        flex: 0 0 calc(33.33% - 16px);
+        width: calc(33.33% - 16px);
+    }
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 480px) {
+    .mainContent {
+        padding: 10px;
+    }
+
+    .zoneSection {
+        flex: 0 0 calc(50% - 16px);
+        width: calc(50% - 16px);
+    }
 }
 .fillDiv {
     width: 100%;

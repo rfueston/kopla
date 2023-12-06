@@ -9,6 +9,7 @@ import checkAdminStatus from '../../../../../lib/checkAdmin';
 
 const Navbar = () => {
     const [isAdmin, setIsAdmin] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,35 +20,37 @@ const Navbar = () => {
         fetchData();
     }, []);
 
+    const toggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    };
+
     return (
-        <nav className={styles.navbar}>
-            <ul className={styles.navList}>
-                <li className={styles.navItem}>
-                    <Link href="/main">
-                        Dashboard
-                    </Link>
+        <nav className={`${styles.navbar} ${styles.mobileOnly}`}>
+            {/* Dropdown button for mobile devices */}
+            <div className={`${styles.dropdownButton} ${showDropdown ? styles.showDropdown : ''}`} onClick={toggleDropdown}>
+            <span className={styles.menuText}>☰ Menu</span>
+            </div>
+
+            {/* Dropdown menu for mobile devices */}
+            <ul className={`${styles.navList} ${styles.dropdown} ${showDropdown ? '' : styles.hideDropdown}`}>
+                <li className={styles.navItem} onClick={toggleDropdown}>
+                    <Link href="/main">Dashboard</Link>
                 </li>
                 {isAdmin && (
-                    <li className={styles.navItem}>
-                        <Link href="/geofencing">
-                            Geofencing
-                        </Link>
+                    <li className={styles.navItem} onClick={toggleDropdown}>
+                        <Link href="/geofencing">Geofencing</Link>
                     </li>
                 )}
                 {isAdmin && (
-                    <li className={styles.navItem}>
-                        <Link href="/firebase">
-                            Admin
-                        </Link>
+                    <li className={styles.navItem} onClick={toggleDropdown}>
+                        <Link href="/firebase">Admin</Link>
                     </li>
                 )}
-                <li className={styles.navItem}>
-                    <Link href="/settings">
-                        Settings
-                    </Link>
+                <li className={styles.navItem} onClick={toggleDropdown}>
+                    <Link href="/settings">Settings</Link>
                 </li>
-                <li className={styles.navItem}>
-                    <LogoutLink/>
+                <li className={styles.navItem} onClick={toggleDropdown}>
+                    <LogoutLink />
                 </li>
             </ul>
         </nav>
