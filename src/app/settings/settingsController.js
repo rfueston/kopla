@@ -64,20 +64,14 @@ class SettingsController {
 
     async updateSystemDocument(systemData) {
         try {
-          console.log(systemData);
-      
           const docRef = doc(db, "System", "SystemSetting");
           
-          // Use await directly without the need for an outer promise
           await updateDoc(docRef, {
             zoneAmount: systemData.zoneAmount,
             schoolAdminCode: systemData.schoolAdminCode,
             schoolStaffCode: systemData.schoolStaffCode
           });
 
-          console.log(docRef);
-      
-          console.log("It worked");
         } catch (error) {
           console.error(`Error updating user document: ${error.message}`);
         }

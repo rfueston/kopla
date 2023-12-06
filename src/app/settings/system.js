@@ -65,7 +65,6 @@ const SystemPage = () => {
 
     const handleInputChange = (e) => {
       const {name, value} = e.target;
-      console.log(name);
       setSystemSettings({...systemSettings, [name]: value});
   };
 
