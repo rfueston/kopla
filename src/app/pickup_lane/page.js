@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useState, useRef} from "react";
 import CameraWithQRCodeScanner from "../../../lib/QRCodeCamera";
 import QRCodeComponent from "../../../lib/createQRCode";
 import styles from "./pickup.module.css";
@@ -18,7 +18,7 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase";
+import {db} from "../firebase";
 import SettingsController from "../settings/settingsController";
 
 export default function PickLane() {
@@ -33,33 +33,29 @@ export default function PickLane() {
   const [zoneAmount, setZoneAmount] = useState(0);
   const [zoneData, setZoneData] = useState({});
   const zoneRefArray = useRef([]);
-  const [parentsAssignedZoneNumber, setParentsAssignedZoneNumber] =
-    useState("Unassigned");
-  const [parentsCurrentQueuePosition, setParentsCurrentQueuePosition] =
-    useState("Unavailable");
 
   useEffect(() => {
     checkAuth();
 
     SettingsController.getUserDocument()
-      .then((userDoc) => {
-        setUserDoc(userDoc);
-        setProfileData({
-          firstName: userDoc.firstName || "",
-          lastName: userDoc.lastName || "",
-          email: userDoc.email || "",
-          isAdmin: userDoc.isAdmin || false,
-          isParent: userDoc.isParent || false,
+        .then((userDoc) => {
+          setUserDoc(userDoc);
+          setProfileData({
+            firstName: userDoc.firstName || "",
+            lastName: userDoc.lastName || "",
+            email: userDoc.email || "",
+            isAdmin: userDoc.isAdmin || false,
+            isParent: userDoc.isParent || false,
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching user document:", error);
         });
-      })
-      .catch((error) => {
-        console.error("Error fetching user document:", error);
-      });
   }, []);
 
   useEffect(() => {
     const fetchSystemSettings = async () => {
-      const systemDocRef = doc(db, "System", "SystemSetting");
+      const systemDocRef = doc(db, 'System', 'SystemSetting');
 
       try {
         const docSnapshot = await getDoc(systemDocRef);
@@ -73,7 +69,7 @@ export default function PickLane() {
           setZoneAmount(3);
         }
       } catch (error) {
-        console.error("Error fetching system settings:", error);
+        console.error('Error fetching system settings:', error);
       }
     };
 
@@ -103,19 +99,19 @@ export default function PickLane() {
 
   useEffect(() => {
     const zoneDataInitialState = Array.from(
-      { length: zoneAmount },
-      (_, index) => ({ parentId: "", studentId: "" })
+        {length: zoneAmount},
+        (_, index) => ({parentId: "", studentId: ""})
     );
 
     const unsubscribes = [];
 
     for (let zoneNumber = 1; zoneNumber <= zoneAmount; zoneNumber++) {
       const unsubscribe = onSnapshot(
-        doc(db, "zone", zoneNumber.toString()),
-        (doc) => {
-          const newData = { ...zoneData, [zoneNumber]: doc.data() };
-          setZoneData((prevData) => ({ ...prevData, ...newData }));
-        }
+          doc(db, "zone", zoneNumber.toString()),
+          (doc) => {
+            const newData = {...zoneData, [zoneNumber]: doc.data()};
+            setZoneData((prevData) => ({...prevData, ...newData}));
+          }
       );
 
       unsubscribes.push(unsubscribe);
@@ -127,56 +123,19 @@ export default function PickLane() {
     const midnightTimestamp = Timestamp.fromDate(currentDate);
 
     const timestampQuery = query(
-      itemsRef,
-      where("queu_timestamp", ">=", midnightTimestamp),
-      orderBy("queu_timestamp")
+        itemsRef,
+        where("queu_timestamp", ">=", midnightTimestamp),
+        orderBy("queu_timestamp")
     );
 
     const unsubscribe = onSnapshot(timestampQuery, (snapshot) => {
       const filteredData = [];
-      var parentQueuePosition = "Unavailable";
-      var position = 0;
       snapshot.forEach((doc) => {
-        position++;
-        filteredData.push({ id: doc.id, ...doc.data() });
+        filteredData.push({id: doc.id, ...doc.data()});
         filteredData.sort((a, b) => a.queu_timestamp - b.queu_timestamp);
-        if (doc.data().parent_email_id === profileData.email) {
-          parentQueuePosition = position.toString();
-          //   console.log("parent queue position: ", position);
-        }
-        // console.log(
-        //   "parent queue position email did not match for id: ",
-        //   doc.id,
-        //   " its idex: ",
-        //   position,
-        //   ". searching for email:  ",
-        //   profileData.email,
-        //   " but found : ",
-        //   doc.data().parent_email_id
-        // );
       });
       setFilteredItems(filteredData);
-      setParentsCurrentQueuePosition(parentQueuePosition);
     });
-    unsubscribes.push(unsubscribe);
-    var zonesRef = collection(db, "zone");
-    const assignedZoneQuery = query(
-      zonesRef,
-      where("parent_email_id", "==", profileData.email)
-    );
-    // console.log("Logged in parent email id: ", profileData.email);
-    const parentZoneSubscription = onSnapshot(assignedZoneQuery, (snapshot) => {
-      var assignedZone = "Awaiting assignment";
-      snapshot.forEach((doc) => {
-        if (doc.id !== null || doc.id.trim !== "") {
-          //   console.log("Parents zone data is not null", doc.data());
-          assignedZone = doc.id;
-        }
-        // console.log("Parents zone data: ", doc.id);
-      });
-      setParentsAssignedZoneNumber(assignedZone);
-    });
-    unsubscribes.push(parentZoneSubscription);
 
     // Clean up subscriptions
     return () => {
@@ -184,6 +143,7 @@ export default function PickLane() {
       unsubscribe();
     };
   }, [zoneAmount, zoneData]);
+
 
   function setSelectedRadioOptionFunction(value) {
     setSelectedRadioOption(value);
@@ -195,7 +155,7 @@ export default function PickLane() {
     if (updatedItems.length !== 0) {
       if (selectedRadioOption && selectedRadioOption.trim() != "") {
         var selectedItemInQueue = updatedItems.filter(
-          (obj) => obj.parent_email_id === selectedRadioOption
+            (obj) => obj.parent_email_id === selectedRadioOption
         );
         setSelectedRadioOptionFunction("");
         return selectedItemInQueue;
@@ -240,10 +200,26 @@ export default function PickLane() {
     }
   };
 
+
+  const setParentToQueue = async (data) => {
+    // auth.currentUser
+
+    if (data && data.text !== "") {
+      const collectionRef = collection(db, "Pairs");
+      const q = query(collectionRef, where("parentEmail", "==", data.text));
+      const snapshot = await getDocs(q);
+      const documents = snapshot.docs.map((doc) => doc.data());
+
+      const queueStudentIdsArray = documents.map((child) => child.childName);
+
+      addToQueue(documents[0].parentName, queueStudentIdsArray, data.text);
+    }
+  };
+
   const addToQueue = async (
-    queueParentId,
-    queueStudentIdsArray,
-    parentEmail
+      queueParentId,
+      queueStudentIdsArray,
+      parentEmail
   ) => {
     try {
       const currentDate = new Date();
@@ -271,16 +247,12 @@ export default function PickLane() {
     const zoneDoc = docSnapshot.data();
     const isZoneEmpty = [
       zoneDoc["parentId"],
-      Array.isArray(zoneDoc["studentId"]) &&
-      zoneDoc["studentId"].every(
-        (str) => typeof str === "string" && str.trim() === ""
-      )
-        ? ""
-        : "non-empty",
+      Array.isArray(zoneDoc["studentId"]) && zoneDoc["studentId"].every((str) => typeof str === "string" && str.trim() === "") ? "" : "non-empty",
       zoneDoc["parent_email_id"],
     ].every((str) => typeof str === "string" && str.trim() === "");
 
     if (action === "ASSIGN") {
+
       if (!isZoneEmpty) {
         alert("Please dismiss current parent to assign new parent");
       } else {
@@ -293,7 +265,7 @@ export default function PickLane() {
             studentId: nextItem[0].student_id,
             parent_email_id: nextItem[0].parent_email_id,
           };
-          setDoc(docRef, newData, { merge: true });
+          setDoc(docRef, newData, {merge: true});
           removeDocumentFromFirestore("queue", nextItem[0].id);
         } else {
           //   var newData = {
@@ -314,7 +286,7 @@ export default function PickLane() {
           studentId: [""],
           parent_email_id: "",
         };
-        setDoc(docRef, newData, { merge: true });
+        setDoc(docRef, newData, {merge: true});
       }
     }
   };
@@ -327,6 +299,7 @@ export default function PickLane() {
     assignParentFromQueueOrDismissFromZone(zoneId, "DISMISS");
   };
   const handlePushBackIntoQueue = async (zoneId) => {
+
     var reduced_top_timestamp;
     if (filteredItems.length > 0) {
       const top_timestamp = filteredItems[0].queu_timestamp;
@@ -348,12 +321,10 @@ export default function PickLane() {
     const isZoneEmpty = [
       swapZoneDoc["parentId"],
       Array.isArray(swapZoneDoc["studentId"])
-        ? swapZoneDoc["studentId"].every((str) =>
-            typeof str === "string" ? str.trim() === "" : true
-          )
-        : true, // If studentId is not an array, consider it as empty
+          ? swapZoneDoc["studentId"].every((str) => (typeof str === 'string' ? str.trim() === '' : true))
+          : true, // If studentId is not an array, consider it as empty
       swapZoneDoc["parent_email_id"],
-    ].every((str) => (typeof str === "string" ? str.trim() === "" : true));
+    ].every((str) => (typeof str === 'string' ? str.trim() === '' : true));
 
     if (!isZoneEmpty) {
       const queuCollectionRef = collection(db, "queue");
@@ -369,7 +340,7 @@ export default function PickLane() {
         studentId: [""],
         parent_email_id: "",
       };
-      setDoc(swapZoneRef, emptyData, { merge: true });
+      setDoc(swapZoneRef, emptyData, {merge: true});
       setSelectedRadioOptionFunction("");
     } else {
       alert("No parent in zone to push into queue");
@@ -385,27 +356,19 @@ export default function PickLane() {
       alert("Please select two zones to swap.");
     } else {
       const selected_zones_to_swap = checkboxStates
-        .map((value, index) => (value ? index : null))
-        .filter((index) => index !== null);
+          .map((value, index) => (value ? index : null))
+          .filter((index) => index !== null);
 
-      var docRefLeftZone = doc(
-        db,
-        "zone",
-        selected_zones_to_swap[0].toString()
-      );
+      var docRefLeftZone = doc(db, "zone", selected_zones_to_swap[0].toString());
       const leftDocSnapshot = await getDoc(docRefLeftZone);
       const leftDoc = leftDocSnapshot.data();
 
-      var docRefRightZone = doc(
-        db,
-        "zone",
-        selected_zones_to_swap[1].toString()
-      );
+      var docRefRightZone = doc(db, "zone", selected_zones_to_swap[1].toString());
       const rightDocSnapshot = await getDoc(docRefRightZone);
       const rightDoc = rightDocSnapshot.data();
 
-      await setDoc(docRefLeftZone, rightDoc, { merge: true });
-      await setDoc(docRefRightZone, leftDoc, { merge: true });
+      await setDoc(docRefLeftZone, rightDoc, {merge: true});
+      await setDoc(docRefRightZone, leftDoc, {merge: true});
 
       // Reset checkbox states
       setCheckboxStates((prevStates) => prevStates.map(() => false));
@@ -413,7 +376,21 @@ export default function PickLane() {
   };
 
   const startGPSServices = async () => {
-    alert("Turn on GPS.");
+    try {
+      navigator.geolocation.watchPosition();
+      console.error('Error getting location:');
+
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // setCenter({
+            //     lat: position.coords.latitude,
+            //     lng: position.coords.longitude,
+            // });
+          },
+      );
+    } catch (error) {
+      console.error('GPS tracking error:', error);
+    }
   };
 
   const resetCheckboxStates = () => {
@@ -429,215 +406,209 @@ export default function PickLane() {
     setSelectedRadioOption(event.target.value);
   };
 
-  const zones = Array.from({ length: zoneAmount }, (_, index) => index + 1);
+  const zones = Array.from({length: zoneAmount}, (_, index) => index + 1);
 
   return (
-    <div>
-      <style jsx global>
-        {`
-          h1 {
-            background-color: white;
-            text-align: center;
-            color: black;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 300%;
-          }
+      <div>
+        <style jsx global>
+          {`
+                  h1 {
+                    background-color: white;
+                    text-align: center;
+                    color: black;
+                    font-family: "Courier New", Courier, monospace;
+                    font-size: 300%;
+                  }
 
-          h2 {
-            background-color: #f5c74d;
-            text-align: center;
-            height: 20%;
-            //padding: auto;
-            color: black;
-            font-family: "Courier New", Courier, monospace;
-            font-size: xx-large;
-          }
+                  h2 {
+                    background-color: #f5c74d;
+                    text-align: center;
+                    height: 20%;
+                    //padding: auto;
+                    color: black;
+                    font-family: "Courier New", Courier, monospace;
+                    font-size: xx-large;
+                  }
 
-          header {
-            background-color: white;
-            color: black;
-            text-align: center;
-          }
+                  header {
+                    background-color: white;
+                    color: black;
+                    text-align: center;
+                  }
 
-          body {
-            background-color: white;
-          }
+                  body {
+                    background-color: white;
+                  }
 
-          li {
-            list-style-type: none;
-          }
-        `}
-      </style>
+                  li {
+                    list-style-type: none;
+                  }
+                `}
+        </style>
 
-      <div className={styles.main}>
-        <header>
-          <h1>Dashboard</h1>
-        </header>
+        <div className={styles.main}>
+          <header>
+            <h1>Dashboard</h1>
+          </header>
 
-        {!profileData.isParent && (
-          <div className={styles.zonesSection}>
-            <main className={styles.mainContent}>
-              {zones.map((zoneNumber, index) => (
-                <section className={styles.zoneSection} key={zoneNumber}>
-                  <div className={styles.fillDiv}>
-                    {profileData.isAdmin && (
-                      <div>
-                        <button
-                          className={styles.buttons}
-                          onClick={() => handlePushBackIntoQueue(zoneNumber)}
-                        >
-                          Send Back to Queue
-                        </button>
-                      </div>
-                    )}
-                    <h2>ZONE {zoneNumber}</h2>
-                    <br></br>
-                    <h4>Parent: {zoneData[zoneNumber]?.parentId || ""}</h4>
-                    <h4>
-                      Student:{" "}
-                      {Array.isArray(zoneData[zoneNumber]?.studentId)
-                        ? zoneData[zoneNumber]?.studentId.join(", ")
-                        : ""}
-                    </h4>
-                    {profileData.isAdmin && (
-                      <div className={styles.fillDivCenter}>
-                        <button
-                          className={styles.buttons}
-                          onClick={() =>
-                            assignParentToZoneFromQueue(zoneNumber)
-                          }
-                        >
-                          Assign
-                        </button>
-                        <button
-                          className={styles.buttons}
-                          onClick={() => dismissParentFromZone(zoneNumber)}
-                        >
-                          Dismiss
-                        </button>
-                        {
-                          <label key={zoneNumber}>
-                            <input
-                              type="checkbox"
-                              checked={checkboxStates[zoneNumber]}
-                              onChange={() => handleCheckboxChange(zoneNumber)}
-                              disabled={
-                                checkboxStates.filter((value) => value)
-                                  .length >= 2 && !checkboxStates[zoneNumber]
-                              }
-                            />
-                            Swap Zone
-                          </label>
-                        }
-                      </div>
-                    )}
-                  </div>
-                  <br></br>
-                  <br></br>
-                </section>
-              ))}
-            </main>
-          </div>
-        )}
+          {!profileData.isParent && (
+              <div className={styles.zonesSection}>
+                <main className={styles.mainContent}>
+                  {zones.map((zoneNumber, index) => (
+                      <section className={styles.zoneSection} key={zoneNumber}>
+                        <div className={styles.fillDiv}>
+                          {profileData.isAdmin && (
+                              <div>
+                                <button
+                                    className={styles.buttons}
+                                    onClick={() => handlePushBackIntoQueue(zoneNumber)}
+                                >
+                                  Send Back to Queue
+                                </button>
+                              </div>
+                          )}
+                          <h2>ZONE {zoneNumber}</h2>
+                          <br></br>
+                          <h4>Parent: {zoneData[zoneNumber]?.parentId || ""}</h4>
+                          <h4>Student: {Array.isArray(zoneData[zoneNumber]?.studentId) ? zoneData[zoneNumber]?.studentId.join(", ") : ""}</h4>
+                          {profileData.isAdmin && (
+                              <div className={styles.fillDivCenter}>
+                                <button
+                                    className={styles.buttons}
+                                    onClick={() => assignParentToZoneFromQueue(zoneNumber)}
+                                >
+                                  Assign
+                                </button>
+                                <button
+                                    className={styles.buttons}
+                                    onClick={() => dismissParentFromZone(zoneNumber)}
+                                >
+                                  Dismiss
+                                </button>
+                                {
+                                  <label key={zoneNumber}>
+                                    <input
+                                        type="checkbox"
+                                        checked={checkboxStates[zoneNumber]}
+                                        onChange={() => handleCheckboxChange(zoneNumber)}
+                                        disabled={
+                                            checkboxStates.filter((value) => value).length >= 2 &&
+                                            !checkboxStates[zoneNumber]
+                                        }
+                                    />
+                                    Swap Zone
+                                  </label>
+                                }
+                              </div>
+                          )}
+                        </div>
+                        <br></br>
+                        <br></br>
+                      </section>
+                  ))}
+                </main>
+              </div>
+          )}
 
-        {profileData.isAdmin && (
-          <div>
-            <button
-              className={styles.outerButtons}
-              onClick={() => handleZoneSwap()}
-            >
-              Swap Zones
-            </button>
-          </div>
-        )}
-
-        {!profileData.isParent && (
-          <div>
-            <h1>Queue of Parents for Today </h1>
-            <ol>
-              {filteredItems.map((item, index) => (
-                <li key={index}>
-                  {" "}
-                  <div className={styles.queueFields}>
-                    {" "}
-                    <div className={styles.queueFields}>
-                      {profileData.isAdmin && (
-                        <input
-                          type="radio"
-                          value={item.parent_email_id}
-                          checked={selectedRadioOption === item.parent_email_id}
-                          onChange={handleRadioChange}
-                        />
-                      )}
-                      Parent Name: {item.parentId}, Child Name(s):{" "}
-                      {item.student_id.join(", ")}
-                    </div>{" "}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-
-        {profileData.isParent && (
-          <div>
-            <h2>Assigned Zone: </h2>
-
-            {/*//check for what zone they are in. add logic*/}
-            <h1>{parentsAssignedZoneNumber}</h1>
-            <h2>Queue Position: </h2>
-
-            {/*//check for what zone they are in. add logic*/}
-            <h1>Queue Position: {parentsCurrentQueuePosition}</h1>
-          </div>
-        )}
-
-        {profileData.isParent && (
-          <div>
-            <h2>Please Select "On My Way" Before Leaving</h2>
-
-            <center>
-              <button
-                className={styles.outerButtons}
-                onClick={() => startGPSServices()}
-              >
-                On My Way
-              </button>
-            </center>
-          </div>
-        )}
-
-        {profileData.isParent && (
-          <div>
-            <h2>If you are not given a Zone Please Select "I'm Here!"</h2>
-
-            <center>
-              <button
-                className={styles.outerButtons}
-                onClick={() => startGPSServices()}
-              >
-                I'm Here!
-              </button>
-            </center>
-          </div>
-        )}
-
-        <div className={styles.qrCodeContainer}>
-          {profileData.isParent && (
-            <div>
-              <h2>Show Staff QR Code to Join the Queue to be Manually Added</h2>
-
-              <QRCodeComponent value={profileData.email} />
-            </div>
+          {profileData.isAdmin && (
+              <div>
+                <button className={styles.outerButtons} onClick={() => handleZoneSwap()}>
+                  Swap Zones
+                </button>
+              </div>
           )}
 
           {!profileData.isParent && (
-            <div>
-              <CameraWithQRCodeScanner getParentData={getParentData} />
-            </div>
+              <div>
+                <h1>Queue of Parents for Today </h1>
+                <ol>
+                  {filteredItems.map((item, index) => (
+                      <li key={index}>
+                        {" "}
+                        <div className={styles.queueFields}>
+                          {" "}
+                          <div className={styles.queueFields}>
+                            {profileData.isAdmin && (
+                                <input
+                                    type="radio"
+                                    value={item.parent_email_id}
+                                    checked={selectedRadioOption === item.parent_email_id}
+                                    onChange={handleRadioChange}
+                                />
+                            )}
+                            Parent Name: {item.parentId}, Child Name(s):{" "}
+                            {item.student_id.join(", ")}
+                          </div>
+                          {" "}
+                        </div>
+                      </li>
+                  ))}
+                </ol>
+              </div>
           )}
+
+
+          {profileData.isParent && (
+              <div>
+
+                <h2>You are in Zone or Queue Position: </h2>
+
+
+                {/*//check for what zone they are in. add logic*/}
+                <h1>Queue Position 0</h1>
+
+              </div>
+          )}
+
+
+          {profileData.isParent && (
+              <div>
+
+                <h2>Please Select "On My Way" Before Leaving</h2>
+
+                <center>
+                  <button className={styles.outerButtons} onClick={() => startGPSServices()}>
+                    On My Way
+                  </button>
+                </center>
+              </div>
+          )}
+
+
+          {profileData.isParent && (
+              <div>
+
+                <h2>If you are not given a Zone Please Select "I'm Here!"</h2>
+
+                <center>
+                  <button className={styles.outerButtons} onClick={() => setParentToQueue()}>
+                    I'm Here!
+                  </button>
+                </center>
+
+              </div>
+          )}
+
+
+          <div className={styles.qrCodeContainer}>
+            {profileData.isParent && (
+                <div>
+                  <h2>Show Staff QR Code to Join the Queue to be Manually Added</h2>
+
+                  <QRCodeComponent value={profileData.email}/>
+                </div>
+            )}
+
+            {!profileData.isParent && (
+                <div>
+                  <CameraWithQRCodeScanner getParentData={getParentData}/>
+                </div>
+            )}
+          </div>
+
+
         </div>
       </div>
-    </div>
+
   );
 }
