@@ -56,5 +56,6 @@
 
     .menuText {
         display: block; /* Show only on smaller screens */
+        color: white;
     }
 }
