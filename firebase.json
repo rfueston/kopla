@@ -1,16 +1,35 @@
 {
   "hosting": {
-    "public": "out",
+    "source": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+    "frameworksBackend": {
+      "region": "us-east1"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/login",
+      "destination": "/",
+      "type": 301
+    },
+    {
+      "source": "/pickup_lane",
+      "destination": "/main",
+      "type": 301
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/login"
+    },
+    {
+      "source": "/main",
+      "destination": "/pickup_lane"
+    }
+  ]
 }

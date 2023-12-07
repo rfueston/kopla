@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "custom-build": "npm install --force && npm run build && firebase deploy",
+    "deploy": "gh-pages -d out -b main -t true"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
@@ -42,11 +44,21 @@
     "react-qr-reader": {
       "react": "$react",
       "react-dom": "$react-dom"
+    },
+    "@react-google-maps/api": {
+      "version": "2.19.2"
+    },
+    "google-maps-react": {
+      "version": "2.0.6"
+    },
+    "google-map-react": {
+      "version": "2.2.1"
     }
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
+    "gh-pages": "^6.1.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0"
   }
