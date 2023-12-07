@@ -3,7 +3,7 @@ import {useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import styles from "./login.module.css";
-import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import {getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import loginController from "./pageController";
 import Head from 'next/head';
 import {handleLogin} from '../../../lib/handleCookie';
@@ -42,6 +42,27 @@ export default function Login() {
     function loginUser() {
         performFirebaseLogin();
     }
+
+    const forgotPassword = async () => {
+        const auth = getAuth();
+    
+        try {
+          await sendPasswordResetEmail(auth, email);
+          // Password reset email sent successfully
+          alert("Password reset email sent. Check your email to reset your password.");
+        } catch (error) {
+          // Handle errors, e.g., if the user does not exist
+          if(error.message) {
+            var errorMessage = error.code.split("/").pop();
+            errorMessage = errorMessage.replace(/-/g, " ");
+
+            alert("Error sending password reset email: " +errorMessage);
+          } else {
+            alert("Error sending password reset email: " +error);
+
+          }
+        }
+      };
 
     return (
         <div>
@@ -119,7 +140,7 @@ export default function Login() {
                                    required
                             />
                             <div className={styles.forgotPassword}>
-                                <Link href="/login">Forgot Password?</Link>
+                                <Link href="/login" onClick={forgotPassword}>Forgot Password?</Link>
                             </div>
                         </div>
 
